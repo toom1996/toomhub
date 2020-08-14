@@ -1,0 +1,6 @@
+{
+  "app_name": "toomhub",
+  "app_mod": "debug",
+  "app_host": "localhost",
+  "app_port": "8080"
+}
