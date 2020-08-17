@@ -2,7 +2,7 @@ package tool
 
 import (
 	"github.com/gin-gonic/gin"
-	miniV1 "toom/controllers/miniprogram/v1"
+	miniV1 "toom/controllers/mini/v1"
 )
 
 func RegisterRoutes(app *gin.Engine) *gin.Engine {

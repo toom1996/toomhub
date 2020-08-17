@@ -1,19 +1,20 @@
 package tool
 
-import "github.com/go-xorm/xorm"
+import (
+	"fmt"
+	"github.com/jinzhu/gorm"
+)
 
-type Orm struct {
-	*xorm.Engine
-}
+var DB *gorm.DB
+var err error
 
-func OrmEngine() (*Orm, error) {
-	engine, err := xorm.NewEngine("mysql", "")
+func init() {
+	DB, err = gorm.Open("mysql", "root:root@tcp(192.168.10.113:3306)/toom?charset=utf8mb4&parseTime=True&loc=Local")
 
 	if err != nil {
-		return nil, err
+		fmt.Println(err)
 	}
+	DB.LogMode(true)
+	DB.SingularTable(true)
 
-	orm := new(Orm)
-	orm.Engine = engine
-	return orm, nil
 }
