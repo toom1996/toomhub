@@ -1,0 +1,68 @@
+/**index.wxss**/
+.box {
+  padding-bottom: 30rpx;
+  background-color: WhiteSmoke;
+}
+
+.operatingBar {
+  border-top:1rpx solid  #ccc!important;
+  background-color: white;
+  height: 60rpx;
+  padding:0rpx;
+  text-align: center;
+  padding-top: 5rpx;
+  line-height: 60rpx;
+}
+
+.post_box {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--skeleton-padding,0 16px);
+  background-color: white
+}
+
+.post_box .top {
+  padding-bottom: 30rpx;
+}
+
+.post_box .top__avatar image {
+  margin-right: var(--padding-md,16px);
+  width: 37px;
+  height: 37px;
+  border-radius: 100%;
+}
+
+
+.post_box .__content {
+  -webkit-flex: 1%;
+  flex: 1;
+  font-size: 80%;
+}
+
+.post_box .__attach {
+  -webkit-flex: 1%;
+  flex: 1;
+}
+
+.post_box .__username {
+  width: 40%;
+  margin: 0;
+  height: var(--skeleton-row-height,16px);
+  background-color: #f2f3f5;
+}
+
+.post_box .__row {
+  width: 100%;
+  margin-top: 20px;
+  height: var(--skeleton-row-height,16px);
+  background-color: #f2f3f5;
+}
+
+.post_box .font__username {
+  font-weight: 600;
+}
+
+.post_box .font__time {
+  font-weight: 100;
+}

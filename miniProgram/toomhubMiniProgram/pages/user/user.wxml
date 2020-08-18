@@ -1,0 +1,23 @@
+<!--index.wxml-->
+<view class="head-read">
+  <view class="flex">
+    <view class="read-img">
+      <image class="userinfo-avatar" src="{{userInfo === null ? '/static/avatar/defaultAvatar.jpg': userInfo.avatarUrl }}" mode="cover"></image>
+    </view>
+    <view class="flex-box">
+      <van-row>
+        <van-col span="12">
+          <view wx:if="{{userInfo}}">
+            <text class="h2">{{userInfo.nickName}}</text>
+          </view>
+          <view wx:else>
+            <van-button round type="default" bindtap="userLogin" size="small">立即登陆</van-button>
+          </view>
+        </van-col>
+      </van-row>
+    </view>
+    <view class="arrow arrow-one">
+      <span>。。。</span>
+    </view>
+  </view>
+</view>

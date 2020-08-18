@@ -9,8 +9,18 @@ type ToomhubUserMini struct {
 	CreatedAt int
 }
 
-type UserMiniCreate struct {
-	Code string `json:"code" form:"code" binding:"required"`
+type V1MiniUserInfo struct {
+	Nickname  string `json:"nickname" form:"nickname" binding:"required"`
+	Gender    int    `json:"gender" form:"gender" binding:"required"`
+	City      string `json:"city" form:"city" binding:"required"`
+	Province  string `json:"province" form:"province" binding:"required"`
+	Country   string `json:"country" form:"country" binding:"required"`
+	AvatarUrl string `json:"avatarUrl" form:"avatarUrl" binding:"required"`
+}
+
+type LoginByV1Model struct {
+	Code     string           `form:"code" binding:"required"`
+	UserInfo []V1MiniUserInfo `form:"userInfo"`
 }
 
 func UserMiniCreated(Openid int) {
