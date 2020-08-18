@@ -22,7 +22,7 @@ func (logic *UserLogic) Login(validator *model.LoginByV1Model) (bool, error) {
 	}
 	fmt.Println(res.ErrCode)
 	//if service.V1MiniUserHasUser(res.OpenID) == false {
-	//	fmt.Println("false")
+	fmt.Println("00")
 	//}
 	//fmt.Println("true")
 	return false, err
