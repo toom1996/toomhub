@@ -6,7 +6,7 @@ package model
 type ToomhubUserMini struct {
 	MiniId    int
 	Openid    string
-	CreatedAt int
+	CreatedAt int64 `gorm:"default:''"`
 }
 
 type V1MiniUserInfo struct {

@@ -5,6 +5,7 @@ package service
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 var DB *gorm.DB
@@ -16,6 +17,9 @@ func init() {
 	if err != nil {
 		fmt.Println(err)
 	}
+	DB.DB().SetMaxIdleConns(10)
+	DB.DB().SetMaxOpenConns(100)
+	DB.DB().SetConnMaxLifetime(1)
 	DB.LogMode(true)
 	DB.SingularTable(true)
 }
