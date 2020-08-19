@@ -12,7 +12,7 @@ var DB *gorm.DB
 var err error
 
 func init() {
-	DB, err = gorm.Open("mysql", "root:root@tcp(192.168.10.113:3306)/toom?charset=utf8mb4&parseTime=True&loc=Local")
+	DB, err = gorm.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/toomhub?charset=utf8mb4&parseTime=True&loc=Local")
 
 	if err != nil {
 		fmt.Println(err)

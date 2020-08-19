@@ -2,11 +2,12 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"toomhub/extension/helpers"
+	ControllersMiniV1 "toomhub/controllers/mini/v1"
+	"toomhub/tool"
 )
 
 func main() {
-	cfg, err := helpers.Init("./config/app.json")
+	cfg, err := tool.Init("./config/app.json")
 
 	if err != nil {
 		panic(err.Error())
@@ -14,7 +15,12 @@ func main() {
 
 	app := gin.Default()
 
-	helpers.RegisterRoutes(app)
+	registerRouter(app)
 
 	_ = app.Run(cfg.AppHost + ":" + cfg.AppPort)
+}
+
+//路由设置
+func registerRouter(router *gin.Engine) {
+	new(ControllersMiniV1.UserController).Register(router)
 }

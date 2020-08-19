@@ -14,12 +14,11 @@ import (
 type UserLogic struct {
 }
 
+// @title	小程序登陆
 func (logic *UserLogic) Login(validator *ModelMiniV1.LoginByV1Model) (interface{}, error) {
-	config := tool.GetConfig().AppPort
-	fmt.Println(config)
+	config := tool.GetConfig()
 	//微信接口验证
-	//res, err := weapp.Login(config.Mini.AppId, config.Mini.AppSecret, validator.Code)
-	res, err := weapp.Login("00000", "555555", validator.Code)
+	res, err := weapp.Login(config.Mini.AppId, config.Mini.AppSecret, validator.Code)
 	if err != nil {
 		return map[string]string{}, err
 	}

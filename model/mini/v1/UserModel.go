@@ -4,8 +4,8 @@ package ModelMiniV1
 
 //表 toomhub_user_mini
 type ToomhubUserMini struct {
-	MiniId    int
-	Openid    string
+	MiniId    int `json:"mini_id"`
+	OpenId    string
 	CreatedAt int64 `gorm:"default:''"`
 }
 
