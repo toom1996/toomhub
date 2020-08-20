@@ -3,21 +3,22 @@
 package service
 
 import (
-	"fmt"
-	"github.com/gomodule/redigo/redis"
+	"context"
+	"github.com/go-redis/redis/v8"
 )
 
-const REDIS_KEY_USER = "miniuser:id:"
+var Ctx = context.Background()
+
+// 声明一个全局的rdb变量
+var Rdb *redis.Client
 
 func init() {
-	c, err := redis.Dial("tcp", "127.0.0.1:6379")
-	if err != nil {
-		fmt.Println("Connect to redis error", err)
-		return
-	}
-	defer c.Close()
-}
-
-func gerUser() {
-
+	//config := util.GetConfig()
+	//// 实例化一个redis客户端
+	//Rdb = redis.NewClient(&redis.Options{
+	//	Addr:     config.Redis.Host + ":" + config.Redis.Port, // ip:port
+	//	Password: config.Redis.Password,                       // redis连接密码
+	//	DB:       config.Redis.Database,                       // 选择的redis库
+	//	PoolSize: 20,                                          // 设置连接数,默认是10个连接
+	//})
 }

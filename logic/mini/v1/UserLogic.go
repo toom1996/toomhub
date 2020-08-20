@@ -8,7 +8,7 @@ import (
 	"github.com/medivhzhan/weapp/v2"
 	ModelMiniV1 "toomhub/model/mini/v1"
 	ServiceMiniV1 "toomhub/service/mini/v1"
-	"toomhub/tool"
+	"toomhub/util"
 )
 
 type UserLogic struct {
@@ -16,7 +16,7 @@ type UserLogic struct {
 
 // @title	小程序登陆
 func (logic *UserLogic) Login(validator *ModelMiniV1.LoginByV1Model) (interface{}, error) {
-	config := tool.GetConfig()
+	config := util.GetConfig()
 	//微信接口验证
 	res, err := weapp.Login(config.Mini.AppId, config.Mini.AppSecret, validator.Code)
 	if err != nil {
@@ -27,7 +27,7 @@ func (logic *UserLogic) Login(validator *ModelMiniV1.LoginByV1Model) (interface{
 	}
 
 	//数据库验证用户信息
-	userInfo, err := ServiceMiniV1.GetUser(res.OpenID)
+	userInfo, err := ServiceMiniV1.GetUser(res.OpenID, validator)
 	if err != nil {
 		return "", err
 	}

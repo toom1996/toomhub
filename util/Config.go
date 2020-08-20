@@ -1,4 +1,4 @@
-package tool
+package util
 
 import (
 	"bufio"
@@ -12,11 +12,24 @@ type Config struct {
 	AppHost string `json:"app_host"`
 	AppPort string `json:"app_port"`
 	Mini    Mini   `json:"mini"`
+	Jwt     Jwt    `json:"jwt"`
+	Redis   Redis  `json:"redis"`
 }
 
 type Mini struct {
 	AppId     string `json:"app_id"`
 	AppSecret string `json:"app_secret"`
+}
+
+type Jwt struct {
+	Secret string `json:"secret"`
+}
+
+type Redis struct {
+	Host     string `json:"host"`
+	Port     string `json:"port"`
+	Database int8   `json:"database"`
+	Password string `json:"password"`
 }
 
 var _cfg *Config = nil

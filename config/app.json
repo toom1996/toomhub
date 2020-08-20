@@ -3,8 +3,17 @@
   "app_mode": "debug",
   "app_host": "localhost",
   "app_port": "8080",
+  "jwt": {
+    "secret": "toomhub"
+  },
   "mini": {
     "app_id": "wxa9a7f53bff2fc937",
     "app_secret": "971869511ee44662c56bcf8a833bd679"
+  },
+  "redis": {
+    "rport": "6379",
+    "rhost": "127.0.0.1",
+    "rdatabase": 0,
+    "rpassword": ""
   }
 }
