@@ -10,10 +10,18 @@
     "app_id": "wxa9a7f53bff2fc937",
     "app_secret": "971869511ee44662c56bcf8a833bd679"
   },
+  "database": {
+    "host": "127.0.0.1",
+    "port": "3306",
+    "username": "root",
+    "password": "123456",
+    "dbname": "toomhub",
+    "charset": "utf8mb4"
+  },
   "redis": {
-    "rport": "6379",
-    "rhost": "127.0.0.1",
-    "rdatabase": 0,
-    "rpassword": ""
+    "port": "6379",
+    "host": "127.0.0.1",
+    "database": 0,
+    "password": ""
   }
 }

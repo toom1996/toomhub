@@ -17,24 +17,32 @@ const UserCacheKey = "mini:user:"
 // @description
 // @auth	toom <1023150697@qq.com>
 func GetUser(openid string, validator *ModelMiniV1.LoginByV1Model) (interface{}, error) {
-	DB := util.DB
-	tableModel := ModelMiniV1.ToomhubUserMini{}
-	//根据openid 查找用户
-	query := util.DB.Where("open_id = ?", openid).Take(&tableModel)
-
-	//如果err不等于record not found错误，又不等于nil，那说明sql执行失败了。
-	if gorm.IsRecordNotFoundError(query.Error) {
-		//TODO 插入一个新用户
-		res, err := UserCreate(openid, DB, validator)
+	db := util.DB
+	res, err := GetUserByOpenId(openid)
+	//如果是未找到的openid
+	if gorm.IsRecordNotFoundError(err) {
+		//插入一个新用户
+		res, err := UserCreate(openid, db, validator)
 		if err != nil {
 			return "", err
 		}
 		return res, nil
-	} else if query.Error != nil {
-		return "", query.Error
 	}
 
-	return query.Value, nil
+	return res, nil
+}
+
+// @title 通过openid查找用户信息
+func GetUserByOpenId(openid string) (bool, error) {
+	db := util.DB
+	tableModel := ModelMiniV1.ToomhubUserMini{}
+	//根据openid 查找用户
+	query := db.Where("open_id = ?", openid).Take(&tableModel)
+	if query.Error != nil {
+		return false, query.Error
+	}
+
+	return true, nil
 }
 
 type UserInfo struct {
@@ -128,8 +136,18 @@ func UserCreate(openid string, DB *gorm.DB, validator *ModelMiniV1.LoginByV1Mode
 	return userModel, err
 }
 
-func GetToken() {
-
+//从REDIS中获取用户信息
+func GetUserInfoByRedis(userId string) {
+	util.Rdb.HMGet(util.Ctx, UserCacheKey+userId, []string{
+		"avatar_url",
+		"created_at",
+		"nick_name",
+		"open_id",
+		"gender",
+		"city",
+		"province",
+		"country",
+	}...)
 }
 
 func SetRedis() {

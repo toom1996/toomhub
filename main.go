@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-
 	cfg, err := util.Init("./config/app.json")
 
 	if err != nil {

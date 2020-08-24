@@ -11,7 +11,6 @@ type ToomhubUserMini struct {
 
 //数据表 toomhub_user_mini 结构体
 type ToomhubUserMiniProfile struct {
-	Id        int
 	MiniId    int
 	NickName  string
 	Gender    int8

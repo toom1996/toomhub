@@ -7,13 +7,14 @@ import (
 )
 
 type Config struct {
-	AppName string `json:"app_name"`
-	AppMode string `json:"app_mode"`
-	AppHost string `json:"app_host"`
-	AppPort string `json:"app_port"`
-	Mini    Mini   `json:"mini"`
-	Jwt     Jwt    `json:"jwt"`
-	Redis   Redis  `json:"redis"`
+	AppName  string   `json:"app_name"`
+	AppMode  string   `json:"app_mode"`
+	AppHost  string   `json:"app_host"`
+	AppPort  string   `json:"app_port"`
+	Mini     Mini     `json:"mini"`
+	Jwt      Jwt      `json:"jwt"`
+	Redis    Redis    `json:"redis"`
+	Database Database `json:"database"`
 }
 
 type Mini struct {
@@ -30,6 +31,15 @@ type Redis struct {
 	Port     string `json:"port"`
 	Database int8   `json:"database"`
 	Password string `json:"password"`
+}
+
+type Database struct {
+	Host     string `json:"host"`
+	Port     string `json:"port"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Dbname   string `json:"dbname"`
+	Charset  string `json:"charset"`
 }
 
 var _cfg *Config = nil

@@ -10,7 +10,8 @@ var DB *gorm.DB
 var err error
 
 func MysqlInit() {
-	DB, err = gorm.Open("mysql", "root:root@tcp(127.0.0.1:3306)/toom?charset=utf8mb4&parseTime=True&loc=Local")
+	config := GetConfig()
+	DB, err = gorm.Open("mysql", config.Database.Username+":"+config.Database.Password+"@tcp("+config.Database.Host+":"+config.Database.Port+")/"+config.Database.Dbname+"?charset="+config.Database.Charset+"&parseTime=True&loc=Local")
 
 	if err != nil {
 		fmt.Println(err)

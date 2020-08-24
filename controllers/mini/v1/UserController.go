@@ -14,6 +14,10 @@ type UserController struct {
 	Age  int    `validate:"gte=0,lte=100"`
 }
 
+type test struct {
+	aa string
+}
+
 //当前控制器注册的路由
 func (miniV1User *UserController) Register(engine *gin.Engine) {
 	user := engine.Group("/v1/mini")
@@ -43,7 +47,7 @@ func (miniV1User *UserController) LoginByV1(Context *gin.Context) {
 	query, err := logic.Login(&model)
 
 	if err != nil {
-		Context.JSON(http.StatusOK, map[string]interface{}{
+		Context.JSON(http.StatusOK, gin.H{
 			"code":    400,
 			"message": err.Error(),
 			"data":    "",
@@ -51,7 +55,7 @@ func (miniV1User *UserController) LoginByV1(Context *gin.Context) {
 		return
 	}
 
-	Context.JSON(http.StatusOK, map[string]interface{}{
+	Context.JSON(http.StatusOK, gin.H{
 		"code":    200,
 		"message": "登陆成功",
 		"data":    query,
