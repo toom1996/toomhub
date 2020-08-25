@@ -3,6 +3,7 @@
 package ServiceMiniV1
 
 import (
+	"errors"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	"strconv"
@@ -33,7 +34,7 @@ func GetUser(openid string, validator *ModelMiniV1.LoginByV1Model) (interface{},
 }
 
 // @title 通过openid查找用户信息
-func GetUserByOpenId(openid string) (bool, error) {
+func GetUserByOpenId(openid string) (interface{}, error) {
 	db := util.DB
 	tableModel := ModelMiniV1.ToomhubUserMini{}
 	//根据openid 查找用户
@@ -42,24 +43,18 @@ func GetUserByOpenId(openid string) (bool, error) {
 		return false, query.Error
 	}
 
-	return true, nil
+	//通过用户id从REDIS中获取信息
+	info, err := GetUserInfoByRedis(tableModel.MiniId)
+	fmt.Println(info)
+	fmt.Println(err)
+
+	return info, nil
 }
 
 type UserInfo struct {
 	Id           string
 	AccessToken  string
 	RefreshToken string
-}
-
-type RedisInfo struct {
-	OpenId    string
-	CreatedAt int64
-	NickName  string
-	Gender    int8
-	City      string
-	Province  string
-	Country   string
-	AvatarUrl string
 }
 
 // @title	创建一个新的小程序用户
@@ -118,9 +113,75 @@ func UserCreate(openid string, DB *gorm.DB, validator *ModelMiniV1.LoginByV1Mode
 	if transaction.Error != nil {
 		fmt.Println(transaction.Error)
 	}
+	_, _ = SetUserInfoToRedis(userModel, profileModel)
 
+	return userModel, err
+}
+
+type RedisUserInfo struct {
+	MiniId    int
+	OpenId    string
+	CreatedAt int64
+	NickName  string
+	Gender    int8
+	City      string
+	Province  string
+	Country   string
+	AvatarUrl string
+}
+
+// @title	从REDIS中获取用户信息
+func GetUserInfoByRedis(userId int) (interface{}, error) {
+	//从redis中获取
+	id := strconv.Itoa(userId)
+	query := util.Rdb.HMGet(util.Ctx, UserCacheKey+id, []string{
+		"mini_id",
+		"open_id",
+		"avatar_url",
+		"created_at",
+		"nick_name",
+		"gender",
+		"city",
+		"province",
+		"country",
+	}...)
+	if query.Err() != nil {
+		fmt.Println(query.Err())
+		return "", query.Err()
+	}
+	res, err := query.Result()
+	if err != nil {
+		fmt.Println(err)
+		return "", query.Err()
+	}
+
+	fmt.Println(res)
+	if res[0] != nil {
+		m := map[string]interface{}{
+			"MiniId":    res[0],
+			"OpenId":    res[1],
+			"CreatedAt": res[2],
+			"NickName":  res[3],
+			"Gender":    res[4],
+			"City":      res[5],
+			"Province":  res[6],
+			"Country":   res[7],
+			"AvatarUrl": res[8],
+		}
+
+		fmt.Println("GetUserInfoByRedis")
+		fmt.Println(m)
+		return m, nil
+	}
+	return "", errors.New("unknown error")
+}
+
+// @title	将用户信息塞入REDIS缓存
+func SetUserInfoToRedis(userModel ModelMiniV1.ToomhubUserMini, profileModel ModelMiniV1.ToomhubUserMiniProfile) (bool, error) {
+	key := UserCacheKey + strconv.Itoa(userModel.MiniId)
 	//塞入redis
-	err = util.Rdb.HMSet(util.Ctx, UserCacheKey+strconv.Itoa(userModel.MiniId), map[string]interface{}{
+	err := util.Rdb.HMSet(util.Ctx, key, map[string]interface{}{
+		"mini_id":    userModel.MiniId,
 		"open_id":    userModel.OpenId,
 		"created_at": userModel.CreatedAt,
 		"nick_name":  profileModel.NickName,
@@ -130,24 +191,14 @@ func UserCreate(openid string, DB *gorm.DB, validator *ModelMiniV1.LoginByV1Mode
 		"country":    profileModel.Country,
 		"avatar_url": profileModel.AvatarUrl,
 	}).Err()
+
+	//设置一周的过期时间
+	util.Rdb.Expire(util.Ctx, key, time.Second*60*60*24*7)
+
 	if err != nil {
 		fmt.Println(err)
 	}
-	return userModel, err
-}
-
-//从REDIS中获取用户信息
-func GetUserInfoByRedis(userId string) {
-	util.Rdb.HMGet(util.Ctx, UserCacheKey+userId, []string{
-		"avatar_url",
-		"created_at",
-		"nick_name",
-		"open_id",
-		"gender",
-		"city",
-		"province",
-		"country",
-	}...)
+	return true, nil
 }
 
 func SetRedis() {
