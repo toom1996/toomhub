@@ -17,7 +17,41 @@
       </van-row>
     </view>
     <view class="arrow arrow-one">
-      <span>。。。</span>
+      <span>更多资料</span>
     </view>
+  </view>
+</view>
+<view class="white-box">
+  <view class="palace palace-one">
+    <a href="#" class="palace-grid">
+      <view class="palace-grid-text">
+        <view>
+          <text>188</text>
+        </view>
+        <view>
+          <text>关注数</text>
+        </view>   
+      </view>
+    </a>
+    <a href="#" class="palace-grid">
+      <view class="palace-grid-text">
+        <view>
+          <text>188</text>
+        </view>
+        <view>
+          <text>粉丝数</text>
+        </view>   
+      </view>
+    </a>
+    <a href="#" class="palace-grid">
+      <view class="palace-grid-text">
+        <view>
+          <text>188</text>
+        </view>
+        <view>
+          <text>获赞数</text>
+        </view>   
+      </view>
+    </a>
   </view>
 </view>

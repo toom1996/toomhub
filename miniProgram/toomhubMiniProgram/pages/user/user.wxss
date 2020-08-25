@@ -8,6 +8,10 @@ html,body {
 	font-weight:400
 }
 
+page {
+  background-color: rgba(0, 0, 0, 0.103)
+}
+
 a {
 	text-decoration:none;
 	color:#000

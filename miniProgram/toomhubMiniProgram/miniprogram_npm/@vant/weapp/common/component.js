@@ -103,7 +103,7 @@ function VantComponent(vantOptions) {
   if (options.properties) {
     Object.keys(options.properties).forEach(function (name) {
       if (Array.isArray(options.properties[name])) {
-        // mini do not allow multi type
+        // miniprogram do not allow multi type
         options.properties[name] = null;
       }
     });
