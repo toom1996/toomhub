@@ -49,39 +49,5 @@ App({
         url: '/pages/login/login'
       })
     }
-    // wx.getSetting({
-    //   success: function (settingRes) {
-    //     if (settingRes.authSetting['scope.userInfo']) {
-    //       wx.checkSession({
-    //         success() {
-    //           console.log('未过期')
-    //           return false;
-    //           //session_key 未过期，并且在本生命周期一直有效
-    //         },
-    //         fail() {
-    //           console.log('过期')
-    //           // session_key 已经失效，需要重新执行登录流程
-    //           wx.login({
-    //             success: function (loginRes) {
-    //               console.log('wx.login----->', loginRes)
-    //               wx.getUserInfo({
-    //                 success: function (data) {
-    //                   app.httpClient.post('/v1/mini/login', {
-    //                     code: loginRes.code
-    //                   }).then(res => {
-    //                     console.log(res.data.code)
-    //                     if (res.data.code == 200) {
-
-    //                     }
-    //                   })
-    //                 }
-    //               })
-    //             }
-    //           })
-    //         }
-    //       })
-    //     }
-    //   }
-    // });
   }
 })

@@ -10,6 +10,7 @@ import (
 	"time"
 	ModelMiniV1 "toomhub/model/mini/v1"
 	"toomhub/util"
+	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
 )
 
 const UserCacheKey = "mini:user:"
@@ -17,7 +18,7 @@ const UserCacheKey = "mini:user:"
 // @title	通过OPENID获取用户信息
 // @description
 // @auth	toom <1023150697@qq.com>
-func GetUser(openid string, validator *ModelMiniV1.LoginByV1Model) (interface{}, error) {
+func GetUser(openid string, validator *validatorMiniprogramV1.Login) (interface{}, error) {
 	db := util.DB
 	res, err := GetUserByOpenId(openid)
 	//如果是未找到的openid
@@ -59,7 +60,7 @@ type UserInfo struct {
 
 // @title	创建一个新的小程序用户
 // @auth toom <1023150697@qq.com>
-func UserCreate(openid string, DB *gorm.DB, validator *ModelMiniV1.LoginByV1Model) (interface{}, error) {
+func UserCreate(openid string, DB *gorm.DB, validator *validatorMiniprogramV1.Login) (interface{}, error) {
 	createTime := time.Now().Unix()
 	//开启事务
 	transaction := DB.Begin()
@@ -192,8 +193,8 @@ func SetUserInfoToRedis(userModel ModelMiniV1.ToomhubUserMini, profileModel Mode
 		"avatar_url": profileModel.AvatarUrl,
 	}).Err()
 
-	//设置一周的过期时间
-	util.Rdb.Expire(util.Ctx, key, time.Second*60*60*24*7)
+	////设置一周的过期时间
+	//util.Rdb.Expire(util.Ctx, key, time.Second*60*60*24*7)
 
 	if err != nil {
 		fmt.Println(err)

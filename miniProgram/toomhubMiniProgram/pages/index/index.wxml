@@ -1,8 +1,8 @@
 <!--index.wxml-->
-<!-- <view wx:for="{{10}}">
+<van-icon name="add" class="add" size="40" bindtap="add" color="#ED3333"/>
+<view wx:for="{{10}}">
   <van-skeleton title avatar row="3" loading="{{ skeletonShow }}"/>
-</view> -->
-<view class="intro">组件</view>
+</view>
 <scroll-view  scroll-y="true"   bindscrolltolower="ScrollLower">
   <view wx:for="{{list}}" >
     <view class="box">
@@ -34,16 +34,16 @@
           </van-row>
           <!-- 附件 图片 视频 -->
           <van-row>
-            <van-col span="24">
+            <van-col span="24" gutter="20">
               <view class="__content">
                 <van-col span="8">
-                  <van-image mode="aspectFill" bindtap="previewImage" data-src="http://qeiwdcsh5.bkt.clouddn.com/006APoFYly1fowt3eeuk6g306o08g4q3.gif" lazy-load width="100" height="100" src="http://qeiwdcsh5.bkt.clouddn.com/006APoFYly1fowt3eeuk6g306o08g4q3.gif" />
+                  <van-image mode="widthFix" bindtap="previewImage" data-src="http://qeiwdcsh5.bkt.clouddn.com/11eaca620fff1761c041093c9484a6b9.gif" lazy-load src="http://qeiwdcsh5.bkt.clouddn.com/11eaca620fff1761c041093c9484a6b9.gif" />
                 </van-col>
                 <van-col span="8">
-                  <van-image mode="aspectFill" bindtap="previewImage" data-src="http://qeiwdcsh5.bkt.clouddn.com/0070uxksgy1ga33vy51kbg309u06xu0x.gif" lazy-load width="100" height="100" src="http://qeiwdcsh5.bkt.clouddn.com/0070uxksgy1ga33vy51kbg309u06xu0x.gif" />
+                  <van-image mode="aspectFill" bindtap="previewImage" data-src="http://qeiwdcsh5.bkt.clouddn.com/0070uxksgy1ga33vy51kbg309u06xu0x.gif" lazy-load src="http://qeiwdcsh5.bkt.clouddn.com/0070uxksgy1ga33vy51kbg309u06xu0x.gif" />
                 </van-col>
                 <van-col span="8">
-                  <van-image mode="aspectFill" bindtap="previewImage" data-src="http://qeiwdcsh5.bkt.clouddn.com/152170904610306200.gif" lazy-load width="100" height="100" src="http://qeiwdcsh5.bkt.clouddn.com/152170904610306200.gif" />
+                  <van-image mode="aspectFill" bindtap="previewImage" data-src="http://qeiwdcsh5.bkt.clouddn.com/152170904610306200.gif" lazy-load src="http://qeiwdcsh5.bkt.clouddn.com/152170904610306200.gif" />
                 </van-col>
               </view>
             </van-col>
@@ -72,22 +72,3 @@
     </view>
   </view>
 </scroll-view>
-<!-- <van-tabbar active="{{ active }}" bind:change="navigationSwitch">
-    <van-tabbar-item info="3">
-      <image
-        slot="icon"
-        src="{{ icon.normal }}"
-        mode="aspectFit"
-        style="width: 30px; height: 18px;"
-      />
-      <image
-        slot="icon-active"
-        src="{{ icon.active }}"
-        mode="aspectFit"
-        style="width: 30px; height: 18px;"
-      />
-      动态
-    </van-tabbar-item>
-    <van-tabbar-item icon="setting-o">人</van-tabbar-item>
-  </van-tabbar> -->
-<!-- <tabbar></tabbar> -->

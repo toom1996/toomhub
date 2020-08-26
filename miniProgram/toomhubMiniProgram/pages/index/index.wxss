@@ -39,6 +39,10 @@
   flex: 1;
   font-size: 80%;
 }
+.__content image{
+  width: 225rpx;
+  height: 225rpx;
+}
 
 .post_box .__attach {
   -webkit-flex: 1%;
@@ -66,3 +70,11 @@
 .post_box .font__time {
   font-weight: 100;
 }
+
+.add {
+  position: fixed;
+  bottom: 100rpx;
+  right: 50rpx;
+  z-index: 9999;
+}
+

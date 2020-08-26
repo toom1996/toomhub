@@ -1,0 +1,30 @@
+<!--pages/square_add/square_add.wxml-->
+<view class="box">
+
+  <van-cell-group>
+  <van-field
+    maxlength="255"
+    show-word-limit
+    autosize="{{autosize}}"
+    value=""
+    type="textarea"
+    placeholder="🐂说点什么吧..."
+    border="{{ false }}"
+  />
+</van-cell-group>
+<van-row>
+  <van-col span="24">
+    <van-uploader
+  file-list="{{ fileList }}"
+  max-count="9"
+  multiple
+  bind:after-read="afterRead"
+/>
+  </van-col>
+</van-row>
+
+
+  <van-tag round  type="primary" size="large" closeable>#肖战偷孙杨尿检瓶#</van-tag>
+  <van-tag round  type="primary" size="large" closeable>#肖战偷rng冠军#</van-tag>
+  <van-tag round  type="primary" size="large" closeable>#肖战偷李云龙意大利炮#</van-tag>
+</view>

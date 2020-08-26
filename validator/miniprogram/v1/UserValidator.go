@@ -2,7 +2,9 @@
 // @Author    2020/8/14 10:53
 package validatorMiniprogramV1
 
-type UserValidator struct {
-	Code string `validate:"required"`
-	Tode string `validate:"required"`
+import "toomhub/model"
+
+type Login struct {
+	Code     string               `form:"code" binding:"required"`
+	UserInfo model.V1MiniUserInfo `form:"userInfo"`
 }

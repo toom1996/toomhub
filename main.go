@@ -33,4 +33,5 @@ func main() {
 //路由设置
 func registerRouter(router *gin.Engine) {
 	new(ControllersMiniV1.UserController).Register(router)
+	new(ControllersMiniV1.SquareController).Register(router)
 }

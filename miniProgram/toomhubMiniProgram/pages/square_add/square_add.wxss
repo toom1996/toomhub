@@ -1,0 +1,12 @@
+/* pages/square_add/square_add.wxss */
+
+page {
+  background-color: rgb(36, 26, 36);
+}
+
+.box {
+  background-color: white;
+  margin: 20rpx;
+  padding: 20rpx;
+  border-radius: 20rpx;
+}

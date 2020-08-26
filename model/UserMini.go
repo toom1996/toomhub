@@ -11,7 +11,7 @@ type ToomhubUserMini struct {
 
 type V1MiniUserInfo struct {
 	Nickname  string `json:"nickname" form:"nickname" binding:"required"`
-	Gender    int    `json:"gender" form:"gender" binding:"required"`
+	Gender    int8   `json:"gender" form:"gender" binding:"required"`
 	City      string `json:"city" form:"city" binding:"required"`
 	Province  string `json:"province" form:"province" binding:"required"`
 	Country   string `json:"country" form:"country" binding:"required"`

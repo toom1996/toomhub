@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	LogicMiniV1 "toomhub/logic/mini/v1"
-	ModelMiniV1 "toomhub/model/mini/v1"
+	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
 )
 
 type UserController struct {
@@ -19,11 +19,11 @@ type test struct {
 }
 
 //当前控制器注册的路由
-func (miniV1User *UserController) Register(engine *gin.Engine) {
+func (square *UserController) Register(engine *gin.Engine) {
 	user := engine.Group("/v1/mini")
 	{
 		//小程序用户登陆接口
-		user.POST("/login", miniV1User.LoginByV1)
+		user.POST("/login", square.Login)
 	}
 }
 
@@ -33,10 +33,10 @@ func (miniV1User *UserController) Register(engine *gin.Engine) {
 // @auth	toom <1023150697@qq.com>
 // @param     Context	*gin.Context
 // @return
-func (miniV1User *UserController) LoginByV1(Context *gin.Context) {
+func (square *UserController) Login(Context *gin.Context) {
 	//validator验证
-	model := ModelMiniV1.LoginByV1Model{}
-	err := Context.ShouldBind(&model)
+	validator := validatorMiniprogramV1.Login{}
+	err := Context.ShouldBind(&validator)
 	if err != nil {
 		Context.String(http.StatusBadRequest, "参数错误:%s", err.Error())
 		return
@@ -44,7 +44,7 @@ func (miniV1User *UserController) LoginByV1(Context *gin.Context) {
 
 	//逻辑验证
 	logic := LogicMiniV1.UserLogic{}
-	query, err := logic.Login(&model)
+	query, err := logic.Login(&validator)
 
 	if err != nil {
 		Context.JSON(http.StatusOK, gin.H{

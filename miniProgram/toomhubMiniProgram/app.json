@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/user/user",
-    "pages/login/login"
+    "pages/login/login",
+    "pages/square_add/square_add"
   ],
   "tabBar": {
     "custom": false,
@@ -43,6 +44,9 @@
     "van-row": "@vant/weapp/row/index",
     "van-col": "@vant/weapp/col/index",
     "van-image": "@vant/weapp/image/index",
-    "van-icon": "@vant/weapp/icon/index"
+    "van-icon": "@vant/weapp/icon/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-uploader": "@vant/weapp/uploader/index"
   }
 }
