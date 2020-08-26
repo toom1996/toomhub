@@ -1,6 +1,25 @@
 <!--pages/square_add/square_add.wxml-->
+<van-dialog
+  use-slot
+  title="标题"
+  show="{{ show }}"
+  show-cancel-button
+  confirm-button-open-type="getUserInfo"
+  bind:close="onClose"
+  bind:getuserinfo="getUserInfo"
+>
+  <van-cell-group>
+  <van-field
+    value="{{ message }}"
+    label="标签"
+    type="textarea"
+    placeholder="请输入留言"
+    autosize
+    border="{{ false }}"
+  />
+</van-cell-group>
+</van-dialog>
 <view class="box">
-
   <van-cell-group>
   <van-field
     maxlength="255"
@@ -22,9 +41,14 @@
 />
   </van-col>
 </van-row>
-
-
-  <van-tag round  type="primary" size="large" closeable>#肖战偷孙杨尿检瓶#</van-tag>
-  <van-tag round  type="primary" size="large" closeable>#肖战偷rng冠军#</van-tag>
-  <van-tag round  type="primary" size="large" closeable>#肖战偷李云龙意大利炮#</van-tag>
+<!-- <van-row>
+  <van-col span="24"> -->
+  
+    <van-tag type="primary" size="large" closeable >#肖战尿</van-tag>
+    
+    <van-tag type="primary" size="large" closeable>#肖战ddd尿</van-tag>
+  
+    <van-button icon="plus" type="primary" size="mini" bindtap="showTagDialog">添加标签</van-button>
+  <!-- </van-col>
+</van-row> -->
 </view>

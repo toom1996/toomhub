@@ -8,7 +8,19 @@ Page({
   data: {
     fileList: [
     ],
-    autosize:{ maxHeight: 350, minHeight: 150 }
+    autosize:{ maxHeight: 350, minHeight: 150 },
+    show: false
+  },
+  getUserInfo(event) {
+    console.log(event.detail);
+  },
+
+  onClose() {
+    this.setData({ close: false });
+  },
+  showTagDialog: function () {
+    console.log(121212121212)
+    this.setData({ show: true });
   },
   afterRead(event) {
     const { file } = event.detail;
