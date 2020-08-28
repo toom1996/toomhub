@@ -1,54 +1,40 @@
 <!--pages/square_add/square_add.wxml-->
-<van-dialog
-  use-slot
-  title="标题"
-  show="{{ show }}"
-  show-cancel-button
-  confirm-button-open-type="getUserInfo"
-  bind:close="onClose"
-  bind:getuserinfo="getUserInfo"
->
-  <van-cell-group>
-  <van-field
-    value="{{ message }}"
-    label="标签"
-    type="textarea"
-    placeholder="请输入留言"
-    autosize
-    border="{{ false }}"
-  />
-</van-cell-group>
-</van-dialog>
 <view class="box">
   <van-cell-group>
-  <van-field
-    maxlength="255"
-    show-word-limit
-    autosize="{{autosize}}"
-    value=""
-    type="textarea"
-    placeholder="🐂说点什么吧..."
-    border="{{ false }}"
-  />
-</van-cell-group>
-<van-row>
-  <van-col span="24">
-    <van-uploader
-  file-list="{{ fileList }}"
-  max-count="9"
-  multiple
-  bind:after-read="afterRead"
-/>
-  </van-col>
-</van-row>
-<!-- <van-row>
-  <van-col span="24"> -->
-  
-    <van-tag type="primary" size="large" closeable >#肖战尿</van-tag>
-    
-    <van-tag type="primary" size="large" closeable>#肖战ddd尿</van-tag>
-  
-    <van-button icon="plus" type="primary" size="mini" bindtap="showTagDialog">添加标签</van-button>
-  <!-- </van-col>
-</van-row> -->
+    <van-field maxlength="255" show-word-limit autosize="{{autosize}}" value="" type="textarea" placeholder="🐂说点什么吧..."
+      border="{{ false }}" />
+  </van-cell-group>
+  <van-row>
+    <van-col span="24">
+      <!-- 图片 -->
+      <van-uploader file-list="{{ imageList }}" max-count="9" multiple bind:after-read="afterRead" bind:delete="imageDelete"/>
+    </van-col>
+  </van-row>
+  <!-- 标签 -->
+  <van-divider contentPosition="left">标签(最多5个)</van-divider>
+
+  <!-- 添加的标签 -->
+  <view style="border:1px solid rgb(245, 245, 245);margin-bottom:20rpx">
+    <block wx:for="{{tagArr}}" wx:for-index="tag">
+      <van-tag type="primary" size="medium" closeable bind:close="tagClose" data-value="{{ tagArr[tag] }}">
+        {{ tagArr[tag] }}</van-tag>
+    </block>
+    <block wx:if="{{ tagAddButtonShow }}">
+      <van-button icon="plus" type="primary" size="mini" bind:click="onTagAddDialogShow">自定义标签</van-button>
+    </block>
+  </view>
+  <!-- 热门标签 -->
+  <block wx:for="{{hotTagArr}}" wx:for-index="index">
+    <van-tag type="primary" size="medium" bindtap="hotTagClick" data-value="{{ hotTagArr[index] }}">
+      {{ hotTagArr[index] }}</van-tag>
+  </block>
+
+
+
+  <!-- 添加自定义标签Dialog -->
+  <van-dialog use-slot title="标题" show="{{ tagShow }}" show-cancel-button bind:confirm="addTag">
+    <van-field label="标签名称" bind:input="tagInput" maxlength="32" show-word-limit autosize="{{addSize}}"
+      model:value="{{ tagInputContent }}" type="textarea" input-class="classTagInput" border="{{ false }}" />
+  </van-dialog>
+  <van-toast id="van-toast" />
 </view>

@@ -15,6 +15,14 @@ type Config struct {
 	Jwt      Jwt      `json:"jwt"`
 	Redis    Redis    `json:"redis"`
 	Database Database `json:"database"`
+	Qiniu    Qiniu    `json:"qiniu"`
+}
+
+type Qiniu struct {
+	Bucket     string `json:"bucket"`
+	AccessKey  string `json:"accessKey"`
+	SecretKey  string `json:"secretKey"`
+	FileServer string `json:"fileServer"`
 }
 
 type Mini struct {

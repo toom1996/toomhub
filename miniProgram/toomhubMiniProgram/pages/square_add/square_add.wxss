@@ -11,6 +11,10 @@ page {
   border-radius: 20rpx;
 }
 
+.classTagInput {
+  border: 1px solid rgb(36, 26, 36) !important;
+}
+
 .van-tag {
   margin: 5rpx;
 }

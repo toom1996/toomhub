@@ -9,5 +9,6 @@ require (
 	github.com/go-redis/redis/v8 v8.0.0-beta.7
 	github.com/jinzhu/gorm v1.9.16
 	github.com/medivhzhan/weapp/v2 v2.2.2
+	github.com/qiniu/api.v7/v7 v7.5.0
 	github.com/vmihailenco/msgpack/v5 v5.0.0-beta.1
 )

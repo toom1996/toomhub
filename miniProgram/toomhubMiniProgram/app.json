@@ -48,6 +48,9 @@
     "van-field": "@vant/weapp/field/index",
     "van-tag": "@vant/weapp/tag/index",
     "van-uploader": "@vant/weapp/uploader/index",
-    "van-dialog": "@vant/weapp/dialog/index"
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-overlay": "@vant/weapp/overlay/index",
+    "van-divider": "@vant/weapp/divider/index",
+    "van-toast": "@vant/weapp/toast/index"
   }
 }
