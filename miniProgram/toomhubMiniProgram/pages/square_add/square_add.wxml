@@ -1,40 +1,24 @@
 <!--pages/square_add/square_add.wxml-->
 <view class="box">
   <van-cell-group>
-    <van-field maxlength="255" show-word-limit autosize="{{autosize}}" value="" type="textarea" placeholder="🐂说点什么吧..."
-      border="{{ false }}" />
+    <van-field maxlength="255" show-word-limit autosize="{{autosize}}" value="" type="textarea" placeholder="🐂说点什么吧..." border="{{ false }}" />
   </van-cell-group>
   <van-row>
     <van-col span="24">
       <!-- 图片 -->
-      <van-uploader file-list="{{ imageList }}" max-count="9" multiple bind:after-read="afterRead" bind:delete="imageDelete"/>
+      <van-uploader file-list="{{ imageList }}" max-count="9" multiple bind:after-read="afterRead" bind:delete="imageDelete" />
     </van-col>
   </van-row>
+  <van-tag round color="{{tag != '添加标签' ? '#db453d': '#ececec' }}" text-color="{{tag != '添加标签' ? '#ffffff': '#b1b1b1' }}" size="medium" bindtap="onTagAddDialogShow" data-value="{{ hotTagArr[index] }}">
+    <van-icon name="label-o" /> {{ tag }}
+  </van-tag>
+
   <!-- 标签 -->
-  <van-divider contentPosition="left">标签(最多5个)</van-divider>
-
-  <!-- 添加的标签 -->
-  <view style="border:1px solid rgb(245, 245, 245);margin-bottom:20rpx">
-    <block wx:for="{{tagArr}}" wx:for-index="tag">
-      <van-tag type="primary" size="medium" closeable bind:close="tagClose" data-value="{{ tagArr[tag] }}">
-        {{ tagArr[tag] }}</van-tag>
-    </block>
-    <block wx:if="{{ tagAddButtonShow }}">
-      <van-button icon="plus" type="primary" size="mini" bind:click="onTagAddDialogShow">自定义标签</van-button>
-    </block>
+  <van-popup show="{{ tagShow }}" close-icon-position="top-left" round duration="{{200}}" position="bottom" custom-style="height: 90%;" closeable bind:close="onTagAddDialogClose">
+  <view style="padding-top:80rpx">
+    <van-search value="{{ value }}" placeholder="请输入搜索关键词" />
   </view>
-  <!-- 热门标签 -->
-  <block wx:for="{{hotTagArr}}" wx:for-index="index">
-    <van-tag type="primary" size="medium" bindtap="hotTagClick" data-value="{{ hotTagArr[index] }}">
-      {{ hotTagArr[index] }}</van-tag>
-  </block>
-
-
-
-  <!-- 添加自定义标签Dialog -->
-  <van-dialog use-slot title="标题" show="{{ tagShow }}" show-cancel-button bind:confirm="addTag">
-    <van-field label="标签名称" bind:input="tagInput" maxlength="32" show-word-limit autosize="{{addSize}}"
-      model:value="{{ tagInputContent }}" type="textarea" input-class="classTagInput" border="{{ false }}" />
-  </van-dialog>
+  <view class="van-cell" bindtap="tagClick" data-value="假的假的"><view class="van-cell__title"><span>假的假的</span></view></view>
+  </van-popup>
   <van-toast id="van-toast" />
 </view>

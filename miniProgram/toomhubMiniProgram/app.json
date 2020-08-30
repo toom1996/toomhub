@@ -51,6 +51,9 @@
     "van-dialog": "@vant/weapp/dialog/index",
     "van-overlay": "@vant/weapp/overlay/index",
     "van-divider": "@vant/weapp/divider/index",
-    "van-toast": "@vant/weapp/toast/index"
+    "van-toast": "@vant/weapp/toast/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-search": "@vant/weapp/search/index",
+    "van-tree-select": "@vant/weapp/tree-select/index"
   }
 }

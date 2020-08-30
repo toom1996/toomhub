@@ -29,3 +29,19 @@ page {
   top: 0;
   left:0;
 }
+
+.van-cell {
+  position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 16px;
+    overflow: hidden;
+    color: #323233;
+    font-size: 14px;
+    line-height: 24px;
+    background-color: #fff;
+    border-bottom: 1px solid #ebedf0;
+}
