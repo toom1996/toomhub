@@ -4,8 +4,10 @@ package ControllersMiniV1
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"net/http"
 	LogicMiniV1 "toomhub/logic/mini/v1"
+	validator2 "toomhub/validator"
 	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
 )
 
@@ -18,6 +20,7 @@ func (square *SquareController) Register(engine *gin.Engine) {
 	{
 		//小程序用户登陆接口
 		user.GET("/index", square.index)
+		user.POST("/create", square.create)
 	}
 }
 
@@ -40,5 +43,33 @@ func (square *SquareController) index(Context *gin.Context) {
 		"data": map[string]interface{}{
 			"list": query,
 		},
+	})
+}
+
+// @title	创建一条广场消息
+func (square *SquareController) create(Context *gin.Context) {
+	var commonValidator validator2.CommonValidator
+	//验证器
+	formValidator := validatorMiniprogramV1.SquareCreate{}
+	err := Context.BindQuery(&formValidator)
+
+	if err != nil {
+		Context.String(http.StatusBadRequest, "参数错误:%s", commonValidator.TransError(err.(validator.ValidationErrors)))
+		return
+	}
+
+	//logic
+	logic := LogicMiniV1.SquareLogic{}
+	_, err = logic.SquareCreate(&formValidator)
+
+	if err != nil {
+		Context.JSON(200, gin.H{
+			"message": err,
+			"code":    400,
+		})
+	}
+	Context.JSON(200, gin.H{
+		"message": "OK",
+		"code":    200,
 	})
 }

@@ -133,6 +133,20 @@ Page({
     })
   },
 
+  send() {
+    console.log(111111111)
+    Toast.loading({
+      message: '发布中...',
+      forbidClick: true,
+      duration: 0
+    });
+
+    app.httpClient.post('/v1/mini/sq/create').then(res=>{
+      Toast.clear();
+      console.log(11111111)
+    })
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -152,6 +166,15 @@ Page({
    */
   onShow: function() {
     // app.isLogin()
+    if (app.globalData.userInfo) {
+      this.setData({
+        userInfo: app.globalData.userInfo,
+      })
+    } else {
+      this.setData({
+        userInfo: null,
+      })
+    }
   },
 
   /**

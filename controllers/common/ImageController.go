@@ -22,8 +22,6 @@ func (image *ImageController) Register(engine *gin.Engine) {
 
 func (*ImageController) Upload(context *gin.Context) {
 
-	//defer context.JSON(, res)
-
 	file, header, err := context.Request.FormFile("file")
 	if err != nil {
 		context.JSON(200, gin.H{
@@ -33,28 +31,6 @@ func (*ImageController) Upload(context *gin.Context) {
 		return
 	}
 
-	fmt.Println(header.Filename)
-	fmt.Println(file)
-	//文件后缀
-	//fileExt := strings.ToLower(path.Ext(file.Filename))
-	//
-	//if fileExt != ".png" && fileExt != ".jpg" && fileExt != ".gif" && fileExt != ".jpeg" {
-	//	context.JSON(200, gin.H{
-	//		"code": 400,
-	//		"msg":  "上传失败!只允许png,jpg,gif,jpeg文件",
-	//	})
-	//	return
-	//}
-
-	//fileName := fmt.Sprintf("%s%s", file.Filename, time.Now().String())
-	//filedDir := fmt.Sprintf("%s%d%s/", 's', time.Now().Year(), time.Now().Month().String())
-	//isExist, _ := tools.IsFileExist(filedDir)
-	//if !isExist {
-	//	_ = os.Mkdir(filedDir, os.ModePerm)
-	//}
-
-	//filepath := "C:\\Users\\EDZ\\go\\src\\awesomeProject\\test.jpg"
-	//
 	uploader := service.QiniuUploader{}
 	//
 	url, err := uploader.Upload(file, header.Filename)

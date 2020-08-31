@@ -1,5 +1,22 @@
 <!--pages/square_add/square_add.wxml-->
 <view class="box">
+  <view class="head-read">
+  <view class="flex">
+    <view class="read-img">
+      <image class="userinfo-avatar" src="{{userInfo === null ? '/static/avatar/defaultAvatar.jpg': userInfo.avatarUrl }}" mode="cover"></image>
+    </view>
+    <view class="flex-box">
+      <van-row>
+        <van-col span="12">
+          <text class="h2">{{userInfo.nickName}}</text>
+        </van-col>
+      </van-row>
+    </view>
+    <view class="arrow arrow-one">
+      <van-button round color="#ED3333" size="mini" bindtap="send">发布</van-button>
+    </view>
+  </view>
+</view>
   <van-cell-group>
     <van-field maxlength="255" show-word-limit autosize="{{autosize}}" value="" type="textarea" placeholder="🐂说点什么吧..." border="{{ false }}" />
   </van-cell-group>

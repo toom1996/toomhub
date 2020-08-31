@@ -22,3 +22,7 @@ func (logic *SquareLogic) SquareIndex(validator *validatorMiniprogramV1.SquareIn
 
 	return query, nil
 }
+
+func (logic *SquareLogic) SquareCreate(validator *validatorMiniprogramV1.SquareCreate) (bool, error) {
+	return true, nil
+}
