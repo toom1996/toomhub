@@ -150,6 +150,7 @@ func GetUserInfoByRedis(userId int) (interface{}, error) {
 		"city",
 		"province",
 		"country",
+		"token",
 	}...)
 	if query.Err() != nil {
 		fmt.Println(query.Err())
@@ -174,6 +175,7 @@ func GetUserInfoByRedis(userId int) (interface{}, error) {
 			"City":      res[6],
 			"Province":  res[7],
 			"Country":   res[8],
+			"Token":     res[9],
 		}
 
 		fmt.Println("GetUserInfoByRedis")
