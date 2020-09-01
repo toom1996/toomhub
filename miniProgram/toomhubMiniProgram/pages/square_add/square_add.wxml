@@ -18,12 +18,12 @@
   </view>
 </view>
   <van-cell-group>
-    <van-field maxlength="255" show-word-limit autosize="{{autosize}}" value="" type="textarea" placeholder="🐂说点什么吧..." border="{{ false }}" />
+    <van-field maxlength="255" show-word-limit bind:input="conetentHandel" autosize="{{autosize}}" value="" type="textarea" placeholder="🐂说点什么吧..." border="{{ false }}" />
   </van-cell-group>
   <van-row>
     <van-col span="24">
       <!-- 图片 -->
-      <van-uploader file-list="{{ imageList }}" max-count="9" multiple bind:after-read="afterRead" bind:delete="imageDelete" />
+      <van-uploader  file-list="{{ imageList }}" max-count="9" multiple bind:after-read="afterRead" bind:delete="imageDelete" />
     </van-col>
   </van-row>
   <van-tag round color="{{tag != '添加标签' ? '#db453d': '#ececec' }}" text-color="{{tag != '添加标签' ? '#ffffff': '#b1b1b1' }}" size="medium" bindtap="onTagAddDialogShow" data-value="{{ hotTagArr[index] }}">

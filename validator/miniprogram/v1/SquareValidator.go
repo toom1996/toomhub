@@ -7,8 +7,9 @@ type SquareIndex struct {
 	Page   int `form:"page" binding:"required"`
 }
 
+// @description	label是输出错误信息时显示的字段中文名
 type SquareCreate struct {
-	Content   string `from:"content" binding:"required"`
-	ImageList string `from:"image_list" binding:"required"`
-	Tag       string `from:"tag" binding:"required"`
+	Content   string `json:"content" form:"content" binding:"required" label:"内容"`
+	ImageList string `form:"image_list" binding:"required,ne=10"  label:"图片列表"`
+	Tag       string `form:"tag"`
 }

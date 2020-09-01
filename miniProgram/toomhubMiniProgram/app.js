@@ -9,15 +9,15 @@ App({
     wx.setStorageSync('logs', logs)
   },
   globalData: {
-    userInfo: null //全局用户信息
+    userInfo: null, //全局用户信息,
+    request_host: 'http://127.0.0.1:8080'
   },
   httpClient: {
     request: function (method, url, data) {
       //返回一个promise实例
       return new Promise((resolve, reject) => {
-        console.log('REQUEST_HOST', REQUEST_HOST)
         wx.request({
-          url: REQUEST_HOST + url,
+          url: getApp().globalData.request_host + url,
           data: data,
           method: method,
           header: {

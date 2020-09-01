@@ -80,3 +80,7 @@ image {
 	display:block;
 	border:0
 }
+
+.van-uploader{
+  margin-top: 20rpx;
+}

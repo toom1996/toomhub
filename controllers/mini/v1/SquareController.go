@@ -51,10 +51,14 @@ func (square *SquareController) create(Context *gin.Context) {
 	var commonValidator validator2.CommonValidator
 	//验证器
 	formValidator := validatorMiniprogramV1.SquareCreate{}
-	err := Context.BindQuery(&formValidator)
+	err := Context.ShouldBind(&formValidator)
 
 	if err != nil {
-		Context.String(http.StatusBadRequest, "参数错误:%s", commonValidator.TransError(err.(validator.ValidationErrors)))
+		Context.JSON(http.StatusOK, gin.H{
+			"code":    400,
+			"message": commonValidator.TransError(err.(validator.ValidationErrors)),
+			"data":    "",
+		})
 		return
 	}
 

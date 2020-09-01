@@ -28,6 +28,8 @@
     "bucket": "toomhub",
     "accessKey": "7GLHrN7BqrI9JnWZ9Pki2q5rqPazhIFroo19a-Av",
     "secretKey": "gmg6PLgg666Cme-gsyTlsBLhshDv-6_zsEmW4jRY",
-    "fileServer": "http://qeiwdcsh5.bkt.clouddn.com/"
+    "fileServer": "http://qeiwdcsh5.bkt.clouddn.com/",
+    "imageMaxSize": 1,
+    "allowExtension": ["gif", "png", "jpg", "jpeg"]
   }
 }

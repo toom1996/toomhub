@@ -19,10 +19,11 @@ type Config struct {
 }
 
 type Qiniu struct {
-	Bucket     string `json:"bucket"`
-	AccessKey  string `json:"accessKey"`
-	SecretKey  string `json:"secretKey"`
-	FileServer string `json:"fileServer"`
+	Bucket       string `json:"bucket"`       //七牛云bucket
+	AccessKey    string `json:"accessKey"`    //七牛云AK
+	SecretKey    string `json:"secretKey"`    //七牛云AS
+	FileServer   string `json:"fileServer"`   //cdn地址
+	ImageMaxSize int8   `json:"imageMaxSize"` //上传最大图片尺寸 M为单位
 }
 
 type Mini struct {

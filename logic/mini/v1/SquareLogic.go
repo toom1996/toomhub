@@ -24,5 +24,10 @@ func (logic *SquareLogic) SquareIndex(validator *validatorMiniprogramV1.SquareIn
 }
 
 func (logic *SquareLogic) SquareCreate(validator *validatorMiniprogramV1.SquareCreate) (bool, error) {
+
+	fmt.Println(validator)
+
+	//model, err := ServiceMiniV1.SquareCreate(validator)
+
 	return true, nil
 }

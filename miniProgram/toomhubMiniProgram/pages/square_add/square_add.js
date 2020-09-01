@@ -1,4 +1,5 @@
 const app = getApp()
+const defaultTag = '添加标签'
 // pages/square_add/square_add.js
 import Toast from '../../miniprogram_npm/@vant/weapp/toast/toast';
 Page({
@@ -8,6 +9,7 @@ Page({
    */
   data: {
     imageList: [],
+    content: '',
     autosize: {
       maxHeight: 350,
       minHeight: 150
@@ -16,10 +18,17 @@ Page({
       maxHeight: 30,
       minHeight: 20
     }, //添加标签输入框高度
-    tag: '添加标签', //添加进来的标签数组
+    tag: defaultTag, //添加进来的标签数组
     tagShow: false, //是否显示添加标签dialog
     mainActiveIndex: 0,
     activeId: null,
+  },
+
+
+  conetentHandel (value) {
+    this.setData({
+      content: value.detail
+    })
   },
 
   //显示添加标签的dialog
@@ -50,15 +59,21 @@ Page({
 
   //上传图片触发事件
   afterRead(event) {
-    console.log(event.detail.file)
+    console.log('所有文件', event.detail.file)
     let list = event.detail.file;
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].size > 1024 * 1024) {
+        list.splice(i, 1)
+        Toast('部分文件超出大小限制,自动忽略');
+      }
+    }
     let _this = this;
 
     var promise = Promise.all(list.map((item, index) => {
       return new Promise(function(resolve, reject) {
         //先插入一个空图片
         let tmp = _this.data.imageList
-        // let baseData = ''
+        let baseData = ''
         let index = tmp.push({
           deletable: false,
           status: 'uploading',
@@ -68,8 +83,8 @@ Page({
           imageList: tmp
         });
 
-        //转成base64, 这里本来想做base64展示, 省点cdn流量, 但是组件好像不支持:-(
-        // wx.getFileSystemManager().readFile({
+        // // 转成base64, 这里本来想做base64展示, 省点cdn流量, 但是组件好像不支持:-(
+        // wx.get.readFile({FileSystemManager()
         //   filePath: item.path, //选择图片返回的相对路径
         //   encoding: 'base64', //编码格式
         //   success: (resBaseData) => {
@@ -82,37 +97,37 @@ Page({
         //   }
         // })
 
-
+        console.log(baseData)
 
         let uploadTask = wx.uploadFile({
-          url: 'http://127.0.0.1:8080/c/image/upload',
+          url: app.globalData.request_host + '/c/image/upload',
           filePath: item.path,
           name: 'file',
           success: (res) => {
             console.log(res)
-
-            //上传成功后更换空图的内容
+            
             let data = JSON.parse(res.data)
-            console.log(data.data)
-            let tmp = _this.data.imageList
-            tmp[index - 1].url = data.data;
-            tmp[index - 1].deletable = true;
-            tmp[index - 1].status = 'done'
-            tmp[index - 1].message = '0%'
-            _this.setData({
-              imageList: tmp
-            });
+            if (res.statusCode == 200 && data.code == 200) {
+              //上传成功后更换空图的内容
+              console.log(data.data)
+              let tmp = _this.data.imageList
+              tmp[index - 1].url = data.data.url;
+              tmp[index - 1].deletable = true;
+              tmp[index - 1].status = 'done'
+              tmp[index - 1].message = '0%'
+              tmp[index - 1].extension = data.data.extension
+              tmp[index - 1].size = data.data.size
+              _this.setData({
+                imageList: tmp
+              });
+            }else{
+              _this.removeImage(index - 1)
+              Toast.fail(data.message);
+            }
           },
           fail: (res) => {
-            //上传失败的处理
-            console.log(data.data)
-            let tmp = _this.data.imageList
-            tmp[index - 1].deletable = true;
-            tmp[index - 1].status = 'fail'
-            tmp[index - 1].message = ''
-            _this.setData({
-              imageList: tmp
-            });
+            _this.removeImage(index - 1)
+            Toast.fail(res);
           }
         });
 
@@ -124,24 +139,40 @@ Page({
   },
 
   imageDelete: function(event) {
-    console.log(event)
+    this.removeImage(event.detail.index)
+  },
+
+  removeImage: function (index) {
     let tmp = this.data.imageList;
-    tmp.splice(event.detail.index, 1)
-    console.log(event)
+    tmp.splice(index, 1)
     this.setData({
       imageList: tmp
     })
   },
 
   send() {
-    console.log(111111111)
+    
+    // if (this.data.content == '') {
+    //   Toast.fail("文字内容不能为空哦")
+    //   return 
+    // }
+
+    // if (this.data.imageList.length == 0) {
+    //   Toast.fail("最少上传一张图片")
+    //   return 
+    // }
+
     Toast.loading({
       message: '发布中...',
       forbidClick: true,
       duration: 0
     });
 
-    app.httpClient.post('/v1/mini/sq/create').then(res=>{
+    app.httpClient.post('/v1/mini/sq/create', {
+      'content': this.data.content,
+      'image_list': JSON.stringify(this.data.imageList),
+      'tag': this.data.tag == defaultTag ? '' : this.data.tag,
+    }).then(res=>{
       Toast.clear();
       console.log(11111111)
     })

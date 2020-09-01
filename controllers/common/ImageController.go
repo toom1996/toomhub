@@ -20,6 +20,8 @@ func (image *ImageController) Register(engine *gin.Engine) {
 	}
 }
 
+// @title	广场图片上传接口
+// @desc	图片对接到七牛云
 func (*ImageController) Upload(context *gin.Context) {
 
 	file, header, err := context.Request.FormFile("file")
@@ -33,17 +35,25 @@ func (*ImageController) Upload(context *gin.Context) {
 
 	uploader := service.QiniuUploader{}
 	//
-	url, err := uploader.Upload(file, header.Filename)
-	fmt.Println(url)
-	fmt.Println(err)
-	//if err != nil {
-	//	res["message"] = err.Error()
-	//	return
-	//}
-	//_ = context.SaveUploadedFile(file, filepath)
+	res, err := uploader.Upload(file, header.Filename)
+	fmt.Println(file)
+
+	if err != nil {
+		context.JSON(200, gin.H{
+			"code":    400,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	fmt.Println(res)
 	context.JSON(200, gin.H{
-		"code": 200,
-		"msg":  "上传成功!",
-		"data": url,
+		"code":    200,
+		"message": "上传成功!",
+		"data": map[string]interface{}{
+			"url":       res["url"],
+			"size":      res["size"],
+			"extension": res["extension"],
+		},
 	})
 }
