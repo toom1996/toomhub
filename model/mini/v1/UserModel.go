@@ -30,7 +30,7 @@ type ToomhubUserMiniToken struct {
 }
 
 type V1MiniUserInfo struct {
-	Nickname  string `json:"nickname" form:"nickname"`
+	Nickname  string `json:"nickname" form:"nickname" binding:"required"`
 	Gender    int8   `json:"gender" form:"gender"`
 	City      string `json:"city" form:"city"`
 	Province  string `json:"province" form:"province"`

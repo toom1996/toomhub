@@ -25,6 +25,7 @@ func GetUser(openid string, validator *validatorMiniprogramV1.Login) (interface{
 	if gorm.IsRecordNotFoundError(err) {
 		//插入一个新用户
 		res, err := UserCreate(openid, db, validator)
+		fmt.Println("insert new user")
 		if err != nil {
 			return "", err
 		}
@@ -41,11 +42,14 @@ func GetUserByOpenId(openid string) (interface{}, error) {
 	//根据openid 查找用户
 	query := db.Where("open_id = ?", openid).Take(&tableModel)
 	if query.Error != nil {
+		fmt.Println(query.Error)
 		return false, query.Error
 	}
 
+	fmt.Println("1111111")
 	//通过用户id从REDIS中获取信息
 	info, err := GetUserInfoByRedis(tableModel.MiniId)
+	fmt.Println("22222")
 	fmt.Println(info)
 	fmt.Println(err)
 
@@ -109,12 +113,13 @@ func UserCreate(openid string, DB *gorm.DB, validator *validatorMiniprogramV1.Lo
 		fmt.Println(err)
 	}
 
+	_, _ = SetUserInfoToRedis(userModel, profileModel, token)
+
 	//提交事务
 	transaction.Commit()
 	if transaction.Error != nil {
 		fmt.Println(transaction.Error)
 	}
-	_, _ = SetUserInfoToRedis(userModel, profileModel)
 
 	return userModel, err
 }
@@ -156,29 +161,31 @@ func GetUserInfoByRedis(userId int) (interface{}, error) {
 		return "", query.Err()
 	}
 
+	fmt.Println("009999999")
 	fmt.Println(res)
 	if res[0] != nil {
 		m := map[string]interface{}{
 			"MiniId":    res[0],
 			"OpenId":    res[1],
-			"CreatedAt": res[2],
-			"NickName":  res[3],
-			"Gender":    res[4],
-			"City":      res[5],
-			"Province":  res[6],
-			"Country":   res[7],
-			"AvatarUrl": res[8],
+			"AvatarUrl": res[2],
+			"CreatedAt": res[3],
+			"NickName":  res[4],
+			"Gender":    res[5],
+			"City":      res[6],
+			"Province":  res[7],
+			"Country":   res[8],
 		}
 
 		fmt.Println("GetUserInfoByRedis")
 		fmt.Println(m)
 		return m, nil
 	}
+
 	return "", errors.New("unknown error")
 }
 
 // @title	将用户信息塞入REDIS缓存
-func SetUserInfoToRedis(userModel ModelMiniV1.ToomhubUserMini, profileModel ModelMiniV1.ToomhubUserMiniProfile) (bool, error) {
+func SetUserInfoToRedis(userModel ModelMiniV1.ToomhubUserMini, profileModel ModelMiniV1.ToomhubUserMiniProfile, token string) (bool, error) {
 	key := UserCacheKey + strconv.Itoa(userModel.MiniId)
 	//塞入redis
 	err := util.Rdb.HMSet(util.Ctx, key, map[string]interface{}{
@@ -191,6 +198,7 @@ func SetUserInfoToRedis(userModel ModelMiniV1.ToomhubUserMini, profileModel Mode
 		"province":   profileModel.Province,
 		"country":    profileModel.Country,
 		"avatar_url": profileModel.AvatarUrl,
+		"token":      token,
 	}).Err()
 
 	////设置一周的过期时间

@@ -38,7 +38,7 @@ func (square *UserController) Login(Context *gin.Context) {
 	validator := validatorMiniprogramV1.Login{}
 	err := Context.ShouldBind(&validator)
 	if err != nil {
-		Context.String(http.StatusBadRequest, "参数错误:%s", err.Error())
+		Context.String(http.StatusOK, "参数错误:%s", err.Error())
 		return
 	}
 

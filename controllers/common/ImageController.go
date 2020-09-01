@@ -49,7 +49,7 @@ func (*ImageController) Upload(context *gin.Context) {
 	fmt.Println(res)
 	context.JSON(200, gin.H{
 		"code":    200,
-		"message": "上传成功!",
+		"message": "上传成功",
 		"data": map[string]interface{}{
 			"url":       res["url"],
 			"size":      res["size"],

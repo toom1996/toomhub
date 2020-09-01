@@ -42,12 +42,15 @@ App({
       return this.request('POST', url, data);
     }
   },
+  //判断用户是否登陆, 未登陆则跳转到登陆界面
   isLogin:function () {
     console.log(wx.getStorageSync('userInfo'))
     if (this.globalData.userInfo === null && wx.getStorageSync('userInfo') === '') {
       wx.navigateTo({
         url: '/pages/login/login'
       })
+      return false;
     }
+    return true;
   }
 })
