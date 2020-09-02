@@ -7,6 +7,10 @@ App({
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
+    let userInfo = wx.getStorageSync('userInfo');
+    if (userInfo !== '') {
+      this.globalData.userInfo = userInfo
+    }
   },
   globalData: {
     userInfo: null, //全局用户信息,
@@ -21,7 +25,8 @@ App({
           data: data,
           method: method,
           header: {
-            'content-type': 'application/x-www-form-urlencoded' // 默认值
+            'Content-Type': 'application/x-www-form-urlencoded', // 默认值
+            'Toomhub-Token': wx.getStorageSync('userInfo').token
           },
           success(res) {
             resolve(res)
@@ -44,13 +49,27 @@ App({
   },
   //判断用户是否登陆, 未登陆则跳转到登陆界面
   isLogin:function () {
-    console.log(wx.getStorageSync('userInfo'))
-    if (this.globalData.userInfo === null && wx.getStorageSync('userInfo') === '') {
-      wx.navigateTo({
-        url: '/pages/login/login'
-      })
-      return false;
-    }
-    return true;
+    console.log(wx.getStorageSync('userInfo').token)
+    wx.checkSession({
+      success() {
+        console.log('success')
+        return true;
+        //session_key 未过期，并且在本生命周期一直有效
+      },
+      fail() {
+        console.log('fail')
+        wx.navigateTo({
+          url: '/pages/login/login'
+        })
+        return false;
+      }
+    }) 
+  },
+  //设置缓存
+  setCache: function(key, value) {
+    wx.setStorage({
+      key: key,
+      data: value,
+    })
   }
 })

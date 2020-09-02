@@ -11,16 +11,16 @@ import (
 var jwtSecret = []byte("toomhub")
 
 type Claims struct {
-	Username string `json:"username"`
+	MiniId string `json:"username"`
 	jwt.StandardClaims
 }
 
-func GenerateToken(username string) (string, error) {
+func GenerateToken(id int) (string, error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(3 * time.Hour)
 
 	claims := Claims{
-		username,
+		fmt.Sprintf("%d", id),
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
 			Issuer:    "toomhub",

@@ -7,6 +7,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"net/http"
 	LogicMiniV1 "toomhub/logic/mini/v1"
+	v1MiniMiddleware "toomhub/middware/mini/v1"
 	validator2 "toomhub/validator"
 	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
 )
@@ -17,6 +18,7 @@ type SquareController struct {
 //当前控制器注册的路由
 func (square *SquareController) Register(engine *gin.Engine) {
 	user := engine.Group("/v1/mini/sq")
+	user.Use(v1MiniMiddleware.CheckIdentity())
 	{
 		//小程序用户登陆接口
 		user.GET("/index", square.index)
