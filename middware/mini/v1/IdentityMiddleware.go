@@ -14,9 +14,9 @@ func CheckIdentity() gin.HandlerFunc {
 
 		token := c.GetHeader("Toomhub-Token")
 
-		r, _ := util.ParseToken(token)
+		r, _ := util.ParseToken(token, c)
 
-		fmt.Println(r.MiniId)
+		fmt.Println(r)
 		//c.JSON(200, map[string]string{
 		//	"sdf": "000",
 		//})

@@ -5,6 +5,8 @@ package util
 import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
+	"net/http"
 	"time"
 )
 
@@ -17,7 +19,7 @@ type Claims struct {
 
 func GenerateToken(id int) (string, error) {
 	nowTime := time.Now()
-	expireTime := nowTime.Add(3 * time.Hour)
+	expireTime := nowTime.Add(3 * time.Second)
 
 	claims := Claims{
 		fmt.Sprintf("%d", id),
@@ -33,7 +35,7 @@ func GenerateToken(id int) (string, error) {
 	return token, err
 }
 
-func ParseToken(token string) (*Claims, error) {
+func ParseToken(token string, c *gin.Context) (*Claims, error) {
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil
 	})
@@ -43,34 +45,23 @@ func ParseToken(token string) (*Claims, error) {
 			if claims, ok := tokenClaims.Claims.(*Claims); ok {
 				return claims, nil
 			}
-			fmt.Println("success")
 		} else if ve, ok := err.(*jwt.ValidationError); ok {
 			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
-				fmt.Println("bad token")
 			} else if ve.Errors&(jwt.ValidationErrorExpired|jwt.ValidationErrorNotValidYet) != 0 {
-				// Token is either expired or not active yet
-				fmt.Println("Time out ")
-			} else {
-				fmt.Println("Couldn't handle this token:", err)
+				// token 过期了
+				c.JSON(http.StatusOK, map[string]interface{}{
+					"code": 401,
+					"msg":  "token is expired",
+				})
+				c.Abort()
+				return nil, nil
 			}
 		}
 	}
-
-	//错误的token
-	if err != nil {
-		fmt.Println("错误的token")
-		fmt.Println(err)
-	}
-
-	if tokenClaims != nil {
-		if tokenClaims.Valid {
-			fmt.Println("验证通过")
-		}
-		fmt.Println("验证不通过")
-		if claims, ok := tokenClaims.Claims.(*Claims); ok && tokenClaims.Valid {
-			return claims, nil
-		}
-	}
-
-	return nil, err
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"code": 401,
+		"msg":  "bad token",
+	})
+	c.Abort()
+	return nil, nil
 }

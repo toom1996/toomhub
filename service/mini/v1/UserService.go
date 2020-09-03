@@ -271,8 +271,12 @@ func UpdateUserInfoToRedis(miniId int) (bool, error) {
 		"refresh_token": refreshToken,
 	}).Err()
 
-	////设置一周的过期时间
-	//util.Rdb.Expire(util.Ctx, key, time.Second*60*60*24*7)
+	// 更新数据库 (感觉没啥必要, 因为数据都是从redis取的, 并且redis的数据都已经更新了)
+	updateTime := time.Now().Unix()
+	tokenModel := ModelMiniV1.ToomhubUserMiniToken{
+		UpdatedAt: updateTime,
+	}
+	_ = db.Table("toomhub_user_mini_token").Update(&tokenModel).Where("mini_id = ?", miniId)
 
 	if err != nil {
 		fmt.Println(err)

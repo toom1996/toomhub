@@ -19,7 +19,7 @@ Page({
           wx.login({
             success: function (loginRes) {
               console.log('wx.login----->', loginRes)
-              app.httpClient.post('/v1/mini/login', {
+              app.httpClient.post('/v1/mini/user/login', {
                 code: loginRes.code,
                 userInfo: JSON.stringify(userinfo.userInfo)
               }).then(res => {

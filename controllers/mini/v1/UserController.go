@@ -20,10 +20,11 @@ type test struct {
 
 //当前控制器注册的路由
 func (square *UserController) Register(engine *gin.Engine) {
-	user := engine.Group("/v1/mini")
+	user := engine.Group("/v1/mini/user")
 	{
 		//小程序用户登陆接口
 		user.POST("/login", square.Login)
+		user.POST("/refresh", square.Login)
 	}
 }
 

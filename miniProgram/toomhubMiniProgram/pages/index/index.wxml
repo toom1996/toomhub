@@ -37,13 +37,13 @@
             <van-col span="24" gutter="20">
               <view class="__content">
                 <van-col span="8">
-                  <van-image mode="widthFix" bindtap="previewImage" data-src="http://qeiwdcsh5.bkt.clouddn.com/11eaca620fff1761c041093c9484a6b9.gif" lazy-load src="http://qeiwdcsh5.bkt.clouddn.com/11eaca620fff1761c041093c9484a6b9.gif" />
+                  <van-image mode="widthFix" lazy-load = "{{ true }}" bindtap="previewImage" error="加载失败" src="http://toomhub.image.23cm.cn/0062db2ef44c073a7c05f9dbc0bc6e7a.gif" />
                 </van-col>
                 <van-col span="8">
-                  <van-image mode="aspectFill" bindtap="previewImage" data-src="http://qeiwdcsh5.bkt.clouddn.com/0070uxksgy1ga33vy51kbg309u06xu0x.gif" lazy-load src="http://qeiwdcsh5.bkt.clouddn.com/0070uxksgy1ga33vy51kbg309u06xu0x.gif" />
+                  <van-image mode="aspectFill" bindtap="previewImage" lazy-load src="http://toomhub.image.23cm.cn/03e1c4ff3c094fcd7633e7c8ab620777.jpg" />
                 </van-col>
                 <van-col span="8">
-                  <van-image mode="aspectFill" bindtap="previewImage" data-src="http://qeiwdcsh5.bkt.clouddn.com/152170904610306200.gif" lazy-load src="http://qeiwdcsh5.bkt.clouddn.com/152170904610306200.gif" />
+                  <van-image mode="aspectFill" bindtap="previewImage" lazy-load src="http://toomhub.image.23cm.cn/02185d37988048f79f97acb6339a1561.gif" />
                 </van-col>
               </view>
             </van-col>

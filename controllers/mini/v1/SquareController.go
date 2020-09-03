@@ -18,18 +18,20 @@ type SquareController struct {
 //当前控制器注册的路由
 func (square *SquareController) Register(engine *gin.Engine) {
 	user := engine.Group("/v1/mini/sq")
+	// 广场首页接口
+	user.GET("/index", square.index)
+
 	user.Use(v1MiniMiddleware.CheckIdentity())
 	{
-		//小程序用户登陆接口
-		user.GET("/index", square.index)
+		// 发布一条广场信息
 		user.POST("/create", square.create)
 	}
 }
 
 func (square *SquareController) index(Context *gin.Context) {
 	//验证器
-	validator := validatorMiniprogramV1.SquareIndex{}
-	err := Context.BindQuery(&validator)
+	formValidator := validatorMiniprogramV1.SquareIndex{}
+	err := Context.BindQuery(&formValidator)
 	if err != nil {
 		Context.String(http.StatusBadRequest, "参数错误:%s", err.Error())
 		return
@@ -37,7 +39,7 @@ func (square *SquareController) index(Context *gin.Context) {
 
 	//logic
 	logic := LogicMiniV1.SquareLogic{}
-	query, _ := logic.SquareIndex(&validator)
+	query, _ := logic.SquareIndex(&formValidator)
 
 	Context.JSON(200, gin.H{
 		"message": "OK",
