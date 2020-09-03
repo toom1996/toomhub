@@ -4,8 +4,10 @@ package ControllersMiniV1
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"net/http"
 	LogicMiniV1 "toomhub/logic/mini/v1"
+	validator2 "toomhub/validator"
 	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
 )
 
@@ -19,22 +21,22 @@ type test struct {
 }
 
 //当前控制器注册的路由
-func (square *UserController) Register(engine *gin.Engine) {
+func (u *UserController) Register(engine *gin.Engine) {
 	user := engine.Group("/v1/mini/user")
 	{
 		//小程序用户登陆接口
-		user.POST("/login", square.Login)
-		user.POST("/refresh", square.Login)
+		user.POST("/login", u.Login)
+		user.POST("/refresh", u.Refresh)
 	}
 }
 
 // @url 	localhost:8080/mini/login	POST
 // @title    小程序用户登陆接口
-// @description   初次登陆的用户将会入库, 非初次登陆的用户将会返回用户信息
+// @description   初次登陆的用户将会入库并返回信息, 非初次登陆的用户将会返回用户信息
 // @auth	toom <1023150697@qq.com>
 // @param     Context	*gin.Context
 // @return
-func (square *UserController) Login(Context *gin.Context) {
+func (u *UserController) Login(Context *gin.Context) {
 	//validator验证
 	validator := validatorMiniprogramV1.Login{}
 	err := Context.ShouldBind(&validator)
@@ -61,4 +63,20 @@ func (square *UserController) Login(Context *gin.Context) {
 		"message": "登陆成功",
 		"data":    query,
 	})
+}
+
+// @title	刷新token接口
+func (u *UserController) Refresh(Context *gin.Context) {
+	var commonValidator validator2.CommonValidator
+
+	formValidator := validatorMiniprogramV1.Refresh{}
+	err := Context.ShouldBind(&formValidator)
+	if err != nil {
+		Context.JSON(http.StatusOK, gin.H{
+			"code": 400,
+			"msg":  commonValidator.TransError(err.(validator.ValidationErrors)),
+		})
+	}
+
+	formLogic :=
 }

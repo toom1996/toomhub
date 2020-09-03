@@ -5,7 +5,9 @@ package LogicMiniV1
 import (
 	"errors"
 	"fmt"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/medivhzhan/weapp/v2"
+	"net/http"
 	ServiceMiniV1 "toomhub/service/mini/v1"
 	"toomhub/util"
 	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
@@ -34,4 +36,29 @@ func (logic *UserLogic) Login(validator *validatorMiniprogramV1.Login) (interfac
 
 	fmt.Println(userInfo)
 	return userInfo, err
+}
+
+func (logic *UserLogic) Refresh(validator *validatorMiniprogramV1.Refresh) {
+	tokenClaims, err := jwt.ParseWithClaims(validator.Token, &util.Claims{}, func(token *jwt.Token) (interface{}, error) {
+		return util.GetConfig().Jwt.Secret, nil
+	})
+
+	if tokenClaims != nil {
+		if tokenClaims.Valid {
+			if claims, ok := tokenClaims.Claims.(*util.Claims); ok {
+				return claims, nil
+			}
+		} else if ve, ok := err.(*jwt.ValidationError); ok {
+			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
+			} else if ve.Errors&(jwt.ValidationErrorExpired|jwt.ValidationErrorNotValidYet) != 0 {
+				// token 过期了
+				c.JSON(http.StatusOK, map[string]interface{}{
+					"code": 401,
+					"msg":  "token is expired",
+				})
+				c.Abort()
+				return nil, nil
+			}
+		}
+	}
 }

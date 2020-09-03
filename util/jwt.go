@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var jwtSecret = []byte("toomhub")
+//var jwtSecret = []byte("")
 
 type Claims struct {
 	MiniId string `json:"username"`
@@ -30,14 +30,14 @@ func GenerateToken(id int) (string, error) {
 	}
 
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token, err := tokenClaims.SignedString(jwtSecret)
+	token, err := tokenClaims.SignedString(GetConfig().Jwt.Secret)
 
 	return token, err
 }
 
 func ParseToken(token string, c *gin.Context) (*Claims, error) {
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		return jwtSecret, nil
+		return GetConfig().Jwt.Secret, nil
 	})
 
 	if tokenClaims != nil {

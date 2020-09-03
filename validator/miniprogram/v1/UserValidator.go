@@ -10,3 +10,8 @@ type Login struct {
 	Code     string                     `form:"code" binding:"required"`
 	UserInfo ModelMiniV1.V1MiniUserInfo `form:"userInfo"`
 }
+
+type Refresh struct {
+	Token        string `form:"token" binding:"required"`
+	RefreshToken string `form:"refresh_token"`
+}
