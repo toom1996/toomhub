@@ -8,7 +8,13 @@ import (
 	"toomhub/service"
 )
 
+const WEBP = "/format/webp"
+
 type ImageController struct {
+}
+
+func QiniuParam() {
+
 }
 
 //当前控制器注册的路由
@@ -51,7 +57,7 @@ func (*ImageController) Upload(context *gin.Context) {
 		"code":    200,
 		"message": "上传成功",
 		"data": map[string]interface{}{
-			"url":       res["url"],
+			"url":       "http://toomhub.image.23cm.cn/006APoFYly1fowt3eeuk6g306o08g4q3.gif?imageMogr2/auto-orient/format/webp",
 			"size":      res["size"],
 			"extension": res["extension"],
 		},

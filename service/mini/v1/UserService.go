@@ -249,6 +249,7 @@ func SetUserInfoToRedis(userModel ModelMiniV1.ToomhubUserMini, profileModel Mode
 	return true, nil
 }
 
+// @title	刷新用户的token 和 refreshToken
 func UpdateUserInfoToRedis(miniId int) (bool, error) {
 	db := util.DB
 
@@ -284,7 +285,10 @@ func UpdateUserInfoToRedis(miniId int) (bool, error) {
 	return true, nil
 }
 
-// @title	刷新用户token 和 refreshToken
-func RefreshInfo() {
+func Refresh(validator *validatorMiniprogramV1.Refresh) (bool, error) {
 
+	db := util.DB
+
+	db.Table("toomhub_user_mini_token").Where("access_token = ?", validator.Token)
+	return true, nil
 }

@@ -57,7 +57,7 @@ Page({
     wx.previewImage({
       current: src, // 当前显示图片的http链接
       urls: [
-        'http://qeiwdcsh5.bkt.clouddn.com/11eaca620fff1761c041093c9484a6b9.gif',
+        'http://toomhub.image.23cm.cn/006APoFYly1fowt3eeuk6g306o08g4q3.gif?imageMogr2/auto-orient/format/webp',
         'http://qeiwdcsh5.bkt.clouddn.com/152170904610306200.gif'
       ] // 需要预览的图片http链接列表
     })

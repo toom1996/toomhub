@@ -78,5 +78,18 @@ func (u *UserController) Refresh(Context *gin.Context) {
 		})
 	}
 
-	formLogic :=
+	formLogic := LogicMiniV1.UserLogic{}
+	token, err := formLogic.Refresh(&formValidator)
+	if err != nil {
+		Context.JSON(http.StatusOK, gin.H{
+			"code": 400,
+			"msg":  err,
+		})
+	}
+
+	Context.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"msg":  token,
+	})
+
 }

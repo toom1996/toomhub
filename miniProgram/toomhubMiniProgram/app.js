@@ -24,6 +24,7 @@ App({
   },
   httpClient: {
     request: function (method, url, data) {
+
       //返回一个promise实例
       let _this = this
       return new Promise((resolve, reject) => {
