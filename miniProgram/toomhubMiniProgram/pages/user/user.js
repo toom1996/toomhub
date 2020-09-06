@@ -4,7 +4,7 @@ const app = getApp()
 
 Page({
   data: {
-    userInfo : null,
+    userInfo: app.globalData.userInfo
   },
   onReady() {
     //是否登陆
@@ -20,14 +20,10 @@ Page({
   },
 
   onShow: function () {
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-      })
-    } else {
-      this.setData({
-        userInfo: null,
-      })
-    }
+    console.log('21212121212')
+    console.log(app.globalData.userInfo)
+    this.setData({
+      userInfo: app.globalData.userInfo
+    })
   }
 })

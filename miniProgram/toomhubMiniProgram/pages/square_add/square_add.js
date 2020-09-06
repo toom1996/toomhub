@@ -100,7 +100,7 @@ Page({
         console.log(baseData)
 
         let uploadTask = wx.uploadFile({
-          url: app.globalData.request_host + '/c/image/upload',
+          url: app.getApi('REQUEST_HOST')+ '/c/image/upload',
           filePath: item.path,
           name: 'file',
           success: (res) => {

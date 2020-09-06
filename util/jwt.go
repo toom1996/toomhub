@@ -10,19 +10,21 @@ import (
 	"time"
 )
 
-//var jwtSecret = []byte("")
+//var jwtSecret = []byte("toomhub")
 
 type Claims struct {
-	MiniId string `json:"username"`
+	MiniId    string
+	CreatedAt int64
 	jwt.StandardClaims
 }
 
 func GenerateToken(id int) (string, error) {
 	nowTime := time.Now()
-	expireTime := nowTime.Add(3 * time.Second)
+	expireTime := nowTime.Add(630 * time.Second)
 
 	claims := Claims{
 		fmt.Sprintf("%d", id),
+		nowTime.Unix(),
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
 			Issuer:    "toomhub",
@@ -30,16 +32,17 @@ func GenerateToken(id int) (string, error) {
 	}
 
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token, err := tokenClaims.SignedString(GetConfig().Jwt.Secret)
-
+	token, err := tokenClaims.SignedString([]byte(GetConfig().Jwt.Secret))
+	fmt.Println(err)
 	return token, err
 }
 
 func ParseToken(token string, c *gin.Context) (*Claims, error) {
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		return GetConfig().Jwt.Secret, nil
+		return []byte(GetConfig().Jwt.Secret), nil
 	})
 
+	fmt.Println(tokenClaims)
 	if tokenClaims != nil {
 		if tokenClaims.Valid {
 			if claims, ok := tokenClaims.Claims.(*Claims); ok {

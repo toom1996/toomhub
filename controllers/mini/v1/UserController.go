@@ -3,6 +3,7 @@
 package ControllersMiniV1
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"net/http"
@@ -26,7 +27,7 @@ func (u *UserController) Register(engine *gin.Engine) {
 	{
 		//小程序用户登陆接口
 		user.POST("/login", u.Login)
-		user.POST("/refresh", u.Refresh)
+		user.POST("/token-checker", u.tokenChecker)
 	}
 }
 
@@ -65,8 +66,8 @@ func (u *UserController) Login(Context *gin.Context) {
 	})
 }
 
-// @title	刷新token接口
-func (u *UserController) Refresh(Context *gin.Context) {
+// @title	检查token接口
+func (u *UserController) tokenChecker(Context *gin.Context) {
 	var commonValidator validator2.CommonValidator
 
 	formValidator := validatorMiniprogramV1.Refresh{}
@@ -76,17 +77,19 @@ func (u *UserController) Refresh(Context *gin.Context) {
 			"code": 400,
 			"msg":  commonValidator.TransError(err.(validator.ValidationErrors)),
 		})
+		return
 	}
 
 	formLogic := LogicMiniV1.UserLogic{}
-	token, err := formLogic.Refresh(&formValidator)
+	token, err := formLogic.Check(&formValidator, Context)
 	if err != nil {
 		Context.JSON(http.StatusOK, gin.H{
-			"code": 400,
-			"msg":  err,
+			"code": 401,
+			"msg":  err.Error(),
 		})
+		return
 	}
-
+	fmt.Println("22333ffffff")
 	Context.JSON(http.StatusOK, gin.H{
 		"code": 200,
 		"msg":  token,

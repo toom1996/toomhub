@@ -160,15 +160,18 @@ func UserCreate(openid string, DB *gorm.DB, validator *validatorMiniprogramV1.Lo
 }
 
 type RedisUserInfo struct {
-	MiniId    int
-	OpenId    string
-	CreatedAt int64
-	NickName  string
-	Gender    int8
-	City      string
-	Province  string
-	Country   string
-	AvatarUrl string
+	MiniId      int
+	OpenId      string
+	CreatedAt   int64
+	NickName    string
+	Gender      int8
+	City        string
+	Province    string
+	Country     string
+	AvatarUrl   string
+	FansCount   string
+	LikesCount  string
+	FollowCount string
 }
 
 // @title	从REDIS中获取用户信息
@@ -187,6 +190,9 @@ func GetUserInfoByRedis(userId int) (interface{}, error) {
 		"country",
 		"token",
 		"refresh_token",
+		"fans_count",
+		"likes_count",
+		"follow_count",
 	}...)
 	if query.Err() != nil {
 		fmt.Println(query.Err())
@@ -213,6 +219,9 @@ func GetUserInfoByRedis(userId int) (interface{}, error) {
 			"Country":       res[8],
 			"token":         res[9],
 			"refresh_token": res[10],
+			"fans_count":    res[11],
+			"likes_count":   res[12],
+			"follow_count":  res[13],
 		}
 
 		fmt.Println("GetUserInfoByRedis")
@@ -250,7 +259,7 @@ func SetUserInfoToRedis(userModel ModelMiniV1.ToomhubUserMini, profileModel Mode
 }
 
 // @title	刷新用户的token 和 refreshToken
-func UpdateUserInfoToRedis(miniId int) (bool, error) {
+func UpdateUserInfoToRedis(miniId int) (interface{}, error) {
 	db := util.DB
 
 	profileModel := ModelMiniV1.ToomhubUserMiniProfile{}
@@ -259,6 +268,7 @@ func UpdateUserInfoToRedis(miniId int) (bool, error) {
 	key := UserCacheKey + strconv.Itoa(miniId)
 	//塞入redis
 	token, _ := util.GenerateToken(miniId)
+	fmt.Println("token -> ", token)
 	refreshToken := util.GetRandomString(64)
 	fmt.Println(refreshToken)
 	err := util.Rdb.HMSet(util.Ctx, key, map[string]interface{}{
@@ -282,7 +292,10 @@ func UpdateUserInfoToRedis(miniId int) (bool, error) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	return true, nil
+	return map[string]string{
+		"token":         token,
+		"refresh_token": refreshToken,
+	}, nil
 }
 
 func Refresh(validator *validatorMiniprogramV1.Refresh) (bool, error) {

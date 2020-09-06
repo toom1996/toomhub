@@ -18,7 +18,11 @@ Page({
         success: function (userinfo) {
           wx.login({
             success: function (loginRes) {
-              console.log('wx.login----->', loginRes)
+              wx.showToast({
+                title: '加载中...',
+                icon: 'loading',
+                mask: true,
+              });
               app.httpClient.post('/v1/mini/user/login', {
                 code: loginRes.code,
                 userInfo: JSON.stringify(userinfo.userInfo)
@@ -26,21 +30,24 @@ Page({
                 let data = res.data
                 console.log(data)
                 if (data.code == 200) {
+                  let info = {
+                    'avatarUrl': data.data.avatar_url,
+                    'nickName': data.data.nick_name,
+                    'token': data.data.token,
+                    'refreshToken': data.data.refresh_token
+                  }
                   //登陆成功后缓存token, refreshToken, nickname
-                 app.setCache('userInfo', {
-                   'avatarUrl': data.data.avatar_url,
-                   'nickName': data.data.nick_name,
-                   'token': data.data.token,
-                   'refreshToken': data.data.refresh_token
-                 })
+                  app.setCache('userInfo', info)
+                  console.log(app.globalData.userInfo = info)
+                  wx.hideToast();
+                  wx.navigateBack({
+                    delta: 1
+                  })
                 }
               }) 
             }
           })
         }
-      })
-      wx.navigateBack({
-        delta: 1
       })
     } else {
       //用户按了拒绝按钮

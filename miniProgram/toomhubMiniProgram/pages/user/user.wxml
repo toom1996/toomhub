@@ -8,7 +8,7 @@
       <van-row>
         <van-col span="12">
           <view wx:if="{{userInfo}}">
-            <text class="h2">{{userInfo.nickName}}</text>
+            <text class="h2">{{ userInfo.nickName }}</text>
           </view>
           <view wx:else>
             <van-button round type="default" bindtap="userLogin" size="small">立即登陆</van-button>
