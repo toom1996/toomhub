@@ -24,7 +24,6 @@ func main() {
 
 	fmt.Println(cfg.AppPort)
 	app := gin.Default()
-
 	registerRouter(app)
 
 	_ = app.Run(cfg.AppHost + ":" + cfg.AppPort)

@@ -4,11 +4,9 @@ package ControllersMiniV1
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"net/http"
 	LogicMiniV1 "toomhub/logic/mini/v1"
 	v1MiniMiddleware "toomhub/middware/mini/v1"
-	validator2 "toomhub/validator"
 	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
 )
 
@@ -52,15 +50,16 @@ func (square *SquareController) index(Context *gin.Context) {
 
 // @title	创建一条广场消息
 func (square *SquareController) create(Context *gin.Context) {
-	var commonValidator validator2.CommonValidator
+	//var commonValidator validator2.CommonValidator
 	//验证器
 	formValidator := validatorMiniprogramV1.SquareCreate{}
 	err := Context.ShouldBind(&formValidator)
 
 	if err != nil {
 		Context.JSON(http.StatusOK, gin.H{
-			"code":    400,
-			"message": commonValidator.TransError(err.(validator.ValidationErrors)),
+			"code": 400,
+			//"message": commonValidator.TransError(err.(validator.ValidationErrors)),
+			"message": err.Error(),
 			"data":    "",
 		})
 		return

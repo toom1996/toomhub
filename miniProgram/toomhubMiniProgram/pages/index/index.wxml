@@ -1,4 +1,3 @@
-<image src="http://toomhub.image.23cm.cn/006APoFYly1fowt3eeuk6g306o08g4q3.gif?imageMogr2/auto-orient/format/webp"></image>
 <!--index.wxml-->
 <van-icon name="add" class="add" size="40" bindtap="add" color="#ED3333"/>
 <view wx:for="{{10}}">

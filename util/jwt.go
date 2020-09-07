@@ -20,7 +20,7 @@ type Claims struct {
 
 func GenerateToken(id int) (string, error) {
 	nowTime := time.Now()
-	expireTime := nowTime.Add(630 * time.Second)
+	expireTime := nowTime.Add(60 * time.Minute * 24 * 7)
 
 	claims := Claims{
 		fmt.Sprintf("%d", id),

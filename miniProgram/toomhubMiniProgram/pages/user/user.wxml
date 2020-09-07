@@ -26,7 +26,7 @@
     <a href="#" class="palace-grid">
       <view class="palace-grid-text">
         <view>
-          <text>188</text>
+          <text>{{ userInfo.follow_count }}</text>
         </view>
         <view>
           <text>关注数</text>
@@ -36,7 +36,7 @@
     <a href="#" class="palace-grid">
       <view class="palace-grid-text">
         <view>
-          <text>188</text>
+          <text>{{ userInfo.likes_count }}</text>
         </view>
         <view>
           <text>粉丝数</text>
@@ -46,7 +46,7 @@
     <a href="#" class="palace-grid">
       <view class="palace-grid-text">
         <view>
-          <text>188</text>
+          <text>{{ userInfo.fans_count }}</text>
         </view>
         <view>
           <text>获赞数</text>

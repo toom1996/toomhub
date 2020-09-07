@@ -206,6 +206,19 @@ func GetUserInfoByRedis(userId int) (interface{}, error) {
 
 	fmt.Println("009999999")
 	fmt.Println(res)
+
+	if res[11] == nil {
+		res[11] = 0
+	}
+
+	if res[12] == nil {
+		res[12] = 0
+	}
+
+	if res[13] == nil {
+		res[13] = 0
+	}
+
 	if res[0] != nil {
 		m := map[string]interface{}{
 			"MiniId":        res[0],
@@ -248,7 +261,7 @@ func SetUserInfoToRedis(userModel ModelMiniV1.ToomhubUserMini, profileModel Mode
 		"avatar_url": profileModel.AvatarUrl,
 		"token":      token,
 	}).Err()
-
+	util.Rdb.Set(util.Ctx, "test", "000", -1)
 	////设置一周的过期时间
 	//util.Rdb.Expire(util.Ctx, key, time.Second*60*60*24*7)
 

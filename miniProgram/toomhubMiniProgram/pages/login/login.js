@@ -34,7 +34,10 @@ Page({
                     'avatarUrl': data.data.avatar_url,
                     'nickName': data.data.nick_name,
                     'token': data.data.token,
-                    'refreshToken': data.data.refresh_token
+                    'refreshToken': data.data.refresh_token,
+                    'fans_count': data.data.fans_count,
+                    'likes_count': data.data.likes_count,
+                    'follow_count': data.data.follow_count,
                   }
                   //登陆成功后缓存token, refreshToken, nickname
                   app.setCache('userInfo', info)

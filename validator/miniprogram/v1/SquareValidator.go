@@ -9,7 +9,11 @@ type SquareIndex struct {
 
 // @description	label是输出错误信息时显示的字段中文名
 type SquareCreate struct {
-	Content   string `json:"content" form:"content" binding:"required" label:"内容"`
-	ImageList string `form:"image_list" binding:"required,ne=10"  label:"图片列表"`
-	Tag       string `form:"tag"`
+	Content   string            `json:"content" form:"content" binding:"required" label:"内容"`
+	ImageList map[string]string `json:"image_list" form:"image_list" binding:"len=2,min=2"  label:"图片列表"`
+	Tag       string            `form:"tag"`
+}
+
+type ImageInfo struct {
+	Url string `json:"url" binding:"required"`
 }

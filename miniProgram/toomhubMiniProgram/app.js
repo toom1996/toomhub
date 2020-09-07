@@ -1,7 +1,5 @@
 
 //app.js
-const REQUEST_HOST = 'http://127.0.0.1:8080'
-
 var toomhubApi = require("./api.js");
 var _this = this;
 App({
@@ -26,7 +24,6 @@ App({
     request: function (method, url, data) {
       //返回一个promise实例
       let _this = this
-      console.log()
       return new Promise((resolve, reject) => {
         wx.request({
           url: toomhubApi.REQUEST_HOST + url,
@@ -36,8 +33,14 @@ App({
             'Content-Type': 'application/x-www-form-urlencoded', // 默认值
             'Toomhub-Token': wx.getStorageSync('userInfo').token
           },
-          success(res) {
+          success: (res) => {
             console.log(res)
+            if (res.data.code == 401) {
+              wx.navigateTo({
+                url: '/pages/login/login'
+              })
+              return false;
+            }
             resolve(res)
           },
           fail(res) {
