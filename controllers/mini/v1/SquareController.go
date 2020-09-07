@@ -4,6 +4,8 @@ package ControllersMiniV1
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 	"net/http"
 	LogicMiniV1 "toomhub/logic/mini/v1"
 	v1MiniMiddleware "toomhub/middware/mini/v1"
@@ -15,6 +17,11 @@ type SquareController struct {
 
 //当前控制器注册的路由
 func (square *SquareController) Register(engine *gin.Engine) {
+
+	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		_ = v.RegisterValidation("countValidate", validatorMiniprogramV1.CountValidate)
+	}
+
 	user := engine.Group("/v1/mini/sq")
 	// 广场首页接口
 	user.GET("/index", square.index)
