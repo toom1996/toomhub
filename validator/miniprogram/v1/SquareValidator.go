@@ -20,21 +20,30 @@ type SquareCreate struct {
 	Tag       string `form:"tag"`
 }
 
-type createImageInfo struct {
-	Url  string `json:"url"`
-	Size int    `json:"size"`
+type CreateImageInfo struct {
+	Param       string `json:"param"`
+	RequestHost int    `json:"request_host"`
+	Name        int    `json:"name"`
+	Size        int    `json:"size"`
+	Extension   int    `json:"extension"`
 }
 
+//图片数量验证
 func CountValidate(fl validator.FieldLevel) bool {
 
-	var create createImageInfo
-	aa := `{"deletable":true,"status":"done","message":"0%","url":"http://toomhub.image.23cm.cn/006APoFYly1fowt3eeuk6g306o08g4q3.gif?imageMogr2/auto-orient/format/webp","extension":".jpg","size":51405}`
-	err := json.Unmarshal([]byte(aa), &create)
-
+	df := fl.Field().String()
+	//json转化成map
+	var dat map[string]interface{}
+	err := json.Unmarshal([]byte(df), &dat)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(create)
-	//fmt.Println(fl.Field().String())
-	return false
+
+	l := len(dat)
+
+	if l == 0 || l > 9 {
+		return false
+	}
+
+	return true
 }

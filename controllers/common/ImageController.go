@@ -6,15 +6,10 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"toomhub/service"
+	"toomhub/util"
 )
 
-const WEBP = "/format/webp"
-
 type ImageController struct {
-}
-
-func QiniuParam() {
-
 }
 
 //当前控制器注册的路由
@@ -29,6 +24,7 @@ func (image *ImageController) Register(engine *gin.Engine) {
 // @title	广场图片上传接口
 // @desc	图片对接到七牛云
 func (*ImageController) Upload(context *gin.Context) {
+	param := "?imageMogr2/auto-orient/format/webp"
 
 	file, header, err := context.Request.FormFile("file")
 	if err != nil {
@@ -53,13 +49,21 @@ func (*ImageController) Upload(context *gin.Context) {
 	}
 
 	fmt.Println(res)
+	var mm interface{}
+	mm = res["url"]
+	name := mm.(string)
+
+	url := util.GetConfig().Qiniu.FileServer + name + param
 	context.JSON(200, gin.H{
 		"code":    200,
 		"message": "上传成功",
 		"data": map[string]interface{}{
-			"url":       "http://toomhub.image.23cm.cn/006APoFYly1fowt3eeuk6g306o08g4q3.gif?imageMogr2/auto-orient/format/webp",
-			"size":      res["size"],
-			"extension": res["extension"],
+			"url":          url,
+			"size":         res["size"],
+			"extension":    res["extension"],
+			"request_host": util.GetConfig().Qiniu.FileServer,
+			"param":        param,
+			"name":         res["url"],
 		},
 	})
 }

@@ -149,7 +149,7 @@ func (u QiniuUploader) Upload(file multipart.File, fileName string) (map[string]
 		return map[string]interface{}{}, err
 	}
 	fmt.Println(ret)
-	url := config.Qiniu.FileServer + ret.Key
+	url := ret.Key
 	return map[string]interface{}{
 		"url":       url,
 		"size":      size,

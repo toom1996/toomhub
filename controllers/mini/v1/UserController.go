@@ -3,7 +3,6 @@
 package ControllersMiniV1
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"net/http"
@@ -89,10 +88,8 @@ func (u *UserController) tokenChecker(Context *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("22333ffffff")
 	Context.JSON(http.StatusOK, gin.H{
 		"code": 200,
 		"msg":  token,
 	})
-
 }

@@ -117,6 +117,9 @@ Page({
               tmp[index - 1].message = '0%'
               tmp[index - 1].extension = data.data.extension
               tmp[index - 1].size = data.data.size
+              tmp[index - 1].name = data.data.name
+              tmp[index - 1].request_host = data.data.request_host
+              tmp[index - 1].param = data.data.param
               _this.setData({
                 imageList: tmp
               });
@@ -167,10 +170,15 @@ Page({
       forbidClick: true,
       duration: 0
     });
+    console.log(this.data.imageList)
 
+
+
+    let obj = {...this.data.imageList}
+    console.log(obj)
     app.httpClient.post('/v1/mini/sq/create', {
       'content': this.data.content,
-      'image_list': JSON.stringify(this.data.imageList),
+      'image_list': JSON.stringify(obj),
       'tag': this.data.tag == defaultTag ? '' : this.data.tag,
     }).then(res=>{
       Toast.clear();
