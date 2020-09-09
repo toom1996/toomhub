@@ -3,13 +3,17 @@
 package ServiceMiniV1
 
 import (
+	"encoding/json"
 	"fmt"
+	"github.com/goinggo/mapstructure"
 	"time"
 	//LogicMiniV1 "toomhub/logic/mini/v1"
 	ModelMiniV1 "toomhub/model/mini/v1"
 	"toomhub/util"
 	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
 )
+
+const SquareCacheKey = "square:id:"
 
 // @title
 func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{}, error) {
@@ -35,7 +39,7 @@ func SquareCreate(v *validatorMiniprogramV1.SquareCreate, image map[string]inter
 	transaction := db.Begin()
 
 	//赋值结构体
-	squareModel := ModelMiniV1.Square{
+	squareModel := ModelMiniV1.ToomhubSquare{
 		Content:       v.Content,
 		CreatedBy:     identity.MiniId,
 		CreatedAt:     createTime,
@@ -43,17 +47,40 @@ func SquareCreate(v *validatorMiniprogramV1.SquareCreate, image map[string]inter
 		ArgumentCount: 0,
 		CollectCount:  0,
 		ShareCount:    0,
+		Tag:           v.Tag,
+	}
+	_ = transaction.Create(&squareModel)
+	for k, value := range image {
+		fmt.Println(k)
+		fmt.Println(value)
+		i := ModelMiniV1.ToomhubSquareImage{
+			Rid: squareModel.Id,
+		}
+		_ = mapstructure.Decode(value, &i)
+		query := transaction.Create(&i)
+
+		if query.Error != nil {
+			return false, query.Error
+		}
 	}
 
-	squareImageModel := ModelMiniV1.SquareImage{
-		Rid: squareModel.Id,
-	}
-	//insert到表
-	query := transaction.Create(&squareModel).Scan(&squareModel)
-	if query.Error != nil {
-		transaction.Rollback()
-		return false, query.Error
-	}
+	imageJson, _ := json.Marshal(image)
+	//写入缓存
+	_, _ = util.Rdb.HMSet(util.Ctx, SquareCacheKey+fmt.Sprintf("%d", squareModel.Id), map[string]interface{}{
+		"id":             squareModel.Id,
+		"created_at":     squareModel.CreatedAt,
+		"created_by":     squareModel.CreatedBy,
+		"likes_count":    squareModel.LikesCount,
+		"argument_count": squareModel.ArgumentCount,
+		"collect_count":  squareModel.CollectCount,
+		"share_count":    squareModel.ShareCount,
+		"tag":            squareModel.Tag,
+		"image":          imageJson,
+	}).Result()
+
+	transaction.Commit()
+
+	//标签写入ES
 
 	return true, nil
 }

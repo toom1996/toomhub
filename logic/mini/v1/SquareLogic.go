@@ -5,7 +5,6 @@ package LogicMiniV1
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/goinggo/mapstructure"
 	ServiceMiniV1 "toomhub/service/mini/v1"
 	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
 )
@@ -25,13 +24,6 @@ func (logic *SquareLogic) SquareIndex(validator *validatorMiniprogramV1.SquareIn
 	return query, nil
 }
 
-type ImageList struct {
-	RequestHost string
-	Size        int
-	Name        string
-	Param       string
-}
-
 func (logic *SquareLogic) SquareCreate(validator *validatorMiniprogramV1.SquareCreate) (bool, error) {
 
 	fmt.Println(validator)
@@ -42,14 +34,7 @@ func (logic *SquareLogic) SquareCreate(validator *validatorMiniprogramV1.SquareC
 		fmt.Println(err)
 	}
 
-	for k, value := range dat {
-		fmt.Println(k)
-		fmt.Println(value)
-		var i ImageList
-		_ = mapstructure.Decode(value, &i)
-		_, _ = ServiceMiniV1.SquareCreate(validator, &dat)
-		fmt.Println(i)
-	}
+	_, _ = ServiceMiniV1.SquareCreate(validator, dat)
 
 	return true, nil
 }
