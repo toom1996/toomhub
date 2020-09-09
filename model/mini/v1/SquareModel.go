@@ -4,6 +4,7 @@ package ModelMiniV1
 
 // TABLE `toomhub_square` 结构体
 type Square struct {
+	Id            int64  `json:"id"`
 	Content       string `json:"content"`          //内容
 	CreatedBy     int64  `json:"created_by"`       //创建时间
 	CreatedAt     int64  `json:"created_at"`       //创建人
@@ -15,8 +16,10 @@ type Square struct {
 
 // TABLE `toomhub_square_image` 结构体
 type SquareImage struct {
-	ImageUrl       string //图片地址
-	ImageExtension string //图片后缀
-	ImageSize      int64  //图片大小
-	SquareId       int    //关联的square
+	Rid   int64
+	Host  string
+	Size  string
+	Ext   string
+	Param string
+	Name  string
 }

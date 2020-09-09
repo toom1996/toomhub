@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 04/09/2020 17:44:51
+ Date: 09/09/2020 18:33:27
 */
 
 SET NAMES utf8mb4;
@@ -38,13 +38,14 @@ CREATE TABLE `toomhub_square`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `toomhub_square_image`;
 CREATE TABLE `toomhub_square_image`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '图片地址',
-  `image_extension` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '图片后缀',
-  `image_size` int(11) NOT NULL COMMENT '图片大小',
-  `square_id` int(11) NOT NULL COMMENT '关联的square',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+  `rid` int(10) UNSIGNED NOT NULL,
+  `host` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `size` int(8) NULL DEFAULT NULL,
+  `ext` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `param` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`rid`) USING BTREE
+) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for toomhub_user_mini

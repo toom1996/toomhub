@@ -175,9 +175,9 @@ type RedisUserInfo struct {
 }
 
 // @title	从REDIS中获取用户信息
-func GetUserInfoByRedis(userId int) (interface{}, error) {
+func GetUserInfoByRedis(userId int64) (interface{}, error) {
 	//从redis中获取
-	id := strconv.Itoa(userId)
+	id := strconv.Itoa(int(userId))
 	query := util.Rdb.HMGet(util.Ctx, UserCacheKey+id, []string{
 		"mini_id",
 		"open_id",
@@ -247,7 +247,7 @@ func GetUserInfoByRedis(userId int) (interface{}, error) {
 
 // @title	将用户信息塞入REDIS缓存
 func SetUserInfoToRedis(userModel ModelMiniV1.ToomhubUserMini, profileModel ModelMiniV1.ToomhubUserMiniProfile, token string) (bool, error) {
-	key := UserCacheKey + strconv.Itoa(userModel.MiniId)
+	key := UserCacheKey + strconv.Itoa(int(userModel.MiniId))
 	//塞入redis
 	err := util.Rdb.HMSet(util.Ctx, key, map[string]interface{}{
 		"mini_id":    userModel.MiniId,
@@ -272,13 +272,13 @@ func SetUserInfoToRedis(userModel ModelMiniV1.ToomhubUserMini, profileModel Mode
 }
 
 // @title	刷新用户的token 和 refreshToken
-func UpdateUserInfoToRedis(miniId int) (interface{}, error) {
+func UpdateUserInfoToRedis(miniId int64) (interface{}, error) {
 	db := util.DB
 
 	profileModel := ModelMiniV1.ToomhubUserMiniProfile{}
 
 	_ = db.Where("mini_id = ?", miniId).Take(&profileModel)
-	key := UserCacheKey + strconv.Itoa(miniId)
+	key := UserCacheKey + strconv.Itoa(int(miniId))
 	//塞入redis
 	token, _ := util.GenerateToken(miniId)
 	fmt.Println("token -> ", token)

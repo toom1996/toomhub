@@ -4,14 +4,14 @@ package ModelMiniV1
 
 //数据表 toomhub_user_mini 结构体
 type ToomhubUserMini struct {
-	MiniId    int    `json:"mini_id"`
+	MiniId    int64  `json:"mini_id"`
 	OpenId    string `json:"open_id"`
 	CreatedAt int64  `json:"created_at"`
 }
 
 //数据表 toomhub_user_mini 结构体
 type ToomhubUserMiniProfile struct {
-	MiniId    int
+	MiniId    int64
 	NickName  string
 	Gender    int8
 	City      string
@@ -22,7 +22,7 @@ type ToomhubUserMiniProfile struct {
 
 //数据表 toomhub_user_mini_token 结构体
 type ToomhubUserMiniToken struct {
-	MiniId       int
+	MiniId       int64
 	AccessToken  string
 	RefreshToken string
 	CreatedAt    int64

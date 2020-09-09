@@ -13,17 +13,19 @@ import (
 //var jwtSecret = []byte("toomhub")
 
 type Claims struct {
-	MiniId    string
+	MiniId    int64
 	CreatedAt int64
 	jwt.StandardClaims
 }
 
-func GenerateToken(id int) (string, error) {
+var identity *Claims
+
+func GenerateToken(id int64) (string, error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(60 * time.Minute * 24 * 7)
 
 	claims := Claims{
-		fmt.Sprintf("%d", id),
+		id,
 		nowTime.Unix(),
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
@@ -46,6 +48,10 @@ func ParseToken(token string, c *gin.Context) (*Claims, error) {
 	if tokenClaims != nil {
 		if tokenClaims.Valid {
 			if claims, ok := tokenClaims.Claims.(*Claims); ok {
+				identity = &Claims{
+					MiniId:    claims.MiniId,
+					CreatedAt: claims.CreatedAt,
+				}
 				return claims, nil
 			}
 		} else if ve, ok := err.(*jwt.ValidationError); ok {
@@ -67,4 +73,10 @@ func ParseToken(token string, c *gin.Context) (*Claims, error) {
 	})
 	c.Abort()
 	return nil, nil
+}
+
+// @title 获取用户信息
+func GetIdentity() *Claims {
+	fmt.Println(identity)
+	return identity
 }

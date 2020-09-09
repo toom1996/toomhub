@@ -8,7 +8,6 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/medivhzhan/weapp/v2"
-	"strconv"
 	"time"
 	ServiceMiniV1 "toomhub/service/mini/v1"
 	"toomhub/util"
@@ -51,9 +50,7 @@ func (logic *UserLogic) Check(validator *validatorMiniprogramV1.Refresh, c *gin.
 			if claims, ok := tokenClaims.Claims.(*util.Claims); ok {
 				t := 60 * 60 * 24 * 5
 				if time.Now().Unix()-claims.CreatedAt > int64(t) {
-					id, _ := strconv.Atoi(claims.MiniId)
-					fmt.Println(id)
-					r, _ := ServiceMiniV1.UpdateUserInfoToRedis(id)
+					r, _ := ServiceMiniV1.UpdateUserInfoToRedis(claims.MiniId)
 					return r, nil
 				}
 				return nil, nil

@@ -26,10 +26,10 @@ func (logic *SquareLogic) SquareIndex(validator *validatorMiniprogramV1.SquareIn
 }
 
 type ImageList struct {
-	RequestHost
-	Size
-	Name
-	Param
+	RequestHost string
+	Size        int
+	Name        string
+	Param       string
 }
 
 func (logic *SquareLogic) SquareCreate(validator *validatorMiniprogramV1.SquareCreate) (bool, error) {
@@ -45,8 +45,11 @@ func (logic *SquareLogic) SquareCreate(validator *validatorMiniprogramV1.SquareC
 	for k, value := range dat {
 		fmt.Println(k)
 		fmt.Println(value)
+		var i ImageList
+		_ = mapstructure.Decode(value, &i)
+		_, _ = ServiceMiniV1.SquareCreate(validator, &dat)
+		fmt.Println(i)
 	}
 
-	mapstructure.Decode()
 	return true, nil
 }

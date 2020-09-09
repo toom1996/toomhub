@@ -5,6 +5,7 @@ package ServiceMiniV1
 import (
 	"fmt"
 	"time"
+	//LogicMiniV1 "toomhub/logic/mini/v1"
 	ModelMiniV1 "toomhub/model/mini/v1"
 	"toomhub/util"
 	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
@@ -25,7 +26,9 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{},
 }
 
 // @title	创建广场信息
-func SquareCreate(validator *validatorMiniprogramV1.SquareCreate) (bool, error) {
+func SquareCreate(v *validatorMiniprogramV1.SquareCreate, image map[string]interface{}) (bool, error) {
+	identity := util.GetIdentity()
+
 	createTime := time.Now().Unix()
 	db := util.DB
 	//开启事务
@@ -33,13 +36,17 @@ func SquareCreate(validator *validatorMiniprogramV1.SquareCreate) (bool, error) 
 
 	//赋值结构体
 	squareModel := ModelMiniV1.Square{
-		Content:       validator.Content,
-		CreatedBy:     10,
+		Content:       v.Content,
+		CreatedBy:     identity.MiniId,
 		CreatedAt:     createTime,
 		LikesCount:    0,
 		ArgumentCount: 0,
 		CollectCount:  0,
 		ShareCount:    0,
+	}
+
+	squareImageModel := ModelMiniV1.SquareImage{
+		Rid: squareModel.Id,
 	}
 	//insert到表
 	query := transaction.Create(&squareModel).Scan(&squareModel)
