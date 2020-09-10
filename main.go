@@ -22,6 +22,7 @@ func main() {
 	//初始化mysql
 	util.MysqlInit()
 
+	util.Get()
 	fmt.Println(cfg.AppPort)
 	app := gin.Default()
 	registerRouter(app)

@@ -16,6 +16,11 @@ type Config struct {
 	Redis    Redis    `json:"redis"`
 	Database Database `json:"database"`
 	Qiniu    Qiniu    `json:"qiniu"`
+	Es       Es       `json:"es"`
+}
+
+type Es struct {
+	Host []string `json:"host"`
 }
 
 type Qiniu struct {
