@@ -82,5 +82,8 @@ func SquareCreate(v *validatorMiniprogramV1.SquareCreate, image map[string]inter
 
 	//标签写入ES
 
+	fmt.Println(fmt.Sprintf(`{"name":"%s"}`, v.Tag))
+	util.EsSet("toomhub", fmt.Sprintf(`{"name":"%s"}`, v.Tag))
+
 	return true, nil
 }

@@ -5,37 +5,44 @@ package util
 import (
 	"fmt"
 	"github.com/elastic/go-elasticsearch/v7"
+	"log"
+	"strings"
 	//"log"
 )
 
 var es *elasticsearch.Client
 
 //初始化
-func init() {
-	fmt.Println(GetConfig().Es.Host)
-
+func EsInit() {
+	cfg := elasticsearch.Config{
+		Addresses: []string{
+			"http://192.168.10.207:9200",
+		},
+	}
+	es, _ = elasticsearch.NewClient(cfg)
 }
 
 type Toomhub struct {
 	Name string `json:"name"`
 }
 
-func Get() {
-	//cfg := elasticsearch.Config{
-	//	Addresses: GetConfig().Es.Host,
-	//}
-	//es, _ = elasticsearch.NewClient(cfg)
-	//s, err := es.Get(
-	//	"toomhub",
-	//	"2",
-	//)
-	//if err != nil {
-	//	log.Fatalf("Error getting response: %s", err)
-	//}
+func EsGet(index string, id string) {
+	s, err := es.Get(
+		"toomhub",
+		"2",
+	)
+	if err != nil {
+		log.Fatalf("Error getting response: %s", err)
+	}
 
-	//fmt.Println(s)
+	fmt.Println(s)
 }
 
-func Set() {
+func EsSet(index string, p string) {
 
+	_, _ = es.Index(
+		index,                        // Index name
+		strings.NewReader(p),         // Document body
+		es.Index.WithRefresh("true"), // Refresh
+	)
 }

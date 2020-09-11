@@ -6,6 +6,7 @@
     "pages/login/login",
     "pages/square_add/square_add"
   ],
+  "enablePullDownRefresh": true,
   "tabBar": {
     "custom": false,
     "color": "#7A7E83",
@@ -31,7 +32,8 @@
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "0.0",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true
   },
   "sitemapLocation": "sitemap.json",
   "usingComponents": {

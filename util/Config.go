@@ -20,7 +20,7 @@ type Config struct {
 }
 
 type Es struct {
-	Host []string `json:"host"`
+	Host string `json:"host"`
 }
 
 type Qiniu struct {

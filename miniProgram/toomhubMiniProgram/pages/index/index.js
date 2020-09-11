@@ -61,5 +61,12 @@ Page({
         'http://qeiwdcsh5.bkt.clouddn.com/152170904610306200.gif'
       ] // 需要预览的图片http链接列表
     })
+  },
+  onReachBottom: function () {
+    console.log(1111111111111)
+  },
+  onPullDownRefresh : function () {
+    console.log(2222222222)
+    wx.stopPullDownRefresh()
   }
 })

@@ -16,13 +16,14 @@ func main() {
 		panic(err.Error())
 	}
 
+	util.EsInit()
+
 	//初始化redis
 	util.RedisInit()
 
 	//初始化mysql
 	util.MysqlInit()
 
-	util.Get()
 	fmt.Println(cfg.AppPort)
 	app := gin.Default()
 	registerRouter(app)

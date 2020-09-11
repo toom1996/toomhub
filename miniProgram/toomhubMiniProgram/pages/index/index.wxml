@@ -5,7 +5,8 @@
 </view>
 <scroll-view  scroll-y="true"   bindscrolltolower="ScrollLower">
   <view wx:for="{{list}}" >
-    <view class="box">
+    <view wx:for="{{10}}">
+      <view class="box">
       <view class="post_box">
         <view style="width:100%;padding-top: 20rpx;">
           <!-- 头像和昵称 -->
@@ -70,5 +71,7 @@
         </van-col>
       </van-row>
     </view>
+  </view>
+    
   </view>
 </scroll-view>

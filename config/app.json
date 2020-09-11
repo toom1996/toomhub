@@ -1,8 +1,8 @@
 {
   "app_name": "toomhub",
   "app_mode": "debug",
-  "app_host": "localhost",
-  "app_port": "8080",
+  "app_host": "192.168.10.113",
+  "app_port": "80",
   "jwt": {
     "secret": "toomhub"
   },
@@ -11,7 +11,7 @@
     "app_secret": "971869511ee44662c56bcf8a833bd679"
   },
   "es": {
-    "host": ["http://192.168.10.207:9200/"]
+    "host": "http://192.168.10.207:9200/"
   },
   "database": {
     "host": "127.0.0.1",
