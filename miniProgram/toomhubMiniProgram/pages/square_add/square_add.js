@@ -22,6 +22,7 @@ Page({
     tagShow: false, //是否显示添加标签dialog
     mainActiveIndex: 0,
     activeId: null,
+    content_show: false,
   },
 
 
@@ -35,6 +36,7 @@ Page({
   onTagAddDialogShow() {
     console.log('onTagAddDialogShow')
     this.setData({
+      content_show: true,
       tagShow: true,
     });
   },
@@ -43,6 +45,7 @@ Page({
   onTagAddDialogClose() {
     console.log('onTagAddDialogClose');
     this.setData({
+      content_show: false,
       tagShow: false,
     });
   },
@@ -155,15 +158,15 @@ Page({
 
   send() {
     
-    // if (this.data.content == '') {
-    //   Toast.fail("文字内容不能为空哦")
-    //   return 
-    // }
+    if (this.data.content == '') {
+      Toast.fail("文字内容不能为空哦")
+      return 
+    }
 
-    // if (this.data.imageList.length == 0) {
-    //   Toast.fail("最少上传一张图片")
-    //   return 
-    // }
+    if (this.data.imageList.length == 0) {
+      Toast.fail("最少上传一张图片")
+      return 
+    }
 
     Toast.loading({
       message: '发布中...',
@@ -173,7 +176,6 @@ Page({
     console.log(this.data.imageList)
 
 
-
     let obj = {...this.data.imageList}
     console.log(obj)
     app.httpClient.post('/v1/mini/sq/create', {
@@ -181,7 +183,12 @@ Page({
       'image_list': JSON.stringify(obj),
       'tag': this.data.tag == defaultTag ? '' : this.data.tag,
     }).then(res=>{
+      let response = res.data
       Toast.clear();
+      if (response.code == 200) {
+        app.redirectToIndex();
+        Toast('发布成功');
+      }
       console.log(11111111)
     })
   },
@@ -204,7 +211,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-    app.isLogin()
+    // app.isLogin()
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,

@@ -58,8 +58,12 @@ Page({
       current: src, // 当前显示图片的http链接
       urls: [
         'http://toomhub.image.23cm.cn/006APoFYly1fowt3eeuk6g306o08g4q3.gif?imageMogr2/auto-orient/format/webp',
-        'http://qeiwdcsh5.bkt.clouddn.com/152170904610306200.gif'
+        'http://toomhub.image.23cm.cn/006APoFYly1fowt3eeuk6g306o08g4q3.gif'
       ] // 需要预览的图片http链接列表
     })
+  },
+
+  onPullDownRefresh: function () {
+    console.log(1111111)
   }
 })

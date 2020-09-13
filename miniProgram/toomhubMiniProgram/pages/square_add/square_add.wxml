@@ -17,9 +17,11 @@
     </view>
   </view>
 </view>
+  <view hidden="{{ content_show }}">
   <van-cell-group>
     <van-field maxlength="255" show-word-limit bind:input="conetentHandel" autosize="{{autosize}}" value="" type="textarea" placeholder="🐂说点什么吧..." border="{{ false }}" />
   </van-cell-group>
+  </view>
   <van-row>
     <van-col span="24">
       <!-- 图片 -->

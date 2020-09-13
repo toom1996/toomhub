@@ -90,6 +90,13 @@ App({
     })
   },
 
+  //跳转到首页
+  redirectToIndex: function () {
+    wx.switchTab({
+      url: '/pages/index/index'
+    })
+  },
+
   //设置缓存
   setCache: function(key, value) {
     wx.setStorage({
