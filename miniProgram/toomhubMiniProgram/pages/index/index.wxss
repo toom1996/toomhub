@@ -12,17 +12,17 @@
   padding-top: 5rpx;
   line-height: 80rpx;
   border-radius: 0px 0px 15px 15px;
-  
+  margin: 0 5rpx;
 }
 
 .post_box {
   display: flex;
   box-sizing: border-box;
-  width: 100%;
+  width: auto;
   padding: var(--skeleton-padding,0 16px);
   background-color: white;
   border-radius: 15px 15px 0px 0px;
-  
+  margin: 0 5rpx;
 }
 
 .post_box .top {

@@ -17,6 +17,11 @@ const SquareCacheKey = "square:id:"
 
 // @title
 func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{}, error) {
+
+	db := util.DB
+
+	db.Where("")
+
 	fmt.Println(validator)
 	return map[string]interface{}{
 		"created_at":     "2020: 01 :08",

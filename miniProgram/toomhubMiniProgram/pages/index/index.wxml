@@ -1,78 +1,93 @@
-<!--index.wxml-->
-<view>
-    <van-search value="{{ value }}" placeholder="请输入搜索关键词" />
-  </view>
-<van-icon name="add" class="add" size="40" bindtap="add" color="#ED3333"/>
-<view wx:for="{{10}}">
-  <van-skeleton title avatar row="3" loading="{{ skeletonShow }}"/>
-</view>
-<scroll-view  scroll-y="true"   bindscrolltolower="ScrollLower">
-  <view wx:for="{{10}}" >
-    <view class="box">
-      
-      <!-- operatingBar -->
-      <van-row>
-      <view class="post_box">
-        <view style="width:100%;padding-top: 20rpx;">
-          <!-- 头像和昵称 -->
-          <van-row class="top">
-            <van-col span="3">
-              <view class="top__avatar">
-                <image src='/static/avatar/defaultAvatar.jpg'></image>
+<van-tabs active="a" swipeable>
+  <van-tab title="标签 1" name="a">
+    <van-icon name="add" class="add" size="40" bindtap="add" color="#ED3333" />
+    <view wx:for="{{10}}">
+      <van-skeleton title avatar row="3" loading="{{ skeletonShow }}" />
+    </view>
+    <!-- height:{{scrollViewHeight}}rpx" -->
+    <scroll-view scroll-y style="width: 100%;height:{{scrollViewHeight}}rpx" bindscrolltolower="ScrollLower"
+      refresher-enabled="{{true}}" refresher-threshold="{{ threshold }}" refresher-default-style="none"
+      refresher-background="rgb(36, 26, 36)" refresher-enabled="{{true}}" refresher-triggered="{{triggered}}"
+      bindrefresherpulling="onPulling" bindrefresherrefresh="onRefresh" bindrefresherrestore="onRestore"
+      bindrefresherabort="onAbort">
+      <view slot="refresher" class="refresh-container"
+        style="display: block; width: 100%; height: 70px; background: rgb(36, 26, 36); display: flex; align-items: center;opacity:1; transform: scale(1)">
+        <view class="view1" style="position: absolute; color: white; text-align: center; width: 100%;">
+          {{ refreshTag }}
+        </view>
+      </view>
+      <view wx:for="{{10}}">
+        <view class="box">
+          <!-- operatingBar -->
+          <van-row>true
+            <view class="post_box">
+              <view style="width:100%;padding-top: 20rpx;">
+                <!-- 头像和昵称 -->
+                <van-row class="top">
+                  <van-col span="3">
+                    <view class="top__avatar">
+                      <image src='/static/avatar/defaultAvatar.jpg'></image>
+                    </view>
+                  </van-col>
+                  <van-col span="20">
+                    <view>
+                      <text class="font__username">{{item.created_by}}</text>
+                    </view>
+                    <text style="display:block;" class="font__time">{{item.created_at}}</text>
+                  </van-col>
+                </van-row>
+                <!-- 文字内容 -->
+                <van-row>
+                  <van-col span="24">
+                    <view>
+                      <text class="__content">{{item.content}}</text>
+                    </view>
+                  </van-col>
+                </van-row>
+                <!-- 附件 图片 视频 -->
+                <van-row>
+                  <van-col span="24" gutter="20">
+                    <view class="__content">
+                      <van-col span="8">
+                        <van-image mode="widthFix" lazy-load bindtap="previewImage" error="加载失败"
+                          src="http://toomhub.image.23cm.cn/006APoFYly1fowt3eeuk6g306o08g4q3.gif?imageMogr2/auto-orient/format/webp" />
+                      </van-col>
+                      <van-col span="8">
+                        <van-image mode="aspectFill" bindtap="previewImage" lazy-load
+                          src="http://toomhub.image.23cm.cn/03e1c4ff3c094fcd7633e7c8ab620777.jpg" />
+                      </van-col>
+                      <van-col span="8">
+                        <van-image mode="aspectFill" bindtap="previewImage" lazy-load
+                          src="http://toomhub.image.23cm.cn/02185d37988048f79f97acb6339a1561.gif" />
+                      </van-col>
+                    </view>
+                  </van-col>
+                </van-row>
               </view>
-            </van-col>
-            <van-col span="20">
-              <view>
-                  <text class="font__username">{{item.created_by}}</text>
-                </view>
-                <text style="display:block;" class="font__time">{{item.created_at}}</text>
-            </van-col>
+            </view>
           </van-row>
-          <!-- 文字内容 -->
           <van-row>
             <van-col span="24">
-              <view>
-                <text class="__content">{{item.content}}</text>
-              </view>
-            </van-col>
-          </van-row>
-          <!-- 附件 图片 视频 -->
-          <van-row>
-            <van-col span="24" gutter="20">
-              <view class="__content">
-                <van-col span="8">
-                  <van-image mode="widthFix" lazy-load bindtap="previewImage" error="加载失败" src="http://toomhub.image.23cm.cn/006APoFYly1fowt3eeuk6g306o08g4q3.gif?imageMogr2/auto-orient/format/webp" />
+              <view class="operatingBar">
+                <van-col span="5">
+                  <van-icon name="like-o" />
                 </van-col>
-                <van-col span="8">
-                  <van-image mode="aspectFill" bindtap="previewImage" lazy-load src="http://toomhub.image.23cm.cn/03e1c4ff3c094fcd7633e7c8ab620777.jpg" />
+                <van-col span="5">
+                  <van-icon name="chat-o" />
                 </van-col>
-                <van-col span="8">
-                  <van-image mode="aspectFill" bindtap="previewImage" lazy-load src="http://toomhub.image.23cm.cn/02185d37988048f79f97acb6339a1561.gif" />
+                <van-col span="5">
+                  <van-icon name="good-job-o" />
+                </van-col>
+                <van-col span="5" offset="4">
+                  <van-icon name="ellipsis" />
                 </van-col>
               </view>
             </van-col>
           </van-row>
         </view>
       </view>
-      </van-row>
-      <van-row>
-        <van-col span="24">
-          <view class="operatingBar">
-              <van-col span="5">
-                <van-icon name="like-o" />
-              </van-col>
-              <van-col span="5">
-                <van-icon name="chat-o" />
-              </van-col>
-              <van-col span="5">
-                <van-icon name="good-job-o" />
-              </van-col>
-              <van-col span="5" offset="4">
-                <van-icon name="ellipsis" />
-              </van-col>
-          </view>
-        </van-col>
-      </van-row>
-    </view>
-  </view>
-</scroll-view>
+    </scroll-view>
+  </van-tab>
+  <van-tab title="标签 2" name="b">内容 2</van-tab>
+  <van-tab title="标签 3" name="c">内容 3</van-tab>
+</van-tabs>

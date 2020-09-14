@@ -1,6 +1,4 @@
 {
   "usingComponents": {
-  },
-  "enablePullDownRefresh": true,
-  "refresher-default-style": "none"
+  }
 }

@@ -6,7 +6,11 @@ const app = getApp()
 Page({
   data: {
     skeletonShow: true,
-    list:[]
+    list:[],
+    refreshTag: '下拉刷新',
+    threshold: 70,
+    scrollViewHeight: 0,
+    triggered: true
   },
   navigationSwitch: function(event) {
     wx.navigateTo({
@@ -20,7 +24,19 @@ Page({
     })
   },
   onLoad: function () {
-    console.log(123123)
+    let that = this
+    wx.getSystemInfo({
+      success: function (res) {
+        var scrollViewHeight = 750 * res.windowHeight / res.windowWidth; //rpx
+        console.log(res.windowWidth)
+        var scrollTop = res.windowWidth * 400 / 750; //矢量转换后的高度
+        that.setData({
+          scrollViewHeight: scrollViewHeight,
+          scrollTop: scrollTop,
+          fixedTop: false
+        });
+      }
+    });
     
     //请求首页接口
     app.httpClient.get('/v1/mini/sq/index?last_id=100&page=10').then(res=>{
@@ -47,7 +63,7 @@ Page({
   },
   // 滚动至低端事件
   ScrollLower: function () {
-    console.log(21212121)
+    console.log('ddddd')
   },
   // 图片点击事件
   previewImage: function (event) {
@@ -65,8 +81,39 @@ Page({
   onReachBottom: function () {
     console.log(1111111111111)
   },
-  onPullDownRefresh : function () {
-    console.log(2222222222)
-    wx.stopPullDownRefresh()
+  onRefresh : function () {
+    app.httpClient.post('/v1/mini/sq/create', {
+      'content': this.data.content,
+      'image_list': JSON.stringify(obj),
+      'tag': this.data.tag == defaultTag ? '' : this.data.tag,
+    }).then(res=>{
+      let response = res.data
+      Toast.clear();
+      if (response.code == 200) {
+        app.redirectToIndex();
+        Toast('发布成功');
+      }
+      console.log(11111111)
+    });
+
+    this.setData({
+      triggered: false
+    });
+  },
+  onRestore(e) {
+    console.log('onRestore:', e)
+  },
+  onPulling: function(e) {
+    var p = Math.min(e.detail.dy / this.data.threshold, 1)
+    
+    if (p == 1) {
+      this.setData({
+        refreshTag: '松开刷新'
+      })
+    }else{
+      this.setData({
+        refreshTag: '下拉刷新'
+      })
+    }
   }
 })
