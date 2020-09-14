@@ -1,17 +1,18 @@
 /**index.wxss**/
 .box {
   padding-bottom: 30rpx;
-  background-color: WhiteSmoke;
 }
 
 .operatingBar {
   border-top:1rpx solid  #ccc!important;
   background-color: white;
-  height: 60rpx;
+  height: 80rpx;
   padding:0rpx;
   text-align: center;
   padding-top: 5rpx;
-  line-height: 60rpx;
+  line-height: 80rpx;
+  border-radius: 0px 0px 15px 15px;
+  
 }
 
 .post_box {
@@ -19,7 +20,9 @@
   box-sizing: border-box;
   width: 100%;
   padding: var(--skeleton-padding,0 16px);
-  background-color: white
+  background-color: white;
+  border-radius: 15px 15px 0px 0px;
+  
 }
 
 .post_box .top {
@@ -65,10 +68,13 @@
 
 .post_box .font__username {
   font-weight: 600;
+  font-size: 30rpx;
 }
 
 .post_box .font__time {
   font-weight: 100;
+  font-size: 20rpx;
+  display:block;
 }
 
 .add {

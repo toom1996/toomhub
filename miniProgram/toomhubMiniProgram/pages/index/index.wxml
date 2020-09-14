@@ -1,17 +1,22 @@
 <!--index.wxml-->
+<view>
+    <van-search value="{{ value }}" placeholder="请输入搜索关键词" />
+  </view>
 <van-icon name="add" class="add" size="40" bindtap="add" color="#ED3333"/>
 <view wx:for="{{10}}">
   <van-skeleton title avatar row="3" loading="{{ skeletonShow }}"/>
 </view>
 <scroll-view  scroll-y="true"   bindscrolltolower="ScrollLower">
-  <view wx:for="{{list}}" >
-    <view wx:for="{{10}}">
-      <view class="box">
+  <view wx:for="{{10}}" >
+    <view class="box">
+      
+      <!-- operatingBar -->
+      <van-row>
       <view class="post_box">
         <view style="width:100%;padding-top: 20rpx;">
           <!-- 头像和昵称 -->
           <van-row class="top">
-            <van-col span="4">
+            <van-col span="3">
               <view class="top__avatar">
                 <image src='/static/avatar/defaultAvatar.jpg'></image>
               </view>
@@ -20,9 +25,7 @@
               <view>
                   <text class="font__username">{{item.created_by}}</text>
                 </view>
-                <view>
-                  <text class="font__time">{{item.created_at}}</text>
-                </view>
+                <text style="display:block;" class="font__time">{{item.created_at}}</text>
             </van-col>
           </van-row>
           <!-- 文字内容 -->
@@ -38,7 +41,7 @@
             <van-col span="24" gutter="20">
               <view class="__content">
                 <van-col span="8">
-                  <van-image mode="widthFix" lazy-load = "{{ true }}" bindtap="previewImage" error="加载失败" src="http://toomhub.image.23cm.cn/0062db2ef44c073a7c05f9dbc0bc6e7a.gif" />
+                  <van-image mode="widthFix" lazy-load bindtap="previewImage" error="加载失败" src="http://toomhub.image.23cm.cn/006APoFYly1fowt3eeuk6g306o08g4q3.gif?imageMogr2/auto-orient/format/webp" />
                 </van-col>
                 <van-col span="8">
                   <van-image mode="aspectFill" bindtap="previewImage" lazy-load src="http://toomhub.image.23cm.cn/03e1c4ff3c094fcd7633e7c8ab620777.jpg" />
@@ -51,7 +54,7 @@
           </van-row>
         </view>
       </view>
-      <!-- operatingBar -->
+      </van-row>
       <van-row>
         <van-col span="24">
           <view class="operatingBar">
@@ -71,7 +74,5 @@
         </van-col>
       </van-row>
     </view>
-  </view>
-    
   </view>
 </scroll-view>
