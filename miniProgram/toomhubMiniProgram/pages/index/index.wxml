@@ -1,4 +1,4 @@
-<van-tabs active="a" swipeable>
+<van-tabs active="a" swipeable animated>
   <van-tab title="标签 1" name="a">
     <van-icon name="add" class="add" size="40" bindtap="add" color="#ED3333" />
     <view wx:for="{{10}}">
@@ -19,7 +19,7 @@
       <view wx:for="{{10}}">
         <view class="box">
           <!-- operatingBar -->
-          <van-row>true
+          <van-row>
             <view class="post_box">
               <view style="width:100%;padding-top: 20rpx;">
                 <!-- 头像和昵称 -->

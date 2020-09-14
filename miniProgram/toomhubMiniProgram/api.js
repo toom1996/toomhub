@@ -1,5 +1,5 @@
 var api = {
-  'REQUEST_HOST': 'http://192.168.10.113',
+  'REQUEST_HOST': 'http://127.0.0.1:8080',
   'TOKEN_CHECK': '/v1/mini/user/token-checker'
 }
 

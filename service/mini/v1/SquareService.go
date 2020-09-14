@@ -19,19 +19,28 @@ const SquareCacheKey = "square:id:"
 func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{}, error) {
 
 	db := util.DB
+	rdb := util.Rdb
 
-	db.Where("")
+	_ = rdb.Pipeline()
 
-	fmt.Println(validator)
-	return map[string]interface{}{
-		"created_at":     "2020: 01 :08",
-		"content":        "测试的那个",
-		"created_by":     "admin",
-		"likes_count":    "555",
-		"argument_count": "111",
-		"collect_count":  "88",
-		"share_count":    "100",
-	}, nil
+	var model []ModelMiniV1.ToomhubSquare
+	db.Select("id").Limit(10).Offset(0).Find(&model)
+
+	m := map[int]map[string]int64{}
+	for k, v := range model {
+		m[k]["test"] = v.Id
+	}
+	return m, nil
+
+	//return map[string]interface{}{
+	//	"created_at":     "2020: 01 :08",
+	//	"content":        "测试的那个",
+	//	"created_by":     "admin",
+	//	"likes_count":    "555",
+	//	"argument_count": "111",
+	//	"collect_count":  "88",
+	//	"share_count":    "100",
+	//}, nil
 }
 
 // @title	创建广场信息
