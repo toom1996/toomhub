@@ -5,6 +5,7 @@ package ServiceMiniV1
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/go-redis/redis/v8"
 	"github.com/goinggo/mapstructure"
 	"time"
 	//LogicMiniV1 "toomhub/logic/mini/v1"
@@ -17,20 +18,54 @@ const SquareCacheKey = "square:id:"
 
 // @title
 func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{}, error) {
+	type imageModel struct {
+		Ext   string
+		Name  string
+		Param string
+		Size  string
+	}
 
 	db := util.DB
 	rdb := util.Rdb
 
-	_ = rdb.Pipeline()
+	pipe := rdb.Pipeline()
 
+	var iModel imageModel
+	var res []interface{}
+	var list map[string]interface{}
+	var i map[string]interface{}
 	var model []ModelMiniV1.ToomhubSquare
 	db.Select("id").Limit(10).Offset(0).Find(&model)
 
-	m := map[int]map[string]int64{}
-	for k, v := range model {
-		m[k]["test"] = v.Id
+	var commands []*redis.StringStringMapCmd
+
+	for _, v := range model {
+		commands = append(commands, pipe.HGetAll(util.Ctx, SquareCacheKey+fmt.Sprintf("%d", v.Id)))
 	}
-	return m, nil
+
+	_, _ = pipe.Exec(util.Ctx)
+
+	for _, cmd := range commands {
+		result, _ := cmd.Result()
+		//没结果跳过
+		if len(result) == 0 {
+			continue
+		}
+		//json 解析成数组
+		err := json.Unmarshal([]byte(result["image"]), &i)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		for _, xx := range i {
+			_ = mapstructure.Decode(xx, &iModel)
+
+		}
+
+		res = append(res, iModel)
+	}
+
+	return list, nil
 
 	//return map[string]interface{}{
 	//	"created_at":     "2020: 01 :08",
