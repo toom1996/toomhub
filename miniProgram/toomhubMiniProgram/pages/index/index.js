@@ -6,7 +6,7 @@ const app = getApp()
 Page({
   data: {
     skeletonShow: true,
-    list:[],
+    data:[],
     refreshTag: '下拉刷新',
     threshold: 70,
     scrollViewHeight: 0,
@@ -37,16 +37,7 @@ Page({
         });
       }
     });
-    
-    //请求首页接口
-    app.httpClient.get('/v1/mini/sq/index?last_id=100&page=10').then(res=>{
-      var responseData = res.data.data
-      this.setData({
-        list: responseData,
-        skeletonShow: false
-      })
-      console.log(this.data.list)
-    })
+    this.refreshIndex();
   },
   getUserInfo: function(e) {
     console.log(e)
@@ -68,14 +59,13 @@ Page({
   // 图片点击事件
   previewImage: function (event) {
     var src = event.currentTarget.dataset.src;//获取data-src
+    console.log(src)
     var imgList = event.currentTarget.dataset.list;//获取data-list
+    console.log(imgList)
     //图片预览
     wx.previewImage({
       current: src, // 当前显示图片的http链接
-      urls: [
-        'http://toomhub.image.23cm.cn/006APoFYly1fowt3eeuk6g306o08g4q3.gif?imageMogr2/auto-orient/format/webp',
-        'http://qeiwdcsh5.bkt.clouddn.com/152170904610306200.gif'
-      ] // 需要预览的图片http链接列表
+      urls: imgList // 需要预览的图片http链接列表
     })
   },
   onReachBottom: function () {
@@ -115,5 +105,16 @@ Page({
         refreshTag: '下拉刷新'
       })
     }
+  },
+  refreshIndex: function () {
+    //请求首页接口
+    app.httpClient.get(app.getApi('SQ_INDEX') + '?last_id=100&page=1').then(res => {
+      var responseData = res.data.data
+      this.setData({
+        data: responseData.list,
+        skeletonShow: false
+      })
+      console.log(this.data.list)
+    })
   }
 })

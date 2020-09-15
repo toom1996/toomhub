@@ -16,7 +16,7 @@
           {{ refreshTag }}
         </view>
       </view>
-      <view wx:for="{{10}}">
+      <view wx:for="{{ data }}">
         <view class="box">
           <!-- operatingBar -->
           <van-row>
@@ -48,18 +48,11 @@
                 <van-row>
                   <van-col span="24" gutter="20">
                     <view class="__content">
-                      <van-col span="8">
-                        <van-image mode="widthFix" lazy-load bindtap="previewImage" error="加载失败"
-                          src="http://toomhub.image.23cm.cn/006APoFYly1fowt3eeuk6g306o08g4q3.gif?imageMogr2/auto-orient/format/webp" />
-                      </van-col>
-                      <van-col span="8">
-                        <van-image mode="aspectFill" bindtap="previewImage" lazy-load
-                          src="http://toomhub.image.23cm.cn/03e1c4ff3c094fcd7633e7c8ab620777.jpg" />
-                      </van-col>
-                      <van-col span="8">
-                        <van-image mode="aspectFill" bindtap="previewImage" lazy-load
-                          src="http://toomhub.image.23cm.cn/02185d37988048f79f97acb6339a1561.gif" />
-                      </van-col>
+                      <view wx:for="{{ item.image }}" wx:for-item="imageItem">
+                        <van-col span="8">
+                            <van-image mode="widthFix" lazy-load bindtap="previewImage" error="加载失败" src="{{ imageItem.host + imageItem.name + imageItem.param }}" data-list="{{  item.list}}" data-src="{{ imageItem.host + imageItem.name }}" />
+                        </van-col>
+                      </view>
                     </view>
                   </van-col>
                 </van-row>

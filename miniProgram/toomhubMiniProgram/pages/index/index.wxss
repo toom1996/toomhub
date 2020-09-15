@@ -31,8 +31,8 @@
 
 .post_box .top__avatar image {
   margin-right: var(--padding-md,16px);
-  width: 37px;
-  height: 37px;
+  width: 70rpx;
+  height: 70rpx;
   border-radius: 100%;
 }
 

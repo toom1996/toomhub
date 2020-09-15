@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/go-redis/redis/v8"
 	"github.com/goinggo/mapstructure"
+	"strconv"
 	"time"
 	//LogicMiniV1 "toomhub/logic/mini/v1"
 	ModelMiniV1 "toomhub/model/mini/v1"
@@ -19,10 +20,11 @@ const SquareCacheKey = "square:id:"
 // @title
 func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{}, error) {
 	type imageModel struct {
-		Ext   string
-		Name  string
-		Param string
-		Size  string
+		Ext   string `json:"ext"`
+		Name  string `json:"name"`
+		Param string `json:"param"`
+		Size  int64  `json:"size"`
+		Host  string `json:"host"`
 	}
 
 	db := util.DB
@@ -31,8 +33,9 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{},
 	pipe := rdb.Pipeline()
 
 	var iModel imageModel
-	var res []interface{}
-	var list map[string]interface{}
+	var tempI []interface{}
+	var tempL []interface{}
+	var list []interface{}
 	var i map[string]interface{}
 	var model []ModelMiniV1.ToomhubSquare
 	db.Select("id").Limit(10).Offset(0).Find(&model)
@@ -59,10 +62,25 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{},
 
 		for _, xx := range i {
 			_ = mapstructure.Decode(xx, &iModel)
-
 		}
 
-		res = append(res, iModel)
+		tempL = append(tempL, iModel.Host+iModel.Name)
+		tempI = append(tempI, iModel)
+		intCreatedAt, _ := strconv.ParseInt(result["created_at"], 10, 64)
+		fmt.Println(intCreatedAt)
+		createdAt := util.StrTime(intCreatedAt)
+		list = append(list, map[string]interface{}{
+			"content":        result["content"],
+			"image":          tempI,
+			"created_at":     createdAt,
+			"created_by":     util.ToInt(result["created_by"]),
+			"likes_count":    util.ToInt(result["likes_count"]),
+			"argument_count": util.ToInt(result["argument_count"]),
+			"collect_count":  util.ToInt(result["collect_count"]),
+			"tag":            result["tag"],
+			"id":             util.ToInt(result["id"]),
+			"list":           tempL,
+		})
 	}
 
 	return list, nil
@@ -125,6 +143,7 @@ func SquareCreate(v *validatorMiniprogramV1.SquareCreate, image map[string]inter
 		"share_count":    squareModel.ShareCount,
 		"tag":            squareModel.Tag,
 		"image":          imageJson,
+		"content":        v.Content,
 	}).Result()
 
 	transaction.Commit()

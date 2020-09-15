@@ -4,6 +4,7 @@ package util
 
 import (
 	"math/rand"
+	"strconv"
 	"time"
 )
 
@@ -16,4 +17,9 @@ func GetRandomString(l int) string {
 		result = append(result, bytes[r.Intn(len(bytes))])
 	}
 	return string(result)
+}
+
+func ToInt(str string) int64 {
+	res, _ := strconv.ParseInt(str, 10, 0)
+	return res
 }
