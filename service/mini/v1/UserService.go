@@ -22,13 +22,6 @@ func GetUser(openid string, validator *validatorMiniprogramV1.Login) (interface{
 	db := util.DB
 	user, err := HasUser(openid)
 
-	createTime := time.Now().Unix()
-	//userModel
-	userModel := ModelMiniV1.ToomhubUserMini{
-		OpenId:    openid,
-		CreatedAt: createTime,
-	}
-
 	//
 
 	if err != nil {
@@ -47,6 +40,31 @@ func GetUser(openid string, validator *validatorMiniprogramV1.Login) (interface{
 
 	info, err := GetUserInfoByRedis(user.MiniId)
 
+	if err != nil {
+		userModel := ModelMiniV1.ToomhubUserMini{}
+		query := db.Where("mini_id = ?", user.MiniId).Find(&userModel)
+		if query.Error != nil {
+			fmt.Println(query.Error)
+		}
+
+		profileModel := ModelMiniV1.ToomhubUserMiniProfile{
+			MiniId:    userModel.MiniId,
+			NickName:  validator.UserInfo.Nickname,
+			Gender:    validator.UserInfo.Gender,
+			City:      validator.UserInfo.City,
+			Province:  validator.UserInfo.Province,
+			Country:   validator.UserInfo.Country,
+			AvatarUrl: validator.UserInfo.AvatarUrl,
+		}
+
+		miniTokenModel := ModelMiniV1.ToomhubUserMiniToken{}
+		query = db.Where("mini_id = ?", user.MiniId).Find(&miniTokenModel)
+		if query.Error != nil {
+			fmt.Println(query.Error)
+		}
+		_, _ = SetUserInfoToRedis(userModel, profileModel, miniTokenModel)
+	}
+	info, err = GetUserInfoByRedis(user.MiniId)
 	return info, nil
 }
 
@@ -112,10 +130,11 @@ func UserCreate(openid string, DB *gorm.DB, validator *validatorMiniprogramV1.Lo
 		fmt.Println(err)
 	}
 
+	refreshToken := util.GetRandomString(64)
 	tokenModel := ModelMiniV1.ToomhubUserMiniToken{
 		MiniId:       userModel.MiniId,
 		AccessToken:  token,
-		RefreshToken: util.GetRandomString(64),
+		RefreshToken: refreshToken,
 		CreatedAt:    createTime,
 		UpdatedAt:    createTime,
 	}
@@ -124,7 +143,7 @@ func UserCreate(openid string, DB *gorm.DB, validator *validatorMiniprogramV1.Lo
 		fmt.Println(err)
 	}
 
-	_, _ = SetUserInfoToRedis(userModel, profileModel, token)
+	_, _ = SetUserInfoToRedis(userModel, profileModel, tokenModel)
 
 	//提交事务
 	transaction.Commit()
@@ -224,7 +243,7 @@ func GetUserInfoByRedis(userId int64) (interface{}, error) {
 }
 
 // @title	将用户信息塞入REDIS缓存
-func SetUserInfoToRedis(userModel ModelMiniV1.ToomhubUserMini, profileModel ModelMiniV1.ToomhubUserMiniProfile, token string) (interface{}, error) {
+func SetUserInfoToRedis(userModel ModelMiniV1.ToomhubUserMini, profileModel ModelMiniV1.ToomhubUserMiniProfile, tokenModel ModelMiniV1.ToomhubUserMiniToken) (interface{}, error) {
 	key := UserCacheKey + strconv.Itoa(int(userModel.MiniId))
 
 	info := map[string]interface{}{
@@ -237,8 +256,8 @@ func SetUserInfoToRedis(userModel ModelMiniV1.ToomhubUserMini, profileModel Mode
 		"province":      profileModel.Province,
 		"country":       profileModel.Country,
 		"avatar_url":    profileModel.AvatarUrl,
-		"token":         token,
-		"refresh_token": util.GetRandomString(64),
+		"token":         tokenModel.AccessToken,
+		"refresh_token": tokenModel.RefreshToken,
 	}
 
 	//塞入redis
@@ -277,7 +296,9 @@ func UpdateUserInfoToRedis(miniId int64) (interface{}, error) {
 	// 更新数据库 (感觉没啥必要, 因为数据都是从redis取的, 并且redis的数据都已经更新了)
 	updateTime := time.Now().Unix()
 	tokenModel := ModelMiniV1.ToomhubUserMiniToken{
-		UpdatedAt: updateTime,
+		UpdatedAt:    updateTime,
+		AccessToken:  token,
+		RefreshToken: refreshToken,
 	}
 	_ = db.Table("toomhub_user_mini_token").Update(&tokenModel).Where("mini_id = ?", miniId)
 

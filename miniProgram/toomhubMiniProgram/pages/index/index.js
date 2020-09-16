@@ -83,7 +83,7 @@ Page({
   onPulling: function(e) {
     var p = Math.min(e.detail.dy / this.data.threshold, 1)
     
-    if (p == 1) {
+    if (p >= 1) {
       this.setData({
         refreshTag: '松开刷新'
       })
@@ -94,12 +94,14 @@ Page({
     }
   },
   refreshIndex: function () {
+    this.setData({
+      skeletonShow: false
+    })
     //请求首页接口
     app.httpClient.get(app.getApi('SQ_INDEX') + '?last_id=100&page=1').then(res => {
       var responseData = res.data.data
       this.setData({
         data: responseData.list,
-        skeletonShow: false
       })
       console.log(this.data.list)
     })

@@ -26,7 +26,7 @@
                 <van-row class="top">
                   <van-col span="3">
                     <view class="top__avatar">
-                      <image src='/static/avatar/defaultAvatar.jpg'></image>
+                      <image src='{{ item.avatar_url }}'></image>
                     </view>
                   </van-col>
                   <van-col span="20">

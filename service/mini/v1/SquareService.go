@@ -32,13 +32,9 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{},
 
 	pipe := rdb.Pipeline()
 
-	var iModel imageModel
-	var tempI []interface{}
-	var tempL []interface{}
 	var list []interface{}
-	var i map[string]interface{}
 	var model []ModelMiniV1.ToomhubSquare
-	db.Select("id").Limit(10).Offset(0).Find(&model)
+	db.Select("id").Limit(10).Offset(0).Order("created_at desc").Find(&model)
 
 	var commands []*redis.StringStringMapCmd
 
@@ -54,12 +50,18 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{},
 		if len(result) == 0 {
 			continue
 		}
+		var i map[string]interface{}
 		//json 解析成数组
 		err := json.Unmarshal([]byte(result["image"]), &i)
 		if err != nil {
 			fmt.Println(err)
 		}
 
+		var tempI []interface{}
+		var tempL []interface{}
+		var iModel imageModel
+
+		fmt.Println(i)
 		for _, xx := range i {
 			_ = mapstructure.Decode(xx, &iModel)
 			tempL = append(tempL, iModel.Host+iModel.Name)
@@ -67,13 +69,15 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{},
 		}
 
 		intCreatedAt, _ := strconv.ParseInt(result["created_at"], 10, 64)
-		fmt.Println(intCreatedAt)
 		createdAt := util.StrTime(intCreatedAt)
+		createdBy, _ := rdb.HMGet(util.Ctx, UserCacheKey+result["created_by"], []string{"nick_name", "avatar_url"}...).Result()
+
 		list = append(list, map[string]interface{}{
 			"content":        result["content"],
 			"image":          tempI,
+			"avatar_url":     createdBy[1],
 			"created_at":     createdAt,
-			"created_by":     util.ToInt(result["created_by"]),
+			"created_by":     createdBy[0], //这里有优化的空间
 			"likes_count":    util.ToInt(result["likes_count"]),
 			"argument_count": util.ToInt(result["argument_count"]),
 			"collect_count":  util.ToInt(result["collect_count"]),
@@ -82,18 +86,7 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{},
 			"list":           tempL,
 		})
 	}
-
 	return list, nil
-
-	//return map[string]interface{}{
-	//	"created_at":     "2020: 01 :08",
-	//	"content":        "测试的那个",
-	//	"created_by":     "admin",
-	//	"likes_count":    "555",
-	//	"argument_count": "111",
-	//	"collect_count":  "88",
-	//	"share_count":    "100",
-	//}, nil
 }
 
 // @title	创建广场信息
@@ -151,7 +144,8 @@ func SquareCreate(v *validatorMiniprogramV1.SquareCreate, image map[string]inter
 	//标签写入ES
 
 	fmt.Println(fmt.Sprintf(`{"name":"%s"}`, v.Tag))
-	util.EsSet("toomhub", fmt.Sprintf(`{"name":"%s"}`, v.Tag))
+
+	//util.EsSet("toomhub", fmt.Sprintf(`{"name":"%s"}`, v.Tag))
 
 	return true, nil
 }
