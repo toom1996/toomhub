@@ -8,6 +8,7 @@ App({
     
     //初始化用户信息
     let userInfo = wx.getStorageSync('userInfo');
+    console.log(userInfo)
     if (userInfo !== '') {
       //赋值
       this.globalData.userInfo = userInfo
@@ -99,10 +100,12 @@ App({
 
   //设置缓存
   setCache: function(key, value) {
-    wx.setStorage({
+    console.log(key)
+    console.log(value)
+    console.log(wx.setStorage({
       key: key,
       data: value,
-    })
+    }))
   },
   //设置验证定时器
   setTokenCheckTimer: function () {

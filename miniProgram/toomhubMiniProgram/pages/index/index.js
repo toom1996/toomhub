@@ -72,20 +72,7 @@ Page({
     console.log(1111111111111)
   },
   onRefresh : function () {
-    app.httpClient.post('/v1/mini/sq/create', {
-      'content': this.data.content,
-      'image_list': JSON.stringify(obj),
-      'tag': this.data.tag == defaultTag ? '' : this.data.tag,
-    }).then(res=>{
-      let response = res.data
-      Toast.clear();
-      if (response.code == 200) {
-        app.redirectToIndex();
-        Toast('发布成功');
-      }
-      console.log(11111111)
-    });
-
+    this.refreshIndex()
     this.setData({
       triggered: false
     });

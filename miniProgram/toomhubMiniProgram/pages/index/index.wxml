@@ -50,7 +50,7 @@
                     <view class="__content">
                       <view wx:for="{{ item.image }}" wx:for-item="imageItem">
                         <van-col span="8">
-                            <van-image mode="widthFix" lazy-load bindtap="previewImage" error="加载失败" src="{{ imageItem.host + imageItem.name + imageItem.param }}" data-list="{{  item.list}}" data-src="{{ imageItem.host + imageItem.name }}" />
+                            <van-image mode="widthFix" lazy-load bindtap="previewImage" error="加载失败" src="{{ imageItem.host + imageItem.name + imageItem.param }}" data-list="{{ item.list }}" data-src="{{ imageItem.host + imageItem.name }}" />
                         </van-col>
                       </view>
                     </view>

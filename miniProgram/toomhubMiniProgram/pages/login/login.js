@@ -28,7 +28,6 @@ Page({
                 userInfo: JSON.stringify(userinfo.userInfo)
               }).then(res => {
                 let data = res.data
-                console.log(data)
                 if (data.code == 200) {
                   let info = {
                     'avatarUrl': data.data.avatar_url,
@@ -41,7 +40,7 @@ Page({
                   }
                   //登陆成功后缓存token, refreshToken, nickname
                   app.setCache('userInfo', info)
-                  console.log(app.globalData.userInfo = info)
+                  app.globalData.userInfo = info
                   wx.hideToast();
                   wx.navigateBack({
                     delta: 1

@@ -62,10 +62,10 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{},
 
 		for _, xx := range i {
 			_ = mapstructure.Decode(xx, &iModel)
+			tempL = append(tempL, iModel.Host+iModel.Name)
+			tempI = append(tempI, iModel)
 		}
 
-		tempL = append(tempL, iModel.Host+iModel.Name)
-		tempI = append(tempI, iModel)
 		intCreatedAt, _ := strconv.ParseInt(result["created_at"], 10, 64)
 		fmt.Println(intCreatedAt)
 		createdAt := util.StrTime(intCreatedAt)

@@ -8,7 +8,7 @@
     <view class="flex-box">
       <van-row>
         <van-col span="12">
-          <text class="h2">{{userInfo.nickName}}</text>
+          <text class="h2">{{ userInfo.nickName }}</text>
         </van-col>
       </van-row>
     </view>
