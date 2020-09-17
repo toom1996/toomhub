@@ -35,7 +35,7 @@
   <!-- 标签 -->
   <van-popup show="{{ tagShow }}" close-icon-position="top-left" round duration="{{200}}" position="bottom" custom-style="height: 90%;" closeable bind:close="onTagAddDialogClose">
   <view style="padding-top:80rpx">
-    <van-search value="{{ value }}" placeholder="请输入搜索关键词" />
+    <van-search value="{{ keyword }}" placeholder="请输入搜索关键词" bind:change="onChange" />
   </view>
   <view class="van-cell" bindtap="tagClick" data-value="假的假的"><view class="van-cell__title"><span>假的假的</span></view></view>
   </van-popup>

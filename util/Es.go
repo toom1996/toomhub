@@ -27,6 +27,7 @@ type Toomhub struct {
 }
 
 func EsGet(index string, id string) {
+
 	s, err := es.Get(
 		"toomhub",
 		"2",
@@ -36,6 +37,10 @@ func EsGet(index string, id string) {
 	}
 
 	fmt.Println(s)
+}
+
+func EsSearch() {
+
 }
 
 func EsSet(index string, p string) {

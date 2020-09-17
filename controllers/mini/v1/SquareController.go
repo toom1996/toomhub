@@ -9,6 +9,7 @@ import (
 	"net/http"
 	LogicMiniV1 "toomhub/logic/mini/v1"
 	v1MiniMiddleware "toomhub/middware/mini/v1"
+	"toomhub/util"
 	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
 )
 
@@ -30,9 +31,11 @@ func (square *SquareController) Register(engine *gin.Engine) {
 	{
 		// 发布一条广场信息
 		user.POST("/create", square.create)
+		user.GET("/tag-search", square.TagSearch)
 	}
 }
 
+// @title	广场首页
 func (square *SquareController) index(Context *gin.Context) {
 	//验证器
 	formValidator := validatorMiniprogramV1.SquareIndex{}
@@ -86,4 +89,10 @@ func (square *SquareController) create(Context *gin.Context) {
 		"message": "OK",
 		"code":    200,
 	})
+}
+
+// @title	标签搜索
+func (square *SquareController) TagSearch(Context *gin.Context) {
+
+	util.EsGet("toomhub", "111")
 }

@@ -61,9 +61,8 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{},
 		var tempL []interface{}
 		var iModel imageModel
 
-		fmt.Println(i)
-		for _, xx := range i {
-			_ = mapstructure.Decode(xx, &iModel)
+		for t := 0; t < len(i); t++ {
+			_ = mapstructure.Decode(i[fmt.Sprintf("%d", t)], &iModel)
 			tempL = append(tempL, iModel.Host+iModel.Name)
 			tempI = append(tempI, iModel)
 		}
@@ -93,7 +92,7 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{},
 func SquareCreate(v *validatorMiniprogramV1.SquareCreate, image map[string]interface{}) (bool, error) {
 	identity := util.GetIdentity()
 
-	createTime := time.Now().Unix()
+	createTime := time.Now()
 	db := util.DB
 	//开启事务
 	transaction := db.Begin()
@@ -102,7 +101,7 @@ func SquareCreate(v *validatorMiniprogramV1.SquareCreate, image map[string]inter
 	squareModel := ModelMiniV1.ToomhubSquare{
 		Content:       v.Content,
 		CreatedBy:     identity.MiniId,
-		CreatedAt:     createTime,
+		CreatedAt:     createTime.Unix(),
 		LikesCount:    0,
 		ArgumentCount: 0,
 		CollectCount:  0,
@@ -141,11 +140,15 @@ func SquareCreate(v *validatorMiniprogramV1.SquareCreate, image map[string]inter
 
 	transaction.Commit()
 
-	//标签写入ES
+	if v.Tag != "" {
+		//标签写入ES
+		fmt.Println(fmt.Sprintf(`{"name":"%s"}`, v.Tag))
 
-	fmt.Println(fmt.Sprintf(`{"name":"%s"}`, v.Tag))
+		util.EsSet("toomhub", fmt.Sprintf(`{"name":"%s"}`, v.Tag))
 
-	//util.EsSet("toomhub", fmt.Sprintf(`{"name":"%s"}`, v.Tag))
+		//入redisZset排序
+		util.Rdb.ZIncrBy(util.Ctx, "hotTag:"+createTime.Format("20060102"), 1, v.Tag)
+	}
 
 	return true, nil
 }

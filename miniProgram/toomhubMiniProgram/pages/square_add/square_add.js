@@ -23,6 +23,7 @@ Page({
     mainActiveIndex: 0,
     activeId: null,
     content_show: false,
+    keyword: ''
   },
 
 
@@ -39,8 +40,16 @@ Page({
       content_show: true,
       tagShow: true,
     });
+    this.search();
   },
-
+  search: function (s) {
+    app.httpClient.get(app.getApi('SQ_TAG_SEARCH') + '?k=' + s).then(res=>{
+      console.log(11111111)
+    })
+  },
+  onChange: function(e) {
+    this.search(e.detail);
+  },
   //显示添加标签的dialog
   onTagAddDialogClose() {
     console.log('onTagAddDialogClose');
