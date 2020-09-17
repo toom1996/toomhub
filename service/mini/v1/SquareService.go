@@ -63,7 +63,7 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{},
 
 		for t := 0; t < len(i); t++ {
 			_ = mapstructure.Decode(i[fmt.Sprintf("%d", t)], &iModel)
-			tempL = append(tempL, iModel.Host+iModel.Name)
+			tempL = append(tempL, iModel.Host+iModel.Name+"/toomhubWatermarkStyle")
 			tempI = append(tempI, iModel)
 		}
 
