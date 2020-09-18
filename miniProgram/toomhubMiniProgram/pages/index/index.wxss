@@ -1,6 +1,5 @@
 /**index.wxss**/
 .box {
-  padding-bottom: 30rpx;
 }
 
 .operatingBar {
@@ -11,8 +10,8 @@
   text-align: center;
   padding-top: 5rpx;
   line-height: 80rpx;
-  border-radius: 0px 0px 15px 15px;
-  margin: 0 5rpx;
+  margin: 0 30rpx;
+  padding-bottom: 80rpx;
 }
 
 .post_box {
@@ -21,8 +20,7 @@
   width: auto;
   padding: var(--skeleton-padding,0 16px);
   background-color: white;
-  border-radius: 15px 15px 0px 0px;
-  margin: 0 5rpx;
+  margin: 0 30rpx;
 }
 
 .post_box .top {
@@ -33,7 +31,7 @@
   margin-right: var(--padding-md,16px);
   width: 70rpx;
   height: 70rpx;
-  border-radius: 100%;
+  border-radius: 25px;
 }
 
 
@@ -43,8 +41,8 @@
   font-size: 80%;
 }
 .__content image{
-  width: 225rpx;
-  height: 225rpx;
+  width: 200rpx;
+  height: 200rpx;
 }
 
 .post_box .__attach {
@@ -69,6 +67,9 @@
 .post_box .font__username {
   font-weight: 600;
   font-size: 30rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
 }
 
 .post_box .font__time {
@@ -82,5 +83,9 @@
   bottom: 100rpx;
   right: 50rpx;
   z-index: 9999;
+}
+
+.content-image {
+  border-radius: 10px;
 }
 

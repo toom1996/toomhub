@@ -30,22 +30,6 @@ page {
   left:0;
 }
 
-.van-cell {
-  position: relative;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: flex;
-    box-sizing: border-box;
-    width: 100%;
-    padding: 10px 16px;
-    overflow: hidden;
-    color: #323233;
-    font-size: 14px;
-    line-height: 24px;
-    background-color: #fff;
-    border-bottom: 1px solid #ebedf0;
-}
-
 .read-img {
 	width:30px;
 	height:30px;
@@ -83,4 +67,20 @@ image {
 
 .van-uploader{
   margin-top: 20rpx;
+}
+
+.van-cell .van-icon{
+  font-weight: bold;
+}
+
+.van-cell{
+    border-bottom: 0px;
+}
+
+.meCell {
+    position: unset !important;
+}
+
+.myValue {
+  font-size: x-small;
 }

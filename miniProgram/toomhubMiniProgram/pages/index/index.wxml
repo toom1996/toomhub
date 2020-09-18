@@ -30,7 +30,7 @@
                     </view>
                   </van-col>
                   <van-col span="20">
-                    <view>
+                    <view style="overflow:hidden">
                       <text class="font__username">{{item.created_by}}</text>
                     </view>
                     <text style="display:block;" class="font__time">{{item.created_at}}</text>
@@ -50,7 +50,7 @@
                     <view class="__content">
                       <view wx:for="{{ item.image }}" wx:for-item="imageItem">
                         <van-col span="8">
-                            <van-image mode="widthFix" lazy-load bindtap="previewImage" error="加载失败" src="{{ imageItem.host + imageItem.name + imageItem.param }}" data-list="{{ item.list }}" data-src="{{ imageItem.host + imageItem.name + '/toomhubWatermarkStyle' }}" />
+                            <van-image image-class="content-image" mode="widthFix" lazy-load bindtap="previewImage" error="加载失败" src="{{ imageItem.host + imageItem.name + imageItem.param }}" data-list="{{ item.list }}" data-src="{{ imageItem.host + imageItem.name + '/toomhubWatermarkStyle' }}" />
                         </van-col>
                       </view>
                     </view>
@@ -63,6 +63,9 @@
             <van-col span="24">
               <view class="operatingBar">
                 <van-col span="5">
+                  #test
+                </van-col>
+                <!-- <van-col span="5">
                   <van-icon name="like-o" />
                 </van-col>
                 <van-col span="5">
@@ -73,7 +76,7 @@
                 </van-col>
                 <van-col span="5" offset="4">
                   <van-icon name="ellipsis" />
-                </van-col>
+                </van-col> -->
               </view>
             </van-col>
           </van-row>

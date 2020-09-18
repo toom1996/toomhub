@@ -1,5 +1,5 @@
 const app = getApp()
-const defaultTag = '添加标签'
+const defaultTag = '#添加标签'
 // pages/square_add/square_add.js
 import Toast from '../../miniprogram_npm/@vant/weapp/toast/toast';
 Page({
@@ -37,7 +37,7 @@ Page({
   onTagAddDialogShow() {
     console.log('onTagAddDialogShow')
     this.setData({
-      content_show: true,
+      // content_show: true,
       tagShow: true,
     });
     this.search();
@@ -54,7 +54,7 @@ Page({
   onTagAddDialogClose() {
     console.log('onTagAddDialogClose');
     this.setData({
-      content_show: false,
+      // content_show: false,
       tagShow: false,
     });
   },

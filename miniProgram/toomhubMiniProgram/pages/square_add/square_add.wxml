@@ -23,21 +23,25 @@
   </van-cell-group>
   </view>
   <van-row>
-    <van-col span="24">
       <!-- 图片 -->
-      <van-uploader  file-list="{{ imageList }}" max-count="9" multiple bind:after-read="afterRead" bind:delete="imageDelete" />
-    </van-col>
+      <van-uploader  file-list="{{ imageList }}" max-count="9" multiple bind:after-read="afterRead" bind:delete="imageDelete" upload-icon="add-o" />
   </van-row>
-  <van-tag round color="{{tag != '添加标签' ? '#db453d': '#ececec' }}" text-color="{{tag != '添加标签' ? '#ffffff': '#b1b1b1' }}" size="medium" bindtap="onTagAddDialogShow" data-value="{{ hotTagArr[index] }}">
-    <van-icon name="label-o" /> {{ tag }}
+  <van-cell title="标签"  bindtap="onTagAddDialogShow" icon="flag-o" title-style="font-weight: bold;" custom-class="meCell" title-class="myTitle" value-class="myValue" bindtap="onTagAddDialogShow">
+  <van-tag round color="rgb(255,245,213)" text-color="rgb(214,158,5)"  size="large" closeable>
+    <van-icon name="label-o" color="rgb(254,205,51)" custom-style="margin-right:10rpx" /> {{ tag }}
   </van-tag>
+    <van-icon slot="right-icon" name="arrow" class="custom-icon" />
+</van-cell>
 
   <!-- 标签 -->
   <van-popup show="{{ tagShow }}" close-icon-position="top-left" round duration="{{200}}" position="bottom" custom-style="height: 90%;" closeable bind:close="onTagAddDialogClose">
   <view style="padding-top:80rpx">
     <van-search value="{{ keyword }}" placeholder="请输入搜索关键词" bind:change="onChange" />
   </view>
-  <view class="van-cell" bindtap="tagClick" data-value="假的假的"><view class="van-cell__title"><span>假的假的</span></view></view>
+  <view class="van-cell" bindtap="tagClick" data-value="假的假的">
+    <view class="van-cell__title"><span>假的假的</span>
+    </view>
+  </view>
   </van-popup>
   <van-toast id="van-toast" />
 </view>
