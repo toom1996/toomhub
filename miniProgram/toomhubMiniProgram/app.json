@@ -28,7 +28,7 @@
     ]
   },
   "window": {
-    "backgroundTextStyle": "light",
+    "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "0.0",
     "navigationBarTextStyle": "black"
@@ -56,6 +56,7 @@
     "van-search": "@vant/weapp/search/index",
     "van-tree-select": "@vant/weapp/tree-select/index",
     "van-cell": "@vant/weapp/cell/index",
-    "van-cell-group": "@vant/weapp/cell-group/index"
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "iconfont": "/iconfont/iconfont"
   }
 }

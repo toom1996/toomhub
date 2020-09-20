@@ -1,6 +1,6 @@
 /**app.wxss**/
 page {
-  background-color: rgb(240, 240, 240);
+  /* background-color: rgb(240, 240, 240); */
 }
 
 .container {
@@ -12,3 +12,24 @@ page {
   padding: 200rpx 0;
   box-sizing: border-box;
 } 
+
+@font-face {font-family: "iconfont";
+  src: url('http://at.alicdn.com/t/font_2080252_11q51149yn4.eot?t=1600581184430'); /* IE9 */
+  src: url('http://at.alicdn.com/t/font_2080252_11q51149yn4.eot?t=1600581184430#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAMgAAsAAAAABxAAAALTAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCCcAqCGIF4ATYCJAMICwYABCAFhG0HMRsfBhHVmwXIfhzGjul3I9aqbLuICJ0m/nMQYB41QZWufYL8l/Dt5mZ9W6MiDFNyHvwv35F2M0J+BoBP3Dv9U/z/6p13Oa69aVIXYBxIge6BUWQFEpgH3DB2gUu4DwEY0siPqF6zfnNcNNYyAYj+fXp1wc1F0WhWcBHYNXs1YjEWrpwjrwKLws+LLxQVLkgshdXSuGeN7lT+8LRL1ORgcnufQDafG2CHQAH5AQ2iea23ISrO5kdhtKwmC/bVKOBDyyDwpbv94YEAYWPVhwCQAqX3JHPltyouAdAwGdoAvUf9I6DyZzMD5saFzb2Y1G7KpVwPHuQ79yB924NaJ+6lrojdMDnFnxd74lqeAykrYlovj9md+/TY7ecTNt8tf/pudRm+a19yfLv4dUkr95o4s3Nv8jExJS1u7dneRvkr1sSyfPXPRtI7ZVQI45OsbXW8vqmV/YItpFe37pKbNYpflXJty9lLrcKRQ5K75TV56tTI1zr8tg7fFne5WIhTadCQCTOy/k9cI14Pzl67hmVtWXg5svIlylWOLpXZWbfMW3h92eiyh1+HXQ97TWUAgtvqiir4p7/Dko/FmnQKL//P9TUATxaEVw7DwW1NPz+49+MT8F9lPQe0rrBsUquy2qKkDep+2wwGCMDBKJ6PNca+RFHgEvsqfofUFAqX7KRm88PCpzhsXCrBkI9ah32iGYpCaA/IywwAQQSHIAnjEhQRXCM1+wwWcXyDTYRQMLQU0Wf65BRSlNUIFaMF/YNottU5DpZR4xX9qyjKKkLuiXTGBAxtXywsuCLNseF8+5HZgaOtwgwew1I22GlLaLgNzPvUda7uRa3ZqpCiGqFitKB/EM22On80y9L7r+hfRVFLX03yiXTG6WFo+x7kol179d3LM+fbj8wOHG0VZuDGYmc32OtnJTTchhHpferQMNdX266vr193DDDCMsmL3aJwbFTr37EIAQA=') format('woff2'),
+  url('http://at.alicdn.com/t/font_2080252_11q51149yn4.woff?t=1600581184430') format('woff'),
+  url('http://at.alicdn.com/t/font_2080252_11q51149yn4.ttf?t=1600581184430') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('http://at.alicdn.com/t/font_2080252_11q51149yn4.svg?t=1600581184430#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-dianzan:before {
+  content: "\e756";
+}

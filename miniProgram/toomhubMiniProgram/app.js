@@ -17,6 +17,32 @@ App({
     }else{
 
     }
+
+
+
+
+
+    var _this = this;
+    let menuButtonObject = wx.getMenuButtonBoundingClientRect();
+    wx.getSystemInfo({
+      success: res => {
+        //导航高度
+        let statusBarHeight = res.statusBarHeight,
+          navTop = menuButtonObject.top,
+          navHeight = statusBarHeight + menuButtonObject.height + (menuButtonObject.top - statusBarHeight) * 2;
+        // console.log(statusBarHeight)
+        // console.log(menuButtonObject.height)
+        // console.log(menuButtonObject.top)
+        // console.log(statusBarHeight)
+        // console.log(navHeight)
+        this.globalData.navHeight = navHeight;
+        this.globalData.navTop = navTop;        //navTop
+        this.globalData.windowHeight = res.windowHeight;
+      },
+      fail(err) {
+        console.log(err);
+      }
+    })
   },
   globalData: {
     userInfo: null, //全局用户信息,

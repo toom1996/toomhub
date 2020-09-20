@@ -1,89 +1,104 @@
-<van-tabs active="a" swipeable animated>
-  <van-tab title="标签 1" name="a">
-    <van-icon name="add" class="add" size="40" bindtap="add" color="#ED3333" />
-    <view wx:for="{{10}}">
-      <van-skeleton title avatar row="3" loading="{{ skeletonShow }}" />
+<!-- 自定义顶部导航 S -->
+<view class="navbar custom-class" style='height:{{navHeight + 40}}px;'>
+  <view class="navbar-action-wrap navbar-action-group row item-center" style='top:{{navTop}}px;'>
+  </view>
+  <view class='navbar-title' style='top:{{navTop}}px'>
+    <view class="search-input">
+      <span class="search-con">
+        <view class="search-name" bindtap="chooseValue" data-inputvalue="{{postname}}">{{postname}}</view>
+
+      </span>
     </view>
-    <!-- height:{{scrollViewHeight}}rpx" -->
-    <scroll-view scroll-y style="width: 100%;height:{{scrollViewHeight}}rpx" bindscrolltolower="ScrollLower"
-      refresher-enabled="{{true}}" refresher-threshold="{{ threshold }}" refresher-default-style="none"
-      refresher-background="rgb(36, 26, 36)" refresher-enabled="{{true}}" refresher-triggered="{{triggered}}"
-      bindrefresherpulling="onPulling" bindrefresherrefresh="onRefresh" bindrefresherrestore="onRestore"
-      bindrefresherabort="onAbort">
-      <view slot="refresher" class="refresh-container"
-        style="display: block; width: 100%; height: 70px; background: rgb(36, 26, 36); display: flex; align-items: center;opacity:1; transform: scale(1)">
-        <view class="view1" style="position: absolute; color: white; text-align: center; width: 100%;">
-          {{ refreshTag }}
-        </view>
-      </view>
-      <view wx:for="{{ data }}">
-        <view class="box">
-          <!-- operatingBar -->
-          <van-row>
-            <view class="post_box">
-              <view style="width:100%;padding-top: 20rpx;">
-                <!-- 头像和昵称 -->
-                <van-row class="top">
-                  <van-col span="3">
-                    <view class="top__avatar">
-                      <image src='{{ item.avatar_url }}'></image>
-                    </view>
-                  </van-col>
-                  <van-col span="20">
-                    <view style="overflow:hidden">
-                      <text class="font__username">{{item.created_by}}</text>
-                    </view>
-                    <text style="display:block;" class="font__time">{{item.created_at}}</text>
-                  </van-col>
-                </van-row>
-                <!-- 文字内容 -->
-                <van-row>
-                  <van-col span="24">
-                    <view>
-                      <text class="__content">{{item.content}}</text>
-                    </view>
-                  </van-col>
-                </van-row>
-                <!-- 附件 图片 视频 -->
-                <van-row>
-                  <van-col span="24" gutter="20">
-                    <view class="__content">
-                      <view wx:for="{{ item.image }}" wx:for-item="imageItem">
-                        <van-col span="8">
-                            <van-image image-class="content-image" mode="widthFix" lazy-load bindtap="previewImage" error="加载失败" src="{{ imageItem.host + imageItem.name + imageItem.param }}" data-list="{{ item.list }}" data-src="{{ imageItem.host + imageItem.name + '/toomhubWatermarkStyle' }}" />
-                        </van-col>
-                      </view>
-                    </view>
-                  </van-col>
-                </van-row>
+  </view>
+  <van-tabs active="{{ active }}" bind:change="onChange" style='--toomhub__tabs-top:{{navTop + 30}}px;' border="{{ false }}" color="#fad55a" custom-class="toom__tag" active="finder">
+    <van-tab title="发现" name="finder"></van-tab>
+    <van-tab title="关注"></van-tab>
+  </van-tabs>
+</view>
+<!-- 自定义顶部导航 E -->
+<van-button color="#f8cd55" icon="edit" round class="add" custom-style="color:#000000;font-weight: bold;" bindtap="addHandle">发布</van-button>
+<view wx:for="{{10}}">
+  <van-skeleton title avatar row="3" loading="{{ skeletonShow }}" />
+</view>
+<!-- height:{{scrollViewHeight}}rpx" -->
+<scroll-view>
+  <view slot="refresher" class="refresh-container" style="display: block; width: 100%; height: 70px; background: rgb(36, 26, 36); display: flex; align-items: center;opacity:1; transform: scale(1)">
+    <view class="view1" style="position: absolute; color: white; text-align: center; width: 100%;">
+      {{ refreshTag }}
+    </view>
+  </view>
+  <view style="height:{{navHeight + navTop + 30}}px;"></view>
+  <view wx:for="{{ data }}">
+    <view class="box">
+      <!-- operatingBar -->
+      <van-row>
+        <view class="post_box">
+          <view style="width:100%;padding-top: 20rpx;">
+            <!-- 头像和昵称 -->
+            <van-row class="top">
+              <van-col span="3">
+                <view class="top__avatar">
+                  <image src='{{ item.avatar_url }}'></image>
+                </view>
+              </van-col>
+              <van-col span="12">
+                <view style="overflow:hidden">
+                  <text class="font__username">{{item.created_by}}</text>
+                </view>
+                <text style="display:block;" class="font__time">{{item.created_at}}</text>
+              </van-col>
+              <van-col span="4" offset="4">
+                <van-button color="#f5d56f" custom-style="color:#000000;" icon="plus" size="mini" round>关注</van-button>
+              </van-col>
+            </van-row>
+            <!-- 文字内容 -->
+            <van-row>
+              <van-col span="24">
+                <view>
+                  <text class="__content">{{item.content}}</text>
+                </view>
+              </van-col>
+            </van-row>
+            <!-- 附件 图片 视频 -->
+            <van-row>
+              <van-col span="24" gutter="20">
+                <view class="__content" style="text-align:center;">
+                  <view wx:for="{{ item.image }}" wx:for-item="imageItem">
+                    <van-col span="8">
+                      <van-image image-class="content-image" mode="widthFix" lazy-load bindtap="previewImage" error="加载失败" src="{{ imageItem.host + imageItem.name + imageItem.param }}" data-list="{{ item.list }}" data-src="{{ imageItem.host + imageItem.name + '/toomhubWatermarkStyle' }}"
+                      />
+                    </van-col>
+                  </view>
+                </view>
+              </van-col>
+            </van-row>
+            <!-- 标签 -->
+            <view>
+              <view wx:if="{{item.tag != ''}}">
+                <van-tag round color="#fef5d8" text-color="#ce9d35" size="medium" custom-class="toomhub__square-tag">
+                  <iconfont name="toomhub-tag"></iconfont>
+                  {{ item.tag }}
+                </van-tag>
               </view>
+              <van-row>
+                <van-col span="24">
+                  <view class="operatingBar">
+                    <van-col span="6">
+                      <iconfont name="toomhub-like-n"></iconfont>
+                    </van-col>
+                    <van-col span="6">
+                      <iconfont name="toomhub-argument"></iconfont>
+                    </van-col>
+                    <van-col span="2" offset="10">
+                      <iconfont name="toomhub-share"></iconfont>
+                    </van-col>
+                  </view>
+                </van-col>
+              </van-row>
             </view>
-          </van-row>
-          <van-row>
-            <van-col span="24">
-              <view class="operatingBar">
-                <van-col span="5">
-                  #test
-                </van-col>
-                <!-- <van-col span="5">
-                  <van-icon name="like-o" />
-                </van-col>
-                <van-col span="5">
-                  <van-icon name="chat-o" />
-                </van-col>
-                <van-col span="5">
-                  <van-icon name="good-job-o" />
-                </van-col>
-                <van-col span="5" offset="4">
-                  <van-icon name="ellipsis" />
-                </van-col> -->
-              </view>
-            </van-col>
-          </van-row>
+          </view>
         </view>
-      </view>
-    </scroll-view>
-  </van-tab>
-  <van-tab title="标签 2" name="b">内容 2</van-tab>
-  <van-tab title="标签 3" name="c">内容 3</van-tab>
-</van-tabs>
+      </van-row>
+    </view>
+  </view>
+</scroll-view>

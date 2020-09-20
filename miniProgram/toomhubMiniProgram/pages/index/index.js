@@ -1,10 +1,18 @@
 //index.js
 //获取应用实例
 const app = getApp()
-
+let myStyle = `
+--tooom__tag-top:
+`
 
 Page({
   data: {
+    // 自定义顶部导航
+    navHeight: app.globalData.navHeight,
+    navTop: app.globalData.navTop,
+    viewData: {
+      style: myStyle
+    },
     skeletonShow: true,
     data:[],
     refreshTag: '下拉刷新',
@@ -37,6 +45,7 @@ Page({
         });
       }
     });
+    this.setData({ 'viewData.style': myStyle + '40px;' })
     this.refreshIndex();
   },
   getUserInfo: function(e) {
@@ -47,7 +56,7 @@ Page({
       hasUserInfo: true
     })
   },
-  add: function () {
+  addHandle: function () {
     wx.navigateTo({
       url: '../square_add/square_add'
     })
@@ -105,5 +114,29 @@ Page({
       })
       console.log(this.data.list)
     })
-  }
+  },
+  onPullDownRefresh: function () {
+    console.log('onPullDownRefresh')
+  },
+
+  goBack: function () {
+    let pages = getCurrentPages();   //获取小程序页面栈
+    let beforePage = pages[pages.length - 2];  //获取上个页面的实例对象
+    beforePage.setData({      //直接修改上个页面的数据（可通过这种方式直接传递参数）
+      txt: '修改数据了'
+    })
+    beforePage.goUpdate();   //触发上个页面自定义的go_update方法
+    wx.navigateBack({         //返回上一页  
+      delta: 1
+    })
+  },
+  /**
+   * 获取顶部固定高度
+   */
+  attached: function () {
+    this.setData({
+      navHeight: App.globalData.navHeight,
+      navTop: App.globalData.navTop,
+    })
+  },
 })
