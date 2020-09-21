@@ -55,7 +55,9 @@ func (logic *SquareLogic) SquareLike(validator *validatorMiniprogramV1.LikeValid
 	}
 
 	fmt.Println("id -> ", util.GetIdentity().MiniId)
-	util.Rdb.SetBit(util.Ctx, k, util.GetIdentity().MiniId, 1)
+	rr, _ := util.Rdb.SetBit(util.Ctx, k, util.GetIdentity().MiniId, 1).Result()
+
+	fmt.Println("rr -> ", rr)
 
 	return true, nil
 }

@@ -87,7 +87,7 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex, c *gin.Contex
 			"avatar_url":     createdBy[1],
 			"created_at":     createdAt,
 			"created_by":     createdBy[0], //这里有优化的空间
-			"likes_count":    util.ToInt(result["likes_count"]),
+			"like_count":     util.ToInt(result["likes_count"]),
 			"argument_count": util.ToInt(result["argument_count"]),
 			"collect_count":  util.ToInt(result["collect_count"]),
 			"tag":            result["tag"],

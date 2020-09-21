@@ -139,7 +139,8 @@ Page({
       isLike = 0;
     }
     app.httpClient.post(app.getApi('SQ_LIKE'), {
-      'id': e.target.dataset.id
+      'id': e.target.dataset.id,
+      'o': isLike
     }).then(res => {
       let response = res.data
       
