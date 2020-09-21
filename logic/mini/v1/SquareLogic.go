@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	ServiceMiniV1 "toomhub/service/mini/v1"
 	"toomhub/util"
 	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
@@ -15,9 +16,9 @@ type SquareLogic struct {
 }
 
 // @title	获取图片广场信息
-func (logic *SquareLogic) SquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{}, error) {
+func (logic *SquareLogic) SquareIndex(validator *validatorMiniprogramV1.SquareIndex, c *gin.Context) (interface{}, error) {
 
-	query, err := ServiceMiniV1.GetSquareIndex(validator)
+	query, err := ServiceMiniV1.GetSquareIndex(validator, c)
 
 	if err != nil {
 		fmt.Println("000000")
@@ -53,6 +54,7 @@ func (logic *SquareLogic) SquareLike(validator *validatorMiniprogramV1.LikeValid
 		return false, errors.New("square not found")
 	}
 
+	fmt.Println("id -> ", util.GetIdentity().MiniId)
 	util.Rdb.SetBit(util.Ctx, k, util.GetIdentity().MiniId, 1)
 
 	return true, nil

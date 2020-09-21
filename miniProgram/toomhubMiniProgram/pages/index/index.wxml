@@ -84,7 +84,7 @@
                 <van-col span="24">
                   <view class="operatingBar">
                     <van-col span="2">
-                      <iconfont bindtap="test" data-like="{{ item.is_like }}" data-index="{{ dataIndex }}" name="{{ item.is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
+                      <iconfont bindtap="{{ likeHandle ? 'likeHandle' : '' }}" data-like="{{ item.is_like }}" data-index="{{ dataIndex }}" data-id="{{ item.id }}" name="{{ item.is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
                     </van-col>
                     <van-col span="2" offset="4">
                       <iconfont name="toomhub-argument"></iconfont>

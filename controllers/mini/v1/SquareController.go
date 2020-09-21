@@ -49,7 +49,7 @@ func (square *SquareController) index(Context *gin.Context) {
 
 	//logic
 	logic := LogicMiniV1.SquareLogic{}
-	query, _ := logic.SquareIndex(&formValidator)
+	query, _ := logic.SquareIndex(&formValidator, Context)
 
 	Context.JSON(200, gin.H{
 		"message": "OK",
@@ -119,14 +119,14 @@ func (square *SquareController) Like(Context *gin.Context) {
 	if err != nil {
 		Context.JSON(http.StatusOK, gin.H{
 			"code":    400,
-			"message": "点赞失败",
+			"message": "fail",
 		})
 		return
 	}
 
 	Context.JSON(http.StatusOK, gin.H{
 		"code":    200,
-		"message": "点赞成功",
+		"message": "OK",
 	})
 
 	return

@@ -3,7 +3,8 @@ var api = {
   'TOKEN_CHECK': '/v1/mini/user/token-checker',
   'SQ_INDEX': '/v1/mini/sq/index',
   'SQ_CREATE': '/v1/mini/sq/create',
-  'SQ_TAG_SEARCH': '/v1/mini/sq/tag-search'
+  'SQ_TAG_SEARCH': '/v1/mini/sq/tag-search',
+  'SQ_LIKE': '/v1/mini/sq/like',
 }
 
 module.exports.api = api;

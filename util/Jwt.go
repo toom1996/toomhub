@@ -77,6 +77,5 @@ func ParseToken(token string, c *gin.Context) (*Claims, error) {
 
 // @title 获取用户信息
 func GetIdentity() *Claims {
-	fmt.Println(identity)
 	return identity
 }

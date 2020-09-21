@@ -1,6 +1,6 @@
 Component({
   properties: {
-    // toomhub-like-n | toomhub-like-y | toomhub-tag | biaoqian | toomhub-share | toomhub-argument
+    // toomhub-tag | biaoqian | toomhub-share | toomhub-argument | toomhub-like-y | toomhub-like-n
     name: {
       type: String,
     },
@@ -16,7 +16,7 @@ Component({
     },
     size: {
       type: Number,
-      value: 20,
+      value: 30,
       observer: function(size) {
         this.setData({
           svgSize: size,
@@ -26,7 +26,7 @@ Component({
   },
   data: {
     colors: '',
-    svgSize: 20,
+    svgSize: 30,
     quot: '"',
     isStr: true,
   },

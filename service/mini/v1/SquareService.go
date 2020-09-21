@@ -5,6 +5,7 @@ package ServiceMiniV1
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	"github.com/goinggo/mapstructure"
 	"strconv"
@@ -19,7 +20,7 @@ const SquareCacheKey = "square:id:"
 const SquareLikeKey = "square:like:"
 
 // @title
-func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{}, error) {
+func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex, c *gin.Context) (interface{}, error) {
 	type imageModel struct {
 		Ext   string `json:"ext"`
 		Name  string `json:"name"`
@@ -72,6 +73,14 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{},
 		createdAt := util.StrTime(intCreatedAt)
 		createdBy, _ := rdb.HMGet(util.Ctx, UserCacheKey+result["created_by"], []string{"nick_name", "avatar_url"}...).Result()
 
+		token := c.GetHeader("Toomhub-Token")
+		if token != "" {
+			r, _ := util.ParseToken(c.GetHeader("Toomhub-Token"), c)
+			util.GetIdentity().MiniId = r.MiniId
+		}
+		fmt.Println(util.GetIdentity().MiniId)
+		isLike, _ := util.Rdb.GetBit(util.Ctx, SquareLikeKey+result["id"], util.GetIdentity().MiniId).Result()
+		fmt.Println(util.GetIdentity().MiniId)
 		list = append(list, map[string]interface{}{
 			"content":        result["content"],
 			"image":          tempI,
@@ -84,7 +93,7 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{},
 			"tag":            result["tag"],
 			"id":             util.ToInt(result["id"]),
 			"list":           tempL,
-			"is_like":        0,
+			"is_like":        isLike,
 		})
 	}
 	return list, nil

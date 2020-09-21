@@ -1,6 +1,7 @@
 //index.js
 //获取应用实例
 const app = getApp()
+import Toast from '../../miniprogram_npm/@vant/weapp/toast/toast';
 let myStyle = `
 --tooom__tag-top:
 `
@@ -15,10 +16,8 @@ Page({
     },
     skeletonShow: true,
     data:[],
-    refreshTag: '下拉刷新',
-    threshold: 70,
-    scrollViewHeight: 0,
-    triggered: true
+    triggered: true,
+    likeHandle: true
   },
   navigationSwitch: function(event) {
     wx.navigateTo({
@@ -89,19 +88,6 @@ Page({
   onRestore(e) {
     console.log('onRestore:', e)
   },
-  onPulling: function(e) {
-    var p = Math.min(e.detail.dy / this.data.threshold, 1)
-    
-    if (p >= 1) {
-      this.setData({
-        refreshTag: '松开刷新'
-      })
-    }else{
-      this.setData({
-        refreshTag: '下拉刷新'
-      })
-    }
-  },
   refreshIndex: function () {
     this.setData({
       skeletonShow: false
@@ -140,7 +126,11 @@ Page({
     })
   },
 
-  test: function (e) {
+  likeHandle: function (e) {
+    this.setData({
+      likeHandle: false
+    })
+
     let newList = this.data.data;
     let isLike = e.target.dataset.like;
     if (isLike === 0) {
@@ -148,10 +138,31 @@ Page({
     }else {
       isLike = 0;
     }
-    newList[e.target.dataset.index].is_like = isLike
-    this.setData({
-      data: newList
+    app.httpClient.post(app.getApi('SQ_LIKE'), {
+      'id': e.target.dataset.id
+    }).then(res => {
+      let response = res.data
+      
+      if (response.code == 200) {
+        newList[e.target.dataset.index].is_like = isLike
+        this.setData({
+          data: newList
+        })
+        wx.showToast({
+          title: '操作成功',
+          icon: 'none',
+          duration: 1000,
+        })
+      }else{
+        wx.showToast({
+          title: '操作失败',
+          icon: 'none',
+          duration: 1000,
+        })
+      }
     })
-    
+    this.setData({
+      likeHandle: true
+    })
   }
 })
