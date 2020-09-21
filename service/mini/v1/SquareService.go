@@ -16,6 +16,7 @@ import (
 )
 
 const SquareCacheKey = "square:id:"
+const SquareLikeKey = "square:like:"
 
 // @title
 func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{}, error) {
@@ -83,6 +84,7 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex) (interface{},
 			"tag":            result["tag"],
 			"id":             util.ToInt(result["id"]),
 			"list":           tempL,
+			"is_like":        0,
 		})
 	}
 	return list, nil
@@ -137,6 +139,9 @@ func SquareCreate(v *validatorMiniprogramV1.SquareCreate, image map[string]inter
 		"image":          imageJson,
 		"content":        v.Content,
 	}).Result()
+
+	//设置一个空的bitmap 用来做点赞
+	util.Rdb.SetBit(util.Ctx, SquareLikeKey+fmt.Sprintf("%d", squareModel.Id), 0, 0)
 
 	transaction.Commit()
 

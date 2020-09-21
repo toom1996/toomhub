@@ -4,8 +4,10 @@ package LogicMiniV1
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	ServiceMiniV1 "toomhub/service/mini/v1"
+	"toomhub/util"
 	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
 )
 
@@ -35,6 +37,23 @@ func (logic *SquareLogic) SquareCreate(validator *validatorMiniprogramV1.SquareC
 	}
 
 	_, _ = ServiceMiniV1.SquareCreate(validator, dat)
+
+	return true, nil
+}
+
+func (logic *SquareLogic) SquareLike(validator *validatorMiniprogramV1.LikeValidator) (bool, error) {
+	k := ServiceMiniV1.SquareLikeKey + fmt.Sprintf("%d", validator.Id)
+	//先验证redisKey是否存在
+	r, err := util.Rdb.Exists(util.Ctx, k).Result()
+	if err != nil {
+		return false, err
+	}
+
+	if r != 1 {
+		return false, errors.New("square not found")
+	}
+
+	util.Rdb.SetBit(util.Ctx, k, util.GetIdentity().MiniId, 1)
 
 	return true, nil
 }

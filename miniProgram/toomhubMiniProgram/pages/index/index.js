@@ -139,4 +139,19 @@ Page({
       navTop: App.globalData.navTop,
     })
   },
+
+  test: function (e) {
+    let newList = this.data.data;
+    let isLike = e.target.dataset.like;
+    if (isLike === 0) {
+      isLike = 1;
+    }else {
+      isLike = 0;
+    }
+    newList[e.target.dataset.index].is_like = isLike
+    this.setData({
+      data: newList
+    })
+    
+  }
 })

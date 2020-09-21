@@ -78,7 +78,8 @@ image {
 }
 
 .meCell {
-    position: unset !important;
+		position: unset !important;
+		width: 100%;
 }
 
 .myValue {

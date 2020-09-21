@@ -28,7 +28,7 @@
     </view>
   </view>
   <view style="height:{{navHeight + navTop + 30}}px;"></view>
-  <view wx:for="{{ data }}">
+  <view wx:for="{{ data }}" wx:for-index="dataIndex">
     <view class="box">
       <!-- operatingBar -->
       <van-row>
@@ -42,12 +42,12 @@
                 </view>
               </van-col>
               <van-col span="12">
-                <view style="overflow:hidden">
+                <view style="overflow:hidden;width: 100%;overflow: hidden;text-overflow: ellipsis;">
                   <text class="font__username">{{item.created_by}}</text>
                 </view>
                 <text style="display:block;" class="font__time">{{item.created_at}}</text>
               </van-col>
-              <van-col span="4" offset="4">
+              <van-col span="4" offset="5">
                 <van-button color="#f5d56f" custom-style="color:#000000;" icon="plus" size="mini" round>关注</van-button>
               </van-col>
             </van-row>
@@ -63,7 +63,7 @@
             <van-row>
               <van-col span="24" gutter="20">
                 <view class="__content" style="text-align:center;">
-                  <view wx:for="{{ item.image }}" wx:for-item="imageItem">
+                  <view wx:for="{{ item.image }}" wx:for-item="imageItem" >
                     <van-col span="8">
                       <van-image image-class="content-image" mode="widthFix" lazy-load bindtap="previewImage" error="加载失败" src="{{ imageItem.host + imageItem.name + imageItem.param }}" data-list="{{ item.list }}" data-src="{{ imageItem.host + imageItem.name + '/toomhubWatermarkStyle' }}"
                       />
@@ -83,13 +83,13 @@
               <van-row>
                 <van-col span="24">
                   <view class="operatingBar">
-                    <van-col span="6">
-                      <iconfont name="toomhub-like-n"></iconfont>
+                    <van-col span="2">
+                      <iconfont bindtap="test" data-like="{{ item.is_like }}" data-index="{{ dataIndex }}" name="{{ item.is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
                     </van-col>
-                    <van-col span="6">
+                    <van-col span="2" offset="4">
                       <iconfont name="toomhub-argument"></iconfont>
                     </van-col>
-                    <van-col span="2" offset="10">
+                    <van-col span="2" offset="14">
                       <iconfont name="toomhub-share"></iconfont>
                     </van-col>
                   </view>

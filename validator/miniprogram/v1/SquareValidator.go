@@ -28,6 +28,10 @@ type CreateImageInfo struct {
 	Extension   int    `json:"extension"`
 }
 
+type LikeValidator struct {
+	Id int64 `json:"id" form:"id" binding:"required"`
+}
+
 //图片数量验证
 func CountValidate(fl validator.FieldLevel) bool {
 

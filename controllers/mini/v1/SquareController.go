@@ -26,12 +26,14 @@ func (square *SquareController) Register(engine *gin.Engine) {
 	user := engine.Group("/v1/mini/sq")
 	// 广场首页接口
 	user.GET("/index", square.index)
-
 	user.Use(v1MiniMiddleware.CheckIdentity())
 	{
 		// 发布一条广场信息
 		user.POST("/create", square.create)
+		//标签搜索
 		user.GET("/tag-search", square.TagSearch)
+		//广场消息点赞
+		user.POST("/like", square.Like)
 	}
 }
 
@@ -95,4 +97,38 @@ func (square *SquareController) create(Context *gin.Context) {
 func (square *SquareController) TagSearch(Context *gin.Context) {
 
 	util.EsGet("toomhub", "111")
+}
+
+// @title	点赞
+func (square *SquareController) Like(Context *gin.Context) {
+
+	formValidator := validatorMiniprogramV1.LikeValidator{}
+	err := Context.ShouldBind(&formValidator)
+
+	if err != nil {
+		Context.JSON(http.StatusOK, gin.H{
+			"code":    400,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	logic := LogicMiniV1.SquareLogic{}
+	_, err = logic.SquareLike(&formValidator)
+
+	if err != nil {
+		Context.JSON(http.StatusOK, gin.H{
+			"code":    400,
+			"message": "点赞失败",
+		})
+		return
+	}
+
+	Context.JSON(http.StatusOK, gin.H{
+		"code":    200,
+		"message": "点赞成功",
+	})
+
+	return
+
 }
