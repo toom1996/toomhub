@@ -36,7 +36,7 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex, c *gin.Contex
 
 	var list []interface{}
 	var model []ModelMiniV1.ToomhubSquare
-	db.Select("id").Limit(10).Offset(0).Order("created_at desc").Find(&model)
+	db.Select("id").Limit(10).Offset(10 * (validator.Page - 1)).Order("created_at desc").Find(&model)
 
 	var commands []*redis.StringStringMapCmd
 
@@ -80,8 +80,14 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex, c *gin.Contex
 			util.GetIdentity().MiniId = r.MiniId
 		}
 		fmt.Println(util.GetIdentity().MiniId)
-		isLike, _ := util.Rdb.GetBit(util.Ctx, SquareLikeKey+result["id"], util.GetIdentity().MiniId).Result()
-		fmt.Println(util.GetIdentity().MiniId)
+		isLikeRes, _ := util.Rdb.HMGet(util.Ctx, SquareLikeKey+result["id"], fmt.Sprintf("%d", util.GetIdentity().MiniId)).Result()
+		isLike := 0
+
+		fmt.Println("----->", len(isLikeRes))
+		if len(isLikeRes) == 1 && isLikeRes[0] == "1" {
+			isLike = 1
+		}
+
 		list = append(list, map[string]interface{}{
 			"content":        result["content"],
 			"image":          tempI,

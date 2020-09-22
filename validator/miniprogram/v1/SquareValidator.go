@@ -9,8 +9,7 @@ import (
 )
 
 type SquareIndex struct {
-	LastId int `form:"last_id" binding:"required"`
-	Page   int `form:"page" binding:"required"`
+	Page int `form:"page" binding:"required"`
 }
 
 // @description	label是输出错误信息时显示的字段中文名

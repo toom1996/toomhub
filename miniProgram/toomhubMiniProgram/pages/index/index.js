@@ -17,7 +17,8 @@ Page({
     skeletonShow: true,
     data:[],
     triggered: true,
-    likeHandle: true
+    likeHandle: true,
+    page: 1
   },
   navigationSwitch: function(event) {
     wx.navigateTo({
@@ -45,7 +46,7 @@ Page({
       }
     });
     this.setData({ 'viewData.style': myStyle + '40px;' })
-    this.refreshIndex();
+    this.refreshIndex(1, true);
   },
   getUserInfo: function(e) {
     console.log(e)
@@ -60,10 +61,6 @@ Page({
       url: '../square_add/square_add'
     })
   },
-  // 滚动至低端事件
-  ScrollLower: function () {
-    console.log('ddddd')
-  },
   // 图片点击事件
   previewImage: function (event) {
     var src = event.currentTarget.dataset.src;//获取data-src
@@ -77,33 +74,51 @@ Page({
     })
   },
   onReachBottom: function () {
-    console.log(1111111111111)
+    console.log('000000')
+    this.refreshIndex(this.data.page);
   },
-  onRefresh : function () {
-    this.refreshIndex()
-    this.setData({
-      triggered: false
-    });
-  },
+
   onRestore(e) {
     console.log('onRestore:', e)
   },
-  refreshIndex: function () {
+  refreshIndex: function (page, refresh) {
     this.setData({
       skeletonShow: false
     })
-    //请求首页接口
-    app.httpClient.get(app.getApi('SQ_INDEX') + '?last_id=100&page=1').then(res => {
-      var responseData = res.data.data
+    if (!page) {
+      page = 1
+    }
+    //下拉刷新
+    if (refresh === true) {
+      console.log("sdfsdsf")
       this.setData({
-        data: responseData.list,
+        skeletonShow: true,
+        data: [],
+        page: 0
       })
-      console.log(this.data.list)
+    }
+    //请求首页接口
+    app.httpClient.get(app.getApi('SQ_INDEX') + '?page=' + page).then(res => {
+      var responseData = res.data.data
+      let d = this.data.data
+
+      if (responseData.list.length > 0) {
+        responseData.list.forEach(item => {
+          d.push(item);
+        })
+      }
+      let newPage = page + 1
+      console.log(newPage)
+      this.setData({
+        data: d,
+        page: newPage,
+        skeletonShow: false,
+      })
     })
   },
   onPullDownRefresh: function () {
     console.log('onPullDownRefresh')
-    this.refreshIndex();
+    this.refreshIndex(1, true);
     wx.stopPullDownRefresh();
   },
 
@@ -142,12 +157,17 @@ Page({
     }
     app.httpClient.post(app.getApi('SQ_LIKE'), {
       'id': e.target.dataset.id,
-      'o': isLike
+      'o': isLike,
+      'page':this.data.page
     }).then(res => {
       let response = res.data
-      
       if (response.code == 200) {
         newList[e.target.dataset.index].is_like = isLike
+        if (isLike === 1) {
+          newList[e.target.dataset.index].like_count += 1
+        }else{
+          newList[e.target.dataset.index].like_count -= 1
+        }
         this.setData({
           data: newList
         })
