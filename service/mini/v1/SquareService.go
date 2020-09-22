@@ -75,6 +75,7 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex, c *gin.Contex
 
 		token := c.GetHeader("Toomhub-Token")
 		if token != "" {
+			fmt.Println("token->", c.GetHeader("Toomhub-Token"))
 			r, _ := util.ParseToken(c.GetHeader("Toomhub-Token"), c)
 			util.GetIdentity().MiniId = r.MiniId
 		}
@@ -149,8 +150,10 @@ func SquareCreate(v *validatorMiniprogramV1.SquareCreate, image map[string]inter
 		"content":        v.Content,
 	}).Result()
 
-	//设置一个空的bitmap 用来做点赞
-	util.Rdb.SetBit(util.Ctx, SquareLikeKey+fmt.Sprintf("%d", squareModel.Id), 0, 0)
+	//设置一个空的hashmap 用来做点赞
+	util.Rdb.HMSet(util.Ctx, SquareLikeKey+fmt.Sprintf("%d", squareModel.Id), map[string]interface{}{
+		"0": 0,
+	})
 
 	transaction.Commit()
 

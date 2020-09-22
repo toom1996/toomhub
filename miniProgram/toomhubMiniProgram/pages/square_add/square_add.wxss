@@ -85,3 +85,7 @@ image {
 .myValue {
   font-size: x-small;
 }
+
+.toomhub__tag {
+	
+}

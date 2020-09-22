@@ -103,6 +103,8 @@ Page({
   },
   onPullDownRefresh: function () {
     console.log('onPullDownRefresh')
+    this.refreshIndex();
+    wx.stopPullDownRefresh();
   },
 
   goBack: function () {
@@ -161,9 +163,9 @@ Page({
           duration: 1000,
         })
       }
-    })
-    this.setData({
-      likeHandle: true
+      this.setData({
+        likeHandle: true
+      })
     })
   }
 })

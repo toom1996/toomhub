@@ -58,7 +58,7 @@ App({
           method: method,
           header: {
             'Content-Type': 'application/x-www-form-urlencoded', // 默认值
-            'Toomhub-Token': wx.getStorageSync('userInfo').token
+            'Toomhub-Token': wx.getStorageSync('userInfo').token != undefined ? wx.getStorageSync('userInfo').token :''
           },
           success: (res) => {
             console.log(res)

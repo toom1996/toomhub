@@ -83,16 +83,16 @@
               <van-row>
                 <van-col span="24">
                   <view class="operatingBar">
-                    <van-col span="2">
-                      <iconfont bindtap="{{ likeHandle ? 'likeHandle' : '' }}" data-like="{{ item.is_like }}" data-index="{{ dataIndex }}" data-id="{{ item.id }}" name="{{ item.is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
+                    <van-col span="6">
+                      <iconfont style="float:left;" bindtap="{{ likeHandle == true ? 'likeHandle' : '' }}" data-like="{{ item.is_like }}" data-index="{{ dataIndex }}" data-id="{{ item.id }}" name="{{ item.is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
                       <text>{{ item.like_count }}</text>
                     </van-col>
-                    <van-col span="2" offset="4">
-                      <iconfont name="toomhub-argument"></iconfont>
+                    <van-col span="6" offset="2">
+                      <iconfont style="float:left;" name="toomhub-argument"></iconfont>
                       <text>{{ item.argument_count }}</text>
                     </van-col>
-                    <van-col span="2" offset="14">
-                      <iconfont name="toomhub-share"></iconfont>
+                    <van-col span="2" offset="8">
+                      <iconfont style="float:left;" name="toomhub-share"></iconfont>
                     </van-col>
                   </view>
                 </van-col>

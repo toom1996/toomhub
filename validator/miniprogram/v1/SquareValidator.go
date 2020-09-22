@@ -30,6 +30,7 @@ type CreateImageInfo struct {
 
 type LikeValidator struct {
 	Id int64 `json:"id" form:"id" binding:"required"`
+	O  int8  `json:"o" form:"o" binding:"omitempty"`
 }
 
 //图片数量验证

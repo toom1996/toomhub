@@ -43,9 +43,11 @@ func (logic *SquareLogic) SquareCreate(validator *validatorMiniprogramV1.SquareC
 }
 
 func (logic *SquareLogic) SquareLike(validator *validatorMiniprogramV1.LikeValidator) (bool, error) {
-	k := ServiceMiniV1.SquareLikeKey + fmt.Sprintf("%d", validator.Id)
+	likeKey := ServiceMiniV1.SquareLikeKey + fmt.Sprintf("%d", validator.Id)
+	SquareKey := ServiceMiniV1.SquareCacheKey + fmt.Sprintf("%d", validator.Id)
+	ctx := util.Ctx
 	//先验证redisKey是否存在
-	r, err := util.Rdb.Exists(util.Ctx, k).Result()
+	r, err := util.Rdb.Exists(util.Ctx, likeKey).Result()
 	if err != nil {
 		return false, err
 	}
@@ -55,9 +57,24 @@ func (logic *SquareLogic) SquareLike(validator *validatorMiniprogramV1.LikeValid
 	}
 
 	fmt.Println("id -> ", util.GetIdentity().MiniId)
-	rr, _ := util.Rdb.SetBit(util.Ctx, k, util.GetIdentity().MiniId, 1).Result()
+	has, _ := util.Rdb.HExists(ctx, likeKey, fmt.Sprintf("%d", util.GetIdentity().MiniId)).Result()
+	if validator.O == 1 {
+		if has == false {
+			rr, _ := util.Rdb.HMSet(ctx, likeKey, map[string]interface{}{
+				fmt.Sprintf("%d", util.GetIdentity().MiniId): 1,
+			}).Result()
+			fmt.Println("rr -> ", rr)
+			_, _ = util.Rdb.HIncrBy(ctx, SquareKey, "likes_count", 1).Result()
+		}
+	} else {
+		fmt.Println(has)
+		if has != false {
+			_, _ = util.Rdb.HDel(ctx, likeKey, fmt.Sprintf("%d", util.GetIdentity().MiniId)).Result()
+			_, _ = util.Rdb.HIncrBy(ctx, SquareKey, "likes_count", -1).Result()
+		}
+	}
 
-	fmt.Println("rr -> ", rr)
+	//fmt.Println("rr -> ", rr)
 
 	return true, nil
 }
