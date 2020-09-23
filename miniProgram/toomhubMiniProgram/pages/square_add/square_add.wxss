@@ -85,7 +85,9 @@ image {
 .myValue {
   font-size: x-small;
 }
-
-.toomhub__tag {
-	
+.toomhub__tag .tagBox {
+	max-width: 140rpx;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }

@@ -20,7 +20,7 @@ const SquareCacheKey = "square:id:"
 const SquareLikeKey = "square:like:"
 
 // @title
-func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex, c *gin.Context) (interface{}, error) {
+func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex, c *gin.Context) ([]interface{}, error) {
 	type imageModel struct {
 		Ext   string `json:"ext"`
 		Name  string `json:"name"`
@@ -73,17 +73,14 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex, c *gin.Contex
 		createdAt := util.StrTime(intCreatedAt)
 		createdBy, _ := rdb.HMGet(util.Ctx, UserCacheKey+result["created_by"], []string{"nick_name", "avatar_url"}...).Result()
 
+		//判断浏览首页的用户是否登录
 		token := c.GetHeader("Toomhub-Token")
 		if token != "" {
-			fmt.Println("token->", c.GetHeader("Toomhub-Token"))
 			r, _ := util.ParseToken(c.GetHeader("Toomhub-Token"), c)
 			util.GetIdentity().MiniId = r.MiniId
 		}
-		fmt.Println(util.GetIdentity().MiniId)
 		isLikeRes, _ := util.Rdb.HMGet(util.Ctx, SquareLikeKey+result["id"], fmt.Sprintf("%d", util.GetIdentity().MiniId)).Result()
 		isLike := 0
-
-		fmt.Println("----->", len(isLikeRes))
 		if len(isLikeRes) == 1 && isLikeRes[0] == "1" {
 			isLike = 1
 		}

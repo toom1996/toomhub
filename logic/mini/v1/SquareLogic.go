@@ -16,7 +16,7 @@ type SquareLogic struct {
 }
 
 // @title	获取图片广场信息
-func (logic *SquareLogic) SquareIndex(validator *validatorMiniprogramV1.SquareIndex, c *gin.Context) (interface{}, error) {
+func (logic *SquareLogic) SquareIndex(validator *validatorMiniprogramV1.SquareIndex, c *gin.Context) ([]interface{}, error) {
 
 	query, err := ServiceMiniV1.GetSquareIndex(validator, c)
 

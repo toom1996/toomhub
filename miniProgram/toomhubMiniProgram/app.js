@@ -66,7 +66,6 @@ App({
               wx.navigateTo({
                 url: '/pages/login/login'
               })
-              return false;
             }
             resolve(res)
           },

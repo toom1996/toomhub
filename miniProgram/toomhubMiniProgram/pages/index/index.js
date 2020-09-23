@@ -12,13 +12,13 @@ Page({
     navHeight: app.globalData.navHeight,
     navTop: app.globalData.navTop,
     viewData: {
-      style: myStyle
+      style: myStyle //顶部搜索栏样式
     },
-    skeletonShow: true,
-    data:[],
-    triggered: true,
-    likeHandle: true,
-    page: 1
+    skeletonShow: true, //是否展示骨架图
+    data:[], //页面数据
+    likeHandle: true, //是否加载点赞处理器, 防止连续点击出现问题
+    page: 1, //上拉页码
+    loadingText: "正在加载更多...." //上拉加载文字
   },
   navigationSwitch: function(event) {
     wx.navigateTo({
@@ -94,26 +94,38 @@ Page({
       this.setData({
         skeletonShow: true,
         data: [],
-        page: 0
+        page: 0,
+        loadingText: '正在加载中...'
       })
     }
     //请求首页接口
     app.httpClient.get(app.getApi('SQ_INDEX') + '?page=' + page).then(res => {
-      var responseData = res.data.data
-      let d = this.data.data
 
-      if (responseData.list.length > 0) {
-        responseData.list.forEach(item => {
-          d.push(item);
-        })
+      if (res.data.code == 200) {
+        if (res.data.data.count == 0) {
+          this.setData({
+            loadingText: '已经到底啦~~'
+          })
+        } else {
+          var responseData = res.data.data
+          let d = this.data.data
+    
+          if (responseData.list.length > 0) {
+            responseData.list.forEach(item => {
+              d.push(item);
+            })
+          }
+          let newPage = page + 1
+          this.setData({
+            data: d,
+            page: newPage,
+            skeletonShow: false,
+          })
+        }
+        
       }
-      let newPage = page + 1
-      console.log(newPage)
-      this.setData({
-        data: d,
-        page: newPage,
-        skeletonShow: false,
-      })
+
+      
     })
   },
   onPullDownRefresh: function () {
@@ -143,6 +155,7 @@ Page({
     })
   },
 
+  //点赞处理函数
   likeHandle: function (e) {
     this.setData({
       likeHandle: false
@@ -155,6 +168,7 @@ Page({
     }else {
       isLike = 0;
     }
+    
     app.httpClient.post(app.getApi('SQ_LIKE'), {
       'id': e.target.dataset.id,
       'o': isLike,
@@ -176,13 +190,14 @@ Page({
           icon: 'none',
           duration: 1000,
         })
-      }else{
+      }else if(response.code != 401){
         wx.showToast({
           title: '操作失败',
           icon: 'none',
           duration: 1000,
         })
       }
+      console.log('set like handle')
       this.setData({
         likeHandle: true
       })

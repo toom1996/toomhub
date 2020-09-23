@@ -9,7 +9,6 @@ import (
 	"net/http"
 	LogicMiniV1 "toomhub/logic/mini/v1"
 	v1MiniMiddleware "toomhub/middware/mini/v1"
-	"toomhub/util"
 	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
 )
 
@@ -51,11 +50,17 @@ func (square *SquareController) index(Context *gin.Context) {
 	logic := LogicMiniV1.SquareLogic{}
 	query, _ := logic.SquareIndex(&formValidator, Context)
 
+	count := 0
+	if query != nil {
+		count = len(query)
+	}
+
 	Context.JSON(200, gin.H{
 		"message": "OK",
 		"code":    200,
 		"data": map[string]interface{}{
-			"list": query,
+			"list":  query,
+			"count": count,
 		},
 	})
 }
@@ -96,7 +101,13 @@ func (square *SquareController) create(Context *gin.Context) {
 // @title	标签搜索
 func (square *SquareController) TagSearch(Context *gin.Context) {
 
-	util.EsGet("toomhub", "111")
+	//空搜索返回热门标签
+	keyword := Context.Query("k")
+
+	if keyword == "" {
+		//util.Rdb.ZRange(util.Ctx, "")
+	}
+
 }
 
 // @title	点赞
