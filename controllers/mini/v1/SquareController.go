@@ -3,12 +3,16 @@
 package ControllersMiniV1
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
+	"github.com/go-redis/redis/v8"
 	"net/http"
+	"time"
 	LogicMiniV1 "toomhub/logic/mini/v1"
 	v1MiniMiddleware "toomhub/middware/mini/v1"
+	"toomhub/util"
 	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
 )
 
@@ -105,7 +109,39 @@ func (square *SquareController) TagSearch(Context *gin.Context) {
 	keyword := Context.Query("k")
 
 	if keyword == "" {
-		//util.Rdb.ZRange(util.Ctx, "")
+
+		t := time.Now()
+
+		t1 := t
+		t2 := t.Add(-1 * 24 * time.Hour)
+		t3 := t.Add(-2 * 24 * time.Hour)
+		t4 := t.Add(-3 * 24 * time.Hour)
+		t5 := t.Add(-4 * 24 * time.Hour)
+		t6 := t.Add(-5 * 24 * time.Hour)
+		t7 := t.Add(-6 * 24 * time.Hour)
+
+		fmt.Println("hotTag:" + t1.Format("20060102"))
+		s := &redis.ZStore{
+			Keys: []string{
+				"hotTag:" + t1.Format("20060102"),
+				"hotTag:" + t2.Format("20060102"),
+				"hotTag:" + t3.Format("20060102"),
+				"hotTag:" + t4.Format("20060102"),
+				"hotTag:" + t5.Format("20060102"),
+				"hotTag:" + t6.Format("20060102"),
+				"hotTag:" + t7.Format("20060102"),
+			},
+		}
+
+		//合并zset
+		_, _ = util.Rdb.ZUnionStore(util.Ctx, "hotTag", s).Result()
+
+		r, _ := util.Rdb.ZRange(util.Ctx, "hotTag", 0, 10).Result()
+		Context.JSON(200, gin.H{
+			"code": 200,
+			"data": r,
+		})
+
 	}
 
 }
