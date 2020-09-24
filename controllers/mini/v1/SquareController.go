@@ -141,9 +141,29 @@ func (square *SquareController) TagSearch(Context *gin.Context) {
 			"code": 200,
 			"data": r,
 		})
+		return
 
 	}
 
+	r := util.EsSearch(map[string]interface{}{
+		"query": map[string]interface{}{
+			"match": map[string]interface{}{
+				"name": keyword,
+			},
+		},
+	}).String()
+
+	fmt.Printf("type %T", r)
+
+	//xx := Tag{}
+	//decoder := json.NewDecoder(strings.NewReader(r))
+	//_ = decoder.Decode(&xx)
+	//fmt.Println(xx)
+
+}
+
+type Tag struct {
+	Name string
 }
 
 // @title	点赞
