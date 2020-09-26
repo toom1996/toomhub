@@ -16,7 +16,7 @@ var es *elasticsearch.Client
 func EsInit() {
 	cfg := elasticsearch.Config{
 		Addresses: []string{
-			"http://192.168.10.207:9200",
+			"http://127.0.0.1:9200",
 		},
 	}
 	es, _ = elasticsearch.NewClient(cfg)

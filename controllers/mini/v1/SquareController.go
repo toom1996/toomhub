@@ -141,7 +141,6 @@ func (square *SquareController) TagSearch(Context *gin.Context) {
 			"code": 200,
 			"data": r,
 		})
-
 	}
 
 }

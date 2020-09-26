@@ -65,7 +65,8 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex, c *gin.Contex
 
 		for t := 0; t < len(i); t++ {
 			_ = mapstructure.Decode(i[fmt.Sprintf("%d", t)], &iModel)
-			tempL = append(tempL, iModel.Host+iModel.Name+"/toomhubWatermarkStyle")
+			//tempL = append(tempL, iModel.Host+iModel.Name+"/toomhubWatermarkStyle")
+			tempL = append(tempL, iModel.Host+iModel.Name)
 			tempI = append(tempI, iModel)
 		}
 
@@ -160,15 +161,15 @@ func SquareCreate(v *validatorMiniprogramV1.SquareCreate, image map[string]inter
 
 	transaction.Commit()
 
-	if v.Tag != "" {
-		//标签写入ES
-		fmt.Println(fmt.Sprintf(`{"name":"%s"}`, v.Tag))
-
-		util.EsSet("toomhub", fmt.Sprintf(`{"name":"%s"}`, v.Tag))
-
-		//入redisZset排序
-		util.Rdb.ZIncrBy(util.Ctx, "hotTag:"+createTime.Format("20060102"), 1, v.Tag)
-	}
+	//if v.Tag != "" {
+	//	//标签写入ES
+	//	fmt.Println(fmt.Sprintf(`{"name":"%s"}`, v.Tag))
+	//
+	//	util.EsSet("toomhub", fmt.Sprintf(`{"name":"%s"}`, v.Tag))
+	//
+	//	//入redisZset排序
+	//	util.Rdb.ZIncrBy(util.Ctx, "hotTag:"+createTime.Format("20060102"), 1, v.Tag)
+	//}
 
 	return true, nil
 }

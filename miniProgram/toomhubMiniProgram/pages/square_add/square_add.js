@@ -1,5 +1,5 @@
 const app = getApp()
-const defaultTag = '#添加标签'
+
 // pages/square_add/square_add.js
 import Toast from '../../miniprogram_npm/@vant/weapp/toast/toast';
 Page({
@@ -18,7 +18,7 @@ Page({
       maxHeight: 30,
       minHeight: 20
     }, //添加标签输入框高度
-    tag: defaultTag, //添加进来的标签数组
+    tag: '', //添加进来的标签数组
     tagShow: false, //是否显示添加标签dialog
     mainActiveIndex: 0,
     activeId: null,
@@ -239,7 +239,9 @@ Page({
   },
 
   onClose: function () {
-    console.log('2112212121')
+    this.setData({
+      tag:''
+    })
   },
 
   /**

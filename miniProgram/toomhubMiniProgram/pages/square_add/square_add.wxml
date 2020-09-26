@@ -27,9 +27,14 @@
       <van-uploader  file-list="{{ imageList }}" max-count="9" multiple bind:after-read="afterRead" bind:delete="imageDelete" upload-icon="add-o" />
   </van-row>
   <van-cell title="标签" icon="flag-o" title-style="font-weight: bold;" custom-class="meCell" title-class="myTitle" value-class="myValue" >
-    <van-tag round color="rgb(255,245,213)" text-color="rgb(214,158,5)"  size="large" closeable custom-class="toomhub__tag" bind:close="onClose">
-        <van-icon name="label-o" color="rgb(254,205,51)" custom-style="margin-right:10rpx" /><view class="tagBox" bindtap="onTagAddDialogShow">空间户籍科户籍科好看课件靠靠靠就</view>
+  <view wx:if="{{ tag == '' }}" bindtap="onTagAddDialogShow">
+    <text>不写点啥吗~</text>
+    </view>
+  <view wx:else>
+  <van-tag round color="rgb(255,245,213)" text-color="rgb(214,158,5)"  size="large" closeable custom-class="toomhub__tag" bind:close="onClose">
+        <van-icon name="label-o" color="rgb(254,205,51)" custom-style="margin-right:10rpx" /><view class="tagBox" bindtap="onTagAddDialogShow">{{ tag }}</view>
       </van-tag>
+      </view>
     <van-icon slot="right-icon" name="arrow" class="custom-icon" bindtap="onTagAddDialogShow"  />
 </van-cell>
 
