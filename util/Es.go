@@ -3,8 +3,12 @@
 package util
 
 import (
+	"bytes"
+	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/elastic/go-elasticsearch/v7"
+	"github.com/elastic/go-elasticsearch/v7/esapi"
 	"log"
 	"strings"
 	//"log"
@@ -39,8 +43,22 @@ func EsGet(index string, id string) {
 	fmt.Println(s)
 }
 
-func EsSearch() {
+func EsSearch(param map[string]interface{}) *esapi.Response {
+	var buf bytes.Buffer
 
+	query := param
+
+	if err := json.NewEncoder(&buf).Encode(query); err != nil {
+		log.Fatalf("Error encoding query: %s", err)
+	}
+
+	r, _ := es.Search(
+		es.Search.WithContext(context.Background()),
+		es.Search.WithIndex("toomhub"),
+		es.Search.WithBody(&buf),
+	)
+
+	return r
 }
 
 func EsSet(index string, p string) {
