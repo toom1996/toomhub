@@ -14,5 +14,6 @@ require (
 	github.com/medivhzhan/weapp/v2 v2.2.2
 	github.com/olivere/elastic/v7 v7.0.20
 	github.com/qiniu/api.v7/v7 v7.5.0
+	github.com/streadway/amqp v1.0.0 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.0.0-beta.1
 )

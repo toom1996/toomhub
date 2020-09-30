@@ -16,6 +16,8 @@
         <method importPath="os" receiver="*File" name="Close" />
         <method importPath="github.com/jinzhu/gorm" receiver="*DB" name="Close" />
         <method importPath="github.com/gomodule/redigo/redis" receiver="Conn" name="Close" />
+        <method importPath="github.com/streadway/amqp" receiver="*Connection" name="Close" />
+        <method importPath="github.com/streadway/amqp" receiver="*Channel" name="Close" />
       </methods>
     </inspection_tool>
   </profile>
