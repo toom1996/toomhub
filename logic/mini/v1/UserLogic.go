@@ -28,7 +28,7 @@ func (logic *UserLogic) Login(validator *validatorMiniprogramV1.Login) (interfac
 	if res.ErrCode != 0 {
 		return map[string]string{}, errors.New(res.ErrMSG)
 	}
-
+	fmt.Println("we login ------>", res)
 	//数据库验证用户信息
 	userInfo, err := ServiceMiniV1.GetUser(res.OpenID, validator)
 	if err != nil {

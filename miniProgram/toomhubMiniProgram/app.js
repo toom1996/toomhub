@@ -78,7 +78,7 @@ App({
         })
       })
     },
-    get: function (url) {
+    get: function (url, data) {
       return this.request('GET', url);
     },
     post: function (url, data) {

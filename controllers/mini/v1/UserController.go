@@ -7,6 +7,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"net/http"
 	LogicMiniV1 "toomhub/logic/mini/v1"
+	"toomhub/util"
 	validator2 "toomhub/validator"
 	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
 )
@@ -27,7 +28,22 @@ func (u *UserController) Register(engine *gin.Engine) {
 		//小程序用户登陆接口
 		user.POST("/login", u.Login)
 		user.POST("/token-checker", u.tokenChecker)
+		user.GET("/get-session", u.GetSessionKey)
 	}
+}
+
+func (u *UserController) GetSessionKey(Context *gin.Context) {
+	//config := util.GetConfig()
+	//code, _ := Context.GetQuery("code")
+	//_, err := weapp.Login(config.Mini.AppId, config.Mini.AppSecret, code)
+
+	util.Response(Context, 200, "OK", map[string]interface{}{
+		"code": 200,
+		"msg":  "OK",
+	}, map[string]interface{}{
+		"test": "test",
+	})
+	return
 }
 
 // @url 	localhost:8080/mini/login	POST
