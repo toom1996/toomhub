@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	"github.com/goinggo/mapstructure"
+	"github.com/jinzhu/gorm"
 	"strconv"
 	"time"
 	//LogicMiniV1 "toomhub/logic/mini/v1"
@@ -72,15 +73,20 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex, c *gin.Contex
 
 		intCreatedAt, _ := strconv.ParseInt(result["created_at"], 10, 64)
 		createdAt := util.StrTime(intCreatedAt)
-		createdBy, _ := rdb.HMGet(util.Ctx, UserCacheKey+result["created_by"], []string{"nick_name", "avatar_url"}...).Result()
+		createdBy, _ := rdb.HMGet(util.Ctx, util.UserCacheKey+result["created_by"], []string{"nick_name", "avatar_url"}...).Result()
 
+		uid := 0
 		//判断浏览首页的用户是否登录
 		token := c.GetHeader("Toomhub-Token")
 		if token != "" {
 			r, _ := util.ParseToken(c.GetHeader("Toomhub-Token"), c)
-			util.GetIdentity().MiniId = r.MiniId
+			uid = int(r.MiniId)
 		}
-		isLikeRes, _ := util.Rdb.HMGet(util.Ctx, SquareLikeKey+result["id"], fmt.Sprintf("%d", util.GetIdentity().MiniId)).Result()
+
+		isLikeRes, err := util.Rdb.HMGet(util.Ctx, SquareLikeKey+result["id"], fmt.Sprintf("%d", uid)).Result()
+		if err != nil {
+			fmt.Println(err)
+		}
 		isLike := 0
 		if len(isLikeRes) == 1 && isLikeRes[0] == "1" {
 			isLike = 1
@@ -161,15 +167,35 @@ func SquareCreate(v *validatorMiniprogramV1.SquareCreate, image map[string]inter
 
 	transaction.Commit()
 
-	//if v.Tag != "" {
-	//	//标签写入ES
-	//	fmt.Println(fmt.Sprintf(`{"name":"%s"}`, v.Tag))
-	//
-	//	util.EsSet("toomhub", fmt.Sprintf(`{"name":"%s"}`, v.Tag))
-	//
-	//	//入redisZset排序
-	//	util.Rdb.ZIncrBy(util.Ctx, "hotTag:"+createTime.Format("20060102"), 1, v.Tag)
-	//}
+	if v.Tag != "" {
+		squareModel := &ModelMiniV1.ToomhubSquareTag{}
+		dbQuery := db.Table("toomhub_square_tag").Where("tag = ?", v.Tag).Take(&squareModel)
+		if gorm.IsRecordNotFoundError(dbQuery.Error) {
+			t := db.Begin()
+			model := ModelMiniV1.ToomhubSquareTag{
+				Tag:   v.Tag,
+				Count: 0,
+			}
+
+			db.Create(&model)
+			//获取插入记录的Id
+			var id []int
+			db.Raw("select LAST_INSERT_ID() as id").Pluck("id", &id)
+
+			//因为Pluck函数返回的是一列值，返回结果是slice类型，我们这里只有一个值，所以取第一个值即可。
+			squareModel.Id = int64(id[0])
+			t.Commit()
+		}
+
+		//fmt.Println(fmt.Sprintf(`{"tag":"%s", "content":"%s"}`, v.Tag, v.Content))
+		//util.EsSet("toomhub_tag", fmt.Sprintf(`{"tag":"%s", "content":"%s", "created_at":%d, "like":0}`, v.Tag, v.Content, time.Now().Unix()), fmt.Sprintf("%d", squareModel.Id))
+
+		//入redisZset排序
+		_, _ = util.Rdb.ZIncrBy(util.Ctx, "hotTag:"+createTime.Format("20060102"), 1, v.Tag).Result()
+		fmt.Println("queryId -> ", squareModel.Id)
+		fmt.Println(fmt.Sprintf(`{"script" : {"source": "ctx._source.hot += 1"},"upsert" : {"hot" : 1,"tag": "%s"}}`, v.Tag))
+		util.SetTag("toomhub_tag", fmt.Sprintf(`{"script" : {"source": "ctx._source.hot += 1"},"upsert" : {"hot" : 1,"tag": "%s", "created_at":%d"}}`, v.Tag, time.Now().Unix()), fmt.Sprintf("%d", squareModel.Id))
+	}
 
 	return true, nil
 }

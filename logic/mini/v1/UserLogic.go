@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"github.com/medivhzhan/weapp/v2"
 	"time"
 	ServiceMiniV1 "toomhub/service/mini/v1"
 	"toomhub/util"
@@ -19,18 +18,29 @@ type UserLogic struct {
 
 // @title	小程序登陆
 func (logic *UserLogic) Login(validator *validatorMiniprogramV1.Login) (interface{}, error) {
-	config := util.GetConfig()
-	//微信接口验证
-	res, err := weapp.Login(config.Mini.AppId, config.Mini.AppSecret, validator.Code)
+
+	cacheInfo, err := util.Rdb.Get(util.Ctx, validator.AuthKey).Result()
+	fmt.Println("cacheInfo -> ", cacheInfo)
+
 	if err != nil {
-		return map[string]string{}, err
+		return "", err
 	}
-	if res.ErrCode != 0 {
-		return map[string]string{}, errors.New(res.ErrMSG)
+
+	sessionCache, err := util.JsonDecode(cacheInfo)
+	if err != nil {
+		return "", err
 	}
-	fmt.Println("we login ------>", res)
+
+	rawData, _ := util.JsonEncode(validator.RawData)
+
+	sign := util.Sha1(rawData + sessionCache["session_key"].(string))
+
+	//验证签名
+	if sign != validator.Signature {
+		return "", errors.New("signature validate fail")
+	}
 	//数据库验证用户信息
-	userInfo, err := ServiceMiniV1.GetUser(res.OpenID, validator)
+	userInfo, err := ServiceMiniV1.GetUser(sessionCache["openid"].(string), validator)
 	if err != nil {
 		return "", err
 	}

@@ -13,16 +13,12 @@ import (
 	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
 )
 
-const UserCacheKey = "mini:user:"
-
 // @title	通过OPENID获取用户信息
 // @description
 // @auth	toom <1023150697@qq.com>
 func GetUser(openid string, validator *validatorMiniprogramV1.Login) (interface{}, error) {
 	db := util.DB
 	user, err := HasUser(openid)
-
-	//
 
 	if err != nil {
 		//如果是没有这个用户
@@ -49,12 +45,12 @@ func GetUser(openid string, validator *validatorMiniprogramV1.Login) (interface{
 
 		profileModel := ModelMiniV1.ToomhubUserMiniProfile{
 			MiniId:    userModel.MiniId,
-			NickName:  validator.UserInfo.Nickname,
-			Gender:    validator.UserInfo.Gender,
-			City:      validator.UserInfo.City,
-			Province:  validator.UserInfo.Province,
-			Country:   validator.UserInfo.Country,
-			AvatarUrl: validator.UserInfo.AvatarUrl,
+			NickName:  validator.RawData.NickName,
+			Gender:    validator.RawData.Gender,
+			City:      validator.RawData.City,
+			Province:  validator.RawData.Province,
+			Country:   validator.RawData.Country,
+			AvatarUrl: validator.RawData.AvatarUrl,
 		}
 
 		miniTokenModel := ModelMiniV1.ToomhubUserMiniToken{}
@@ -93,6 +89,7 @@ type UserInfo struct {
 // @desc
 // @auth toom <1023150697@qq.com>
 func UserCreate(openid string, DB *gorm.DB, validator *validatorMiniprogramV1.Login) (interface{}, error) {
+	fmt.Println("not found this user")
 	createTime := time.Now().Unix()
 	//开启事务
 	transaction := DB.Begin()
@@ -110,12 +107,12 @@ func UserCreate(openid string, DB *gorm.DB, validator *validatorMiniprogramV1.Lo
 
 	profileModel := ModelMiniV1.ToomhubUserMiniProfile{
 		MiniId:    userModel.MiniId,
-		NickName:  validator.UserInfo.Nickname,
-		Gender:    validator.UserInfo.Gender,
-		City:      validator.UserInfo.City,
-		Province:  validator.UserInfo.Province,
-		Country:   validator.UserInfo.Country,
-		AvatarUrl: validator.UserInfo.AvatarUrl,
+		NickName:  validator.RawData.NickName,
+		Gender:    validator.RawData.Gender,
+		City:      validator.RawData.City,
+		Province:  validator.RawData.Province,
+		Country:   validator.RawData.Country,
+		AvatarUrl: validator.RawData.AvatarUrl,
 	}
 
 	profileQuery := transaction.Create(&profileModel)
@@ -151,7 +148,9 @@ func UserCreate(openid string, DB *gorm.DB, validator *validatorMiniprogramV1.Lo
 		fmt.Println(transaction.Error)
 	}
 
-	return map[string]string{}, err
+	info, _ := GetUserInfoByRedis(userModel.MiniId)
+
+	return info, err
 }
 
 type RedisUserInfo struct {
@@ -173,7 +172,7 @@ type RedisUserInfo struct {
 func GetUserInfoByRedis(userId int64) (interface{}, error) {
 	//从redis中获取
 	id := strconv.Itoa(int(userId))
-	query := util.Rdb.HMGet(util.Ctx, UserCacheKey+id, []string{
+	query := util.Rdb.HMGet(util.Ctx, util.UserCacheKey+id, []string{
 		"mini_id",
 		"open_id",
 		"avatar_url",
@@ -244,7 +243,7 @@ func GetUserInfoByRedis(userId int64) (interface{}, error) {
 
 // @title	将用户信息塞入REDIS缓存
 func SetUserInfoToRedis(userModel ModelMiniV1.ToomhubUserMini, profileModel ModelMiniV1.ToomhubUserMiniProfile, tokenModel ModelMiniV1.ToomhubUserMiniToken) (interface{}, error) {
-	key := UserCacheKey + strconv.Itoa(int(userModel.MiniId))
+	key := util.UserCacheKey + strconv.Itoa(int(userModel.MiniId))
 
 	info := map[string]interface{}{
 		"mini_id":       userModel.MiniId,
@@ -258,6 +257,9 @@ func SetUserInfoToRedis(userModel ModelMiniV1.ToomhubUserMini, profileModel Mode
 		"avatar_url":    profileModel.AvatarUrl,
 		"token":         tokenModel.AccessToken,
 		"refresh_token": tokenModel.RefreshToken,
+		"fans_count":    0,
+		"follow_count":  0,
+		"likes_count":   0,
 	}
 
 	//塞入redis
@@ -276,7 +278,7 @@ func UpdateUserInfoToRedis(miniId int64) (interface{}, error) {
 	profileModel := ModelMiniV1.ToomhubUserMiniProfile{}
 
 	_ = db.Where("mini_id = ?", miniId).Take(&profileModel)
-	key := UserCacheKey + strconv.Itoa(int(miniId))
+	key := util.UserCacheKey + strconv.Itoa(int(miniId))
 	//塞入redis
 	token, _ := util.GenerateToken(miniId)
 	fmt.Println("token -> ", token)

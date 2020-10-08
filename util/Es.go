@@ -3,9 +3,7 @@
 package util
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/elastic/go-elasticsearch/v7/esapi"
@@ -30,42 +28,50 @@ type Toomhub struct {
 	Name string `json:"name"`
 }
 
-func EsGet(index string, id string) {
-
-	s, err := es.Get(
-		"toomhub",
-		"2",
-	)
-	if err != nil {
-		log.Fatalf("Error getting response: %s", err)
-	}
-
-	fmt.Println(s)
-}
-
-func EsSearch(param map[string]interface{}) *esapi.Response {
-	var buf bytes.Buffer
-
-	query := param
-
-	if err := json.NewEncoder(&buf).Encode(query); err != nil {
-		log.Fatalf("Error encoding query: %s", err)
-	}
+func EsSearch(index string, param string) *esapi.Response {
 
 	r, _ := es.Search(
 		es.Search.WithContext(context.Background()),
-		es.Search.WithIndex("toomhub"),
-		es.Search.WithBody(&buf),
+		es.Search.WithIndex(index),
+		es.Search.WithBody(strings.NewReader(param)),
 	)
 
 	return r
 }
 
-func EsSet(index string, p string) {
+func EsSet(index string, p string, id string) bool {
 
-	_, _ = es.Index(
-		index,                        // Index name
-		strings.NewReader(p),         // Document body
-		es.Index.WithRefresh("true"), // Refresh
+	req := esapi.IndexRequest{
+		Index:      index,
+		DocumentID: id,
+		Body:       strings.NewReader(p),
+		Refresh:    "true",
+	}
+
+	res, err := req.Do(context.Background(), es)
+	if err != nil {
+		log.Fatalf("Error getting response: %s", err)
+	}
+	fmt.Println(res)
+	//_, err := es.Index(
+	//	index,                        // Index name
+	//	strings.NewReader(p),         // Document body
+	//	es.Index.WithRefresh("true"), // Refresh
+	//)
+	return true
+}
+
+func SetTag(index string, p string, id string) {
+
+	xx, err := es.Update(
+		index,
+		id,
+		strings.NewReader(p),
 	)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println("xx -> ", xx)
 }

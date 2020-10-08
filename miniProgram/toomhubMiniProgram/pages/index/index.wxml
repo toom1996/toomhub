@@ -17,7 +17,7 @@
 </view>
 <!-- 自定义顶部导航 E -->
 <van-button color="#f8cd55" icon="edit" round class="add" custom-style="color:#000000;font-weight: bold;" bindtap="addHandle">发布</van-button>
-<view wx:for="{{10}}">
+<view wx:for="{{10}}" wx:key="skeletonIndex">
   <van-skeleton title avatar row="3" loading="{{ skeletonShow }}" />
 </view>
 <!-- height:{{scrollViewHeight}}rpx" -->
@@ -28,7 +28,7 @@
     </view>
   </view>
   <view style="height:{{navHeight + navTop + 30}}px;"></view>
-  <view wx:for="{{ data }}" wx:for-index="dataIndex">
+  <view wx:for="{{ data }}" wx:for-index="dataIndex" wx:key="dataIndex">
     <view class="box">
       <!-- operatingBar -->
       <van-row>
@@ -63,7 +63,7 @@
             <van-row>
               <van-col span="24" gutter="20">
                 <view class="__content" style="text-align:center;">
-                  <view wx:for="{{ item.image }}" wx:for-item="imageItem" >
+                  <view wx:for="{{ item.image }}" wx:for-item="imageItem" wx:key="itemImageIndex" >
                     <van-col span="8">
                       <van-image image-class="content-image" mode="widthFix" lazy-load bindtap="previewImage" error="加载失败" src="{{ imageItem.host + imageItem.name + imageItem.param }}" data-list="{{ item.list }}" data-src="{{ imageItem.host + imageItem.name }}"
                       />
@@ -75,7 +75,7 @@
             <!-- 标签 -->
             <view>
               <view wx:if="{{item.tag != ''}}">
-                <van-tag round color="#fef5d8" text-color="#ce9d35" size="medium" custom-class="toomhub__square-tag">
+                <van-tag round color="#fef5d8" text-color="#ce9d35" size="mini" custom-class="toomhub__square-tag">
                   <iconfont name="toomhub-tag"></iconfont>
                   {{ item.tag }}
                 </van-tag>

@@ -3,10 +3,15 @@
 package ControllersMiniV1
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/medivhzhan/weapp/v2"
 	"net/http"
+	"time"
 	LogicMiniV1 "toomhub/logic/mini/v1"
+	v1MiniMiddleware "toomhub/middware/mini/v1"
 	"toomhub/util"
 	validator2 "toomhub/validator"
 	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
@@ -15,10 +20,6 @@ import (
 type UserController struct {
 	Name string `validate:"required"`
 	Age  int    `validate:"gte=0,lte=100"`
-}
-
-type test struct {
-	aa string
 }
 
 //当前控制器注册的路由
@@ -30,18 +31,62 @@ func (u *UserController) Register(engine *gin.Engine) {
 		user.POST("/token-checker", u.tokenChecker)
 		user.GET("/get-session", u.GetSessionKey)
 	}
+	user.Use(v1MiniMiddleware.CheckIdentity())
+	{
+		user.GET("/get-info", u.refreshInfo)
+	}
 }
 
 func (u *UserController) GetSessionKey(Context *gin.Context) {
-	//config := util.GetConfig()
-	//code, _ := Context.GetQuery("code")
-	//_, err := weapp.Login(config.Mini.AppId, config.Mini.AppSecret, code)
+	config := util.GetConfig()
+	code, _ := Context.GetQuery("code")
 
-	util.Response(Context, 200, "OK", map[string]interface{}{
-		"code": 200,
-		"msg":  "OK",
-	}, map[string]interface{}{
-		"test": "test",
+	if code == "" {
+		Context.JSON(200, gin.H{
+			"code":    400,
+			"message": "can't find code",
+		})
+		return
+	}
+	wechatLogin, _ := weapp.Login(config.Mini.AppId, config.Mini.AppSecret, code)
+
+	if wechatLogin.ErrCode != 0 {
+		Context.JSON(200, gin.H{
+			"code":    400,
+			"message": wechatLogin.ErrMSG,
+		})
+		return
+	}
+
+	wechatLoginJson, err := json.Marshal(wechatLogin)
+
+	if err != nil {
+		Context.JSON(200, gin.H{
+			"code":    400,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	authKey := util.GetRandomString(10) + fmt.Sprintf("%d", time.Now().Unix())
+	_, err = util.Rdb.Set(util.Ctx, authKey, wechatLoginJson, time.Second*7150).Result()
+
+	if err != nil {
+		Context.JSON(200, gin.H{
+			"code":    400,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	fmt.Println(code)
+	Context.JSON(200, map[string]interface{}{
+		"code":    200,
+		"message": "OK",
+		"errcode": 0,
+		"data": map[string]interface{}{
+			"authKey": authKey,
+		},
 	})
 	return
 }
@@ -54,16 +99,15 @@ func (u *UserController) GetSessionKey(Context *gin.Context) {
 // @return
 func (u *UserController) Login(Context *gin.Context) {
 	//validator验证
-	validator := validatorMiniprogramV1.Login{}
-	err := Context.ShouldBind(&validator)
+	formValidator := validatorMiniprogramV1.Login{}
+	err := Context.ShouldBind(&formValidator)
 	if err != nil {
 		Context.String(http.StatusOK, "参数错误:%s", err.Error())
 		return
 	}
 
-	//逻辑验证
 	logic := LogicMiniV1.UserLogic{}
-	query, err := logic.Login(&validator)
+	query, err := logic.Login(&formValidator)
 
 	if err != nil {
 		Context.JSON(http.StatusOK, gin.H{
@@ -107,5 +151,19 @@ func (u *UserController) tokenChecker(Context *gin.Context) {
 	Context.JSON(http.StatusOK, gin.H{
 		"code": 200,
 		"msg":  token,
+	})
+}
+
+// @title 取用户最新的信息
+func (u *UserController) refreshInfo(Context *gin.Context) {
+	r, _ := util.Rdb.HMGet(util.Ctx, util.UserCacheKey+fmt.Sprintf("%d", util.GetIdentity().MiniId), []string{"likes_count", "fans_count", "follow_count"}...).Result()
+	Context.JSON(200, gin.H{
+		"code":    200,
+		"message": "OK",
+		"data": map[string]interface{}{
+			"likes_count":  r[0],
+			"fans_count":   r[1],
+			"follow_count": r[1],
+		},
 	})
 }

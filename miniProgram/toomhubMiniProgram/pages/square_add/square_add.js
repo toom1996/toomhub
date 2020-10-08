@@ -19,6 +19,7 @@ Page({
       minHeight: 20
     }, //添加标签输入框高度
     tag: '', //添加进来的标签数组
+    tagList: '', //标签数组
     tagShow: false, //是否显示添加标签dialog
     mainActiveIndex: 0,
     activeId: null,
@@ -40,14 +41,19 @@ Page({
       // content_show: true,
       tagShow: true,
     });
-    this.search();
+    this.search(this.data.tag);
   },
   search: function (s) {
-    app.httpClient.get(app.getApi('SQ_TAG_SEARCH') + '?k=' + s).then(res=>{
-      console.log(11111111)
+    app.httpClient.get(app.getApi('squareTagSearch') + '?k=' + s).then(res=>{
+      this.setData({
+        tagList:res.data.data
+      });
     })
   },
   onChange: function(e) {
+    this.setData({
+      tag: e.detail
+    });
     this.search(e.detail);
   },
   //显示添加标签的dialog
@@ -60,6 +66,7 @@ Page({
   },
 
   tagClick(event) {
+    console.log(event.currentTarget.dataset)
     this.setData({
       tag: event.currentTarget.dataset.value
     });
@@ -112,7 +119,7 @@ Page({
         console.log(baseData)
 
         let uploadTask = wx.uploadFile({
-          url: app.getApi('REQUEST_HOST') + '/c/image/upload',
+          url: app.getApi('requestHost') + '/c/image/upload',
           filePath: item.path,
           name: 'file',
           success: (res) => {
@@ -182,21 +189,28 @@ Page({
       forbidClick: true,
       duration: 0
     });
-    console.log(this.data.imageList)
-
-
+    
     let obj = {...this.data.imageList}
-    console.log(obj)
-    app.httpClient.post('/v1/mini/sq/create', {
+    
+    app.httpClient.post(squareCreate, {
       'content': this.data.content,
       'image_list': JSON.stringify(obj),
-      'tag': this.data.tag == defaultTag ? '' : this.data.tag,
+      'tag': this.data.tag,
     }).then(res=>{
       let response = res.data
       Toast.clear();
       if (response.code == 200) {
-        app.redirectToIndex();
-        Toast('发布成功');
+        wx.showToast({
+          title: '发布成功',
+          icon: 'success',
+          duration: 2000,
+          success: function () {
+            app.globalData.forceRefresh = true;
+            setTimeout(function () {
+              app.redirectToIndex();
+            }, 2000);
+          }
+        })
       }
       console.log(11111111)
     })

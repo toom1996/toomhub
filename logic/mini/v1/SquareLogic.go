@@ -58,19 +58,27 @@ func (logic *SquareLogic) SquareLike(validator *validatorMiniprogramV1.LikeValid
 
 	fmt.Println("id -> ", util.GetIdentity().MiniId)
 	has, _ := util.Rdb.HExists(ctx, likeKey, fmt.Sprintf("%d", util.GetIdentity().MiniId)).Result()
+	createdBy, _ := util.Rdb.HMGet(ctx, SquareKey, "created_by").Result()
 	if validator.O == 1 {
 		if has == false {
 			rr, _ := util.Rdb.HMSet(ctx, likeKey, map[string]interface{}{
 				fmt.Sprintf("%d", util.GetIdentity().MiniId): 1,
 			}).Result()
 			fmt.Println("rr -> ", rr)
+			//增加说说点赞量
 			_, _ = util.Rdb.HIncrBy(ctx, SquareKey, "likes_count", 1).Result()
+
+			//增加发布说说用户点赞量
+			_, _ = util.Rdb.HIncrBy(ctx, "mini:user:"+createdBy[0].(string), "likes_count", 1).Result()
+
 		}
 	} else {
 		fmt.Println(has)
 		if has != false {
 			_, _ = util.Rdb.HDel(ctx, likeKey, fmt.Sprintf("%d", util.GetIdentity().MiniId)).Result()
 			_, _ = util.Rdb.HIncrBy(ctx, SquareKey, "likes_count", -1).Result()
+			//扣除发布说说用户点赞量
+			_, _ = util.Rdb.HIncrBy(ctx, "mini:user:"+createdBy[0].(string), "likes_count", -1).Result()
 		}
 	}
 

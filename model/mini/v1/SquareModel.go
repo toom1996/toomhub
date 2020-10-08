@@ -24,3 +24,9 @@ type ToomhubSquareImage struct {
 	Param string
 	Name  string
 }
+
+type ToomhubSquareTag struct {
+	Id    int64
+	Tag   string
+	Count int64
+}

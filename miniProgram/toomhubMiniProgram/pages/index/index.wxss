@@ -244,7 +244,7 @@
   content: '';  
   width: 40rpx;  
   height: 40rpx;  
-  background: url(../../images/icon-loading.png) no-repeat;  
+  /* background: url(../../images/icon-loading.png) no-repeat;   */
   background-size: contain;  
   animation: rotate 1s linear infinite;  
 }  

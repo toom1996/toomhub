@@ -2,13 +2,14 @@
 // @Author    2020/8/14 10:53
 package validatorMiniprogramV1
 
-import (
-	ModelMiniV1 "toomhub/model/mini/v1"
-)
+import ModelMiniV1 "toomhub/model/mini/v1"
 
 type Login struct {
-	Code     string                     `form:"code" binding:"required"`
-	UserInfo ModelMiniV1.V1MiniUserInfo `form:"userInfo"`
+	RawData       ModelMiniV1.V1MiniUserInfo `form:"rawData" binding:"required"`
+	Iv            string                     `form:"iv" binding:"required"`
+	EncryptedData string                     `form:"encryptedData" binding:"required"`
+	Signature     string                     `form:"signature" binding:"required"`
+	AuthKey       string                     `form:"authKey" binding:"required"`
 }
 
 type Refresh struct {

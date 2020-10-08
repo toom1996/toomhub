@@ -46,6 +46,7 @@ App({
   },
   globalData: {
     userInfo: null, //全局用户信息,
+    forceRefresh:false
   },
   httpClient: {
     request: function (method, url, data) {
@@ -53,7 +54,7 @@ App({
       let _this = this
       return new Promise((resolve, reject) => {
         wx.request({
-          url: toomhubApi.REQUEST_HOST + url,
+          url: toomhubApi.requestHost + url,
           data: data,
           method: method,
           header: {
@@ -146,7 +147,7 @@ App({
   tokenRefresh: function () {
     let p = this.globalData.userInfo;
     console.log(p)
-    this.httpClient.post(toomhubApi.TOKEN_CHECK, {
+    this.httpClient.post(toomhubApi.tokenCheck, {
       token: p.token,
       r: p.refreshToken
     }).then(res => {

@@ -99,7 +99,7 @@ Page({
       })
     }
     //请求首页接口
-    app.httpClient.get(app.getApi('SQ_INDEX') + '?page=' + page).then(res => {
+    app.httpClient.get(app.getApi('squareIndex') + '?page=' + page).then(res => {
 
       if (res.data.code == 200) {
         if (res.data.data.count == 0) {
@@ -134,6 +134,12 @@ Page({
     wx.stopPullDownRefresh();
   },
 
+  onShow: function () {
+    if (app.globalData.forceRefresh == true) {
+      app.globalData.forceRefresh = false;
+      this.refreshIndex(1, true);
+    }
+  },
   goBack: function () {
     let pages = getCurrentPages();   //获取小程序页面栈
     let beforePage = pages[pages.length - 2];  //获取上个页面的实例对象
@@ -169,7 +175,7 @@ Page({
       isLike = 0;
     }
     
-    app.httpClient.post(app.getApi('SQ_LIKE'), {
+    app.httpClient.post(app.getApi('squareLike'), {
       'id': e.target.dataset.id,
       'o': isLike,
       'page':this.data.page

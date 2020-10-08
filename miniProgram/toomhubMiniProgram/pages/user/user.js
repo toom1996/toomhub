@@ -20,8 +20,10 @@ Page({
   },
 
   onShow: function () {
-    console.log('21212121212')
     console.log(app.globalData.userInfo)
+    app.httpClient.get(app.getApi('getUserInfo')).then(res=> {
+
+    })
     this.setData({
       userInfo: app.globalData.userInfo
     })

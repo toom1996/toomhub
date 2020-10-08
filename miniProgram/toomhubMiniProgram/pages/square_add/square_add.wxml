@@ -3,12 +3,12 @@
   <view class="head-read">
   <view class="flex">
     <view class="read-img">
-      <image class="userinfo-avatar" src="{{userInfo === null ? '/static/avatar/defaultAvatar.jpg': userInfo.avatarUrl }}" mode="cover"></image>
+      <image class="userinfo-avatar" src="{{userInfo === null ? '/static/avatar/defaultAvatar.jpg': userInfo.avatar_url }}" mode="cover"></image>
     </view>
     <view class="flex-box">
       <van-row>
         <van-col span="12">
-          <text class="h2">{{ userInfo.nickName }}</text>
+          <text class="h2">{{ userInfo.nick_name }}</text>
         </van-col>
       </van-row>
     </view>
@@ -40,13 +40,13 @@
 
   <!-- 标签 -->
   <van-popup show="{{ tagShow }}" close-icon-position="top-left" round duration="{{200}}" position="bottom" custom-style="height: 90%;" closeable bind:close="onTagAddDialogClose">
+  <van-button round color="#ED3333" size="mini" bindtap="send" custom-style="top:var(--popup-close-icon-margin,14px);right:var(--popup-close-icon-margin,16px);float:right;" bindtap="tagClick" data-value="{{ tag }}">确定</van-button>
   <view style="padding-top:80rpx">
-    <van-search value="{{ keyword }}" placeholder="请输入搜索关键词" bind:change="onChange" />
+    <van-search value="{{ tag }}" placeholder="请输入搜索关键词" bind:change="onChange" />
   </view>
-  <view class="van-cell" bindtap="tagClick" data-value="假的假的">
-    <view class="van-cell__title"><span>假的假的</span>
-    </view>
-  </view>
+  <view wx:for="{{ tagList }}" wx:for-item="tagListItem">
+        <van-cell title="{{ tagListItem.Member }}" size="large" bindtap="tagClick" data-value="{{ tagListItem.Member }}" value="约{{tagListItem.Score}}人参与" />
+      </view>
   </van-popup>
   <van-toast id="van-toast" />
 </view>

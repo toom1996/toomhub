@@ -3,12 +3,15 @@
 package ControllersMiniV1
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
 	"github.com/go-redis/redis/v8"
+	"log"
 	"net/http"
+	"strings"
 	"time"
 	LogicMiniV1 "toomhub/logic/mini/v1"
 	v1MiniMiddleware "toomhub/middware/mini/v1"
@@ -107,7 +110,7 @@ func (square *SquareController) TagSearch(Context *gin.Context) {
 
 	//空搜索返回热门标签
 	keyword := Context.Query("k")
-
+	res := make(map[int]interface{})
 	if keyword == "" {
 
 		t := time.Now()
@@ -136,13 +139,64 @@ func (square *SquareController) TagSearch(Context *gin.Context) {
 		//合并zset
 		_, _ = util.Rdb.ZUnionStore(util.Ctx, "hotTag", s).Result()
 
-		r, _ := util.Rdb.ZRange(util.Ctx, "hotTag", 0, 10).Result()
+		r, _ := util.Rdb.ZRangeWithScores(util.Ctx, "hotTag", -10, -1).Result()
+
+		length := len(r)
+		for index, item := range r {
+			res[length-index-1] = item
+		}
+
 		Context.JSON(200, gin.H{
 			"code": 200,
-			"data": r,
+			"data": res,
 		})
+		return
 	}
 
+	query := util.EsSearch("toomhub_tag", fmt.Sprintf(`{
+  "query": {
+    "function_score": { 
+      "query": { 
+        "match": {
+			"tag": "%s"
+		}
+      },
+      "field_value_factor": { 
+        "field": "hot" ,
+        "modifier":"log1p"
+      }
+    }
+  }
+}`, keyword))
+
+	var r map[string]interface{}
+
+	if err := json.NewDecoder(query.Body).Decode(&r); err != nil {
+		fmt.Println(fmt.Println("Error parsing the response body: %s", err))
+	}
+	// Print the response status, number of results, and request duration.
+	log.Printf(
+		"[%s] %d hits; took: %dms",
+		query.Status(),
+		int(r["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"].(float64)),
+		int(r["took"].(float64)),
+	)
+
+	// Print the ID and document source for each hit.
+	for index, hit := range r["hits"].(map[string]interface{})["hits"].([]interface{}) {
+		res[index] = map[string]interface{}{
+			"Score":  hit.(map[string]interface{})["_source"].(map[string]interface{})["hot"],
+			"Member": hit.(map[string]interface{})["_source"].(map[string]interface{})["tag"],
+		}
+		fmt.Println(fmt.Printf(" * ID=%s, %s", hit.(map[string]interface{})["_id"], hit.(map[string]interface{})["_source"]))
+	}
+
+	log.Println(strings.Repeat("=", 37))
+
+	Context.JSON(200, gin.H{
+		"code": 200,
+		"data": res,
+	})
 }
 
 // @title	点赞
