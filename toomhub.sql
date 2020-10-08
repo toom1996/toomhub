@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 09/09/2020 22:53:10
+ Date: 08/10/2020 21:28:54
 */
 
 SET NAMES utf8mb4;
@@ -32,7 +32,7 @@ CREATE TABLE `toomhub_square` (
   `share_count` int(11) unsigned NOT NULL COMMENT '分享数',
   `tag` varchar(64) NOT NULL DEFAULT '' COMMENT '标签',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for toomhub_square_image
@@ -47,7 +47,18 @@ CREATE TABLE `toomhub_square_image` (
   `param` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=131 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Table structure for toomhub_square_tag
+-- ----------------------------
+DROP TABLE IF EXISTS `toomhub_square_tag`;
+CREATE TABLE `toomhub_square_tag` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tag` varchar(64) NOT NULL,
+  `count` int(11) unsigned NOT NULL COMMENT '累计分值',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for toomhub_user_mini
@@ -58,7 +69,7 @@ CREATE TABLE `toomhub_user_mini` (
   `open_id` varchar(64) NOT NULL,
   `created_at` int(11) NOT NULL,
   PRIMARY KEY (`mini_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=123156 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=123161 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for toomhub_user_mini_profile
@@ -77,7 +88,7 @@ CREATE TABLE `toomhub_user_mini_profile` (
   `likes_count` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '获赞数',
   `follow_count` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '关注数',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for toomhub_user_mini_token
@@ -91,6 +102,6 @@ CREATE TABLE `toomhub_user_mini_token` (
   `created_at` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updated_at` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;
