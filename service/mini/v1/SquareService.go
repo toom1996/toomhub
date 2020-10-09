@@ -194,7 +194,7 @@ func SquareCreate(v *validatorMiniprogramV1.SquareCreate, image map[string]inter
 		_, _ = util.Rdb.ZIncrBy(util.Ctx, "hotTag:"+createTime.Format("20060102"), 1, v.Tag).Result()
 		fmt.Println("queryId -> ", squareModel.Id)
 		fmt.Println(fmt.Sprintf(`{"script" : {"source": "ctx._source.hot += 1"},"upsert" : {"hot" : 1,"tag": "%s"}}`, v.Tag))
-		util.SetTag("toomhub_tag", fmt.Sprintf(`{"script" : {"source": "ctx._source.hot += 1"},"upsert" : {"hot" : 1,"tag": "%s", "created_at":%d"}}`, v.Tag, time.Now().Unix()), fmt.Sprintf("%d", squareModel.Id))
+		util.SetTag("toomhub_tag", fmt.Sprintf(`{"script" : {"source": "ctx._source.hot += 1"},"upsert" : {"hot" : 1,"tag": "%s", "created_at":%d}}`, v.Tag, time.Now().Unix()), fmt.Sprintf("%d", squareModel.Id))
 	}
 
 	return true, nil
