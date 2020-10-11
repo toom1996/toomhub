@@ -192,7 +192,7 @@ Page({
     
     let obj = {...this.data.imageList}
     
-    app.httpClient.post(squareCreate, {
+    app.httpClient.post(app.getApi('squareCreate'), {
       'content': this.data.content,
       'image_list': JSON.stringify(obj),
       'tag': this.data.tag,
