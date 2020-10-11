@@ -16,7 +16,7 @@ func RedisInit() {
 	config := GetConfig()
 	// 实例化一个redis客户端
 	Rdb = redis.NewClient(&redis.Options{
-		Addr:     "127.0.0.1:6379",      // ip:port
+		Addr:     config.Redis.Host,     // ip:port
 		Password: config.Redis.Password, // redis连接密码
 		DB:       0,                     // 选择的redis库
 		PoolSize: 20,                    // 设置连接数,默认是10个连接
