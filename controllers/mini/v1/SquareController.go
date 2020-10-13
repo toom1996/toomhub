@@ -194,13 +194,6 @@ func (square *SquareController) TagSearch(Context *gin.Context) {
 		})
 		return
 	}
-	//// Print the response status, number of results, and request duration.
-	//log.Printf(
-	//	"[%s] %d hits; took: %dms",
-	//	query.Status(),
-	//	int(r["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"].(float64)),
-	//	int(r["took"].(float64)),
-	//)
 
 	Context.JSON(200, gin.H{
 		"code": 200,
