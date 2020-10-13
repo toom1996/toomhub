@@ -31,5 +31,8 @@
     "fileServer": "http://toomhub.image.23cm.cn/",
     "imageMaxSize": 1,
     "allowExtension": ["gif", "png", "jpg", "jpeg"]
+  },
+  "es": {
+    "host": "http://127.0.0.1:9200"
   }
 }
