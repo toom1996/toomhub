@@ -174,7 +174,7 @@ func (square *SquareController) TagSearch(Context *gin.Context) {
 	if err := json.NewDecoder(query.Body).Decode(&r); err != nil {
 		fmt.Println(fmt.Println("Error parsing the response body: %s", err))
 	}
-	fmt.Println(r["status"])
+	fmt.Println(r)
 
 	if _, ok := r["hits"]; ok {
 		// Print the ID and document source for each hit.
