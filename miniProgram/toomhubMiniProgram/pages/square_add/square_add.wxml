@@ -1,5 +1,6 @@
 <!--pages/square_add/square_add.wxml-->
-<view class="box">
+<block wx:if="{{ userInfo.MiniId ==  123162}}">
+  <view class="box">
   <view class="head-read">
   <view class="flex">
     <view class="read-img">
@@ -50,3 +51,4 @@
   </van-popup>
   <van-toast id="van-toast" />
 </view>
+</block>

@@ -16,7 +16,9 @@
   </van-tabs>
 </view>
 <!-- 自定义顶部导航 E -->
-<van-button color="#f8cd55" icon="edit" round class="add" custom-style="color:#000000;font-weight: bold;" bindtap="addHandle">发布</van-button>
+<block wx:if="{{ showPubButton === true }}">
+  <van-button color="#f8cd55" icon="edit" round class="add" custom-style="color:#000000;font-weight: bold;" bindtap="addHandle">发布</van-button>
+</block>
 <view wx:for="{{10}}" wx:key="skeletonIndex">
   <van-skeleton title avatar row="3" loading="{{ skeletonShow }}" />
 </view>
@@ -47,9 +49,9 @@
                 </view>
                 <text style="display:block;" class="font__time">{{item.created_at}}</text>
               </van-col>
-              <van-col span="4" offset="5">
+              <!-- <van-col span="4" offset="5">
                 <van-button color="#f5d56f" custom-style="color:#000000;" icon="plus" size="mini" round>关注</van-button>
-              </van-col>
+              </van-col> -->
             </van-row>
             <!-- 文字内容 -->
             <van-row>
@@ -87,13 +89,13 @@
                       <iconfont style="float:left;" bindtap="{{ likeHandle == true ? 'likeHandle' : '' }}" data-like="{{ item.is_like }}" data-index="{{ dataIndex }}" data-id="{{ item.id }}" name="{{ item.is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
                       <text>{{ item.like_count }}</text>
                     </van-col>
-                    <van-col span="6" offset="2">
+                    <!-- <van-col span="6" offset="2">
                       <iconfont style="float:left;" name="toomhub-argument"></iconfont>
                       <text>{{ item.argument_count }}</text>
                     </van-col>
                     <van-col span="2" offset="8">
                       <iconfont style="float:left;" name="toomhub-share"></iconfont>
-                    </van-col>
+                    </van-col> -->
                   </view>
                 </van-col>
               </van-row>
