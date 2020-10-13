@@ -18,7 +18,8 @@ Page({
     data:[], //页面数据
     likeHandle: true, //是否加载点赞处理器, 防止连续点击出现问题
     page: 1, //上拉页码
-    loadingText: "正在加载更多...." //上拉加载文字
+    loadingText: "正在加载更多....", //上拉加载文字
+    showPubButtom: false
   },
   navigationSwitch: function(event) {
     wx.navigateTo({
@@ -138,6 +139,14 @@ Page({
     if (app.globalData.forceRefresh == true) {
       app.globalData.forceRefresh = false;
       this.refreshIndex(1, true);
+    }
+
+    if (app.globalData.userInfo !== null) {
+      if (app.globalData.userInfo.MiniId == 123162) {
+        this.setData({
+          showPubButton: true
+        })
+      }
     }
   },
   goBack: function () {
