@@ -174,28 +174,37 @@ func (square *SquareController) TagSearch(Context *gin.Context) {
 	if err := json.NewDecoder(query.Body).Decode(&r); err != nil {
 		fmt.Println(fmt.Println("Error parsing the response body: %s", err))
 	}
-	// Print the response status, number of results, and request duration.
-	log.Printf(
-		"[%s] %d hits; took: %dms",
-		query.Status(),
-		int(r["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"].(float64)),
-		int(r["took"].(float64)),
-	)
+	fmt.Println(r["status"])
 
-	// Print the ID and document source for each hit.
-	for index, hit := range r["hits"].(map[string]interface{})["hits"].([]interface{}) {
-		res[index] = map[string]interface{}{
-			"Score":  hit.(map[string]interface{})["_source"].(map[string]interface{})["hot"],
-			"Member": hit.(map[string]interface{})["_source"].(map[string]interface{})["tag"],
+	if _, ok := r["hits"]; ok {
+		// Print the ID and document source for each hit.
+		for index, hit := range r["hits"].(map[string]interface{})["hits"].([]interface{}) {
+			res[index] = map[string]interface{}{
+				"Score":  hit.(map[string]interface{})["_source"].(map[string]interface{})["hot"],
+				"Member": hit.(map[string]interface{})["_source"].(map[string]interface{})["tag"],
+			}
+			fmt.Println(fmt.Printf(" * ID=%s, %s", hit.(map[string]interface{})["_id"], hit.(map[string]interface{})["_source"]))
 		}
-		fmt.Println(fmt.Printf(" * ID=%s, %s", hit.(map[string]interface{})["_id"], hit.(map[string]interface{})["_source"]))
-	}
 
-	log.Println(strings.Repeat("=", 37))
+		log.Println(strings.Repeat("=", 37))
+
+		Context.JSON(200, gin.H{
+			"code": 200,
+			"data": res,
+		})
+		return
+	}
+	//// Print the response status, number of results, and request duration.
+	//log.Printf(
+	//	"[%s] %d hits; took: %dms",
+	//	query.Status(),
+	//	int(r["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"].(float64)),
+	//	int(r["took"].(float64)),
+	//)
 
 	Context.JSON(200, gin.H{
 		"code": 200,
-		"data": res,
+		"data": "",
 	})
 }
 
