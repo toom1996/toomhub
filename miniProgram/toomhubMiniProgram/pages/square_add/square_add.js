@@ -124,27 +124,31 @@ Page({
           name: 'file',
           success: (res) => {
             console.log(res)
-            
-            let data = JSON.parse(res.data)
-            if (res.statusCode == 200 && data.code == 200) {
-              //上传成功后更换空图的内容
-              console.log(data.data)
-              let tmp = _this.data.imageList
-              tmp[index - 1].url = data.data.url;
-              tmp[index - 1].deletable = true;
-              tmp[index - 1].status = 'done'
-              tmp[index - 1].message = '0%'
-              tmp[index - 1].ext = data.data.extension
-              tmp[index - 1].size = data.data.size
-              tmp[index - 1].name = data.data.name
-              tmp[index - 1].host = data.data.request_host
-              tmp[index - 1].param = data.data.param
-              _this.setData({
-                imageList: tmp
-              });
-            }else{
+            try{
+              let data = JSON.parse(res.data)
+              if (res.statusCode == 200 && data.code == 200) {
+                //上传成功后更换空图的内容
+                console.log(data.data)
+                let tmp = _this.data.imageList
+                tmp[index - 1].url = data.data.url;
+                tmp[index - 1].deletable = true;
+                tmp[index - 1].status = 'done'
+                tmp[index - 1].message = '0%'
+                tmp[index - 1].ext = data.data.extension
+                tmp[index - 1].size = data.data.size
+                tmp[index - 1].name = data.data.name
+                tmp[index - 1].host = data.data.request_host
+                tmp[index - 1].param = data.data.param
+                _this.setData({
+                  imageList: tmp
+                });
+              } else {
+                _this.removeImage(index - 1)
+                Toast.fail(data.message);
+              }
+            }catch(e){
               _this.removeImage(index - 1)
-              Toast.fail(data.message);
+              Toast.fail('上传失败');
             }
           },
           fail: (res) => {
