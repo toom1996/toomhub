@@ -17,3 +17,25 @@ page{
   width: 100%;
   display: inline-block;
 }
+
+.canui-head-box{
+    position:fixed;/*滑动页面的时候，像小程序胶囊一样，悬浮固定，不跟随页面动*/
+    top:26px; /*默认为26px，建议使用colorUI  demo 里面的自定义头部使用的取通知栏高度的方式设置，我使用的是StatusBar + 6*/
+    margin-left:10px;
+    background:rgba(0,0,0,0.2);
+    color:#fff;
+    border-radius:20px;
+    padding:4px 4px;
+    border:1px solid rgba(255,255,255,0.3);
+}
+.canui-head-box navigator{
+    padding:8px;
+    font-size:20px;
+    display:initial;
+}
+.canui-head-box navigator + navigator{
+    border-left:1px solid rgba(255,255,255,0.3);
+    margin:0 3px;
+    padding:0 5px;
+    padding-left:15px;
+}

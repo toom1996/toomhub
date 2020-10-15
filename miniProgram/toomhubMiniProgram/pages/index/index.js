@@ -65,8 +65,8 @@ Page({
   // 图片点击事件
   previewImage: function (event) {
     console.log('212112')
-    wx.redirectTo({
-      url: '../components/image_preview/image_preview?l=' + event.currentTarget.dataset.list
+    wx.navigateTo({
+      url: '../components/image_preview/image_preview?list=' + event.currentTarget.dataset.list + '&index=' + event.currentTarget.dataset.index
     })
     // var src = event.currentTarget.dataset.src;//获取data-src
     // console.log(src)
