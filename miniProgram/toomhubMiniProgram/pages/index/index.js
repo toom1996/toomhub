@@ -64,15 +64,19 @@ Page({
   },
   // 图片点击事件
   previewImage: function (event) {
-    var src = event.currentTarget.dataset.src;//获取data-src
-    console.log(src)
-    var imgList = event.currentTarget.dataset.list;//获取data-list
-    console.log(imgList)
-    //图片预览
-    wx.previewImage({
-      current: src, // 当前显示图片的http链接
-      urls: imgList // 需要预览的图片http链接列表
+    console.log('212112')
+    wx.redirectTo({
+      url: '../components/image_preview/image_preview?l=' + event.currentTarget.dataset.list
     })
+    // var src = event.currentTarget.dataset.src;//获取data-src
+    // console.log(src)
+    // var imgList = event.currentTarget.dataset.list;//获取data-list
+    // console.log(imgList)
+    // //图片预览
+    // wx.previewImage({
+    //   current: src, // 当前显示图片的http链接
+    //   urls: imgList // 需要预览的图片http链接列表
+    // })
   },
   onReachBottom: function () {
     console.log('000000')

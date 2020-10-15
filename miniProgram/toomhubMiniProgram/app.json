@@ -4,7 +4,8 @@
     "pages/logs/logs",
     "pages/user/user",
     "pages/login/login",
-    "pages/square_add/square_add"
+    "pages/square_add/square_add",
+    "pages/components/image_preview/image_preview"
   ],
   "tabBar": {
     "custom": false,

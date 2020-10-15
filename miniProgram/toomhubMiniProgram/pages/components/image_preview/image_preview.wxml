@@ -1,0 +1,8 @@
+<swiper class="box" indicator-dots="{{indicatorDots}}"
+      autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+      <block wx:for="{{image}}" wx:key="*this">
+        <swiper-item>
+          <view class="swiper-item"><image bindtap="imageClickHandle" src="{{item}}" mode="widthFix"></image></view>
+        </swiper-item>
+      </block>
+    </swiper>
