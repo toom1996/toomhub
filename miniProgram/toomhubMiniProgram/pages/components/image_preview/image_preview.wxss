@@ -25,17 +25,18 @@ page{
     background:rgba(0,0,0,0.2);
     color:#fff;
     border-radius:20px;
-    padding:4px 4px;
+    padding:4rpx 4rpx;
     border:1px solid rgba(255,255,255,0.3);
+    z-index:999;
 }
 .canui-head-box navigator{
     padding:8px;
-    font-size:20px;
+    font-size:30rpx;
     display:initial;
 }
 .canui-head-box navigator + navigator{
     border-left:1px solid rgba(255,255,255,0.3);
     margin:0 3px;
-    padding:0 5px;
-    padding-left:15px;
+    padding:0px 16rpx 0px 0rpx;
+    padding-left:20rpx;
 }
