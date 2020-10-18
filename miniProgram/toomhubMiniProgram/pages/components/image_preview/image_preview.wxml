@@ -7,20 +7,20 @@
     </navigator>
 </view>
 
-<swiper class="box" duration="{{ 200 }}" current="{{ index }}">
-  <block wx:for="{{image}}" wx:key="*this">
+<swiper class="box" duration="{{ 200 }}" current="{{ index }}" bindchange="swiperChangeHandle">
+  <block wx:for="{{ image }}" wx:key="*this" wx:for-index="imageIndex">
     <swiper-item>
       <view class="swiper-item">
-        <image bindtap="imageClickHandle" src="{{item}}" show-menu-by-longpress mode="widthFix"></image>
+      <block wx:if="{{ loadedImageList[imageIndex] == 1 }}">
+        <image bindtap="imageClickHandle" data-index="{{ imageIndex }}" src="{{item}}" bindlongtap="imageLongTapHandle" show-menu-by-longpress mode="widthFix" bindload="imageLoadedHandle">
+        </image>
+      </block >
+      <block wx:else>
+        <van-image use-loading-slot>
+          <van-loading slot="loading" type="spinner" size="20" vertical />
+        </van-image>
+      </block >
       </view>
     </swiper-item>
   </block>
 </swiper>
-
-<van-action-sheet
-  show="{{ show }}"
-  actions="{{ actions }}"
-  bind:close="onClose"
-  bind:select="onSelect"
-  cancel-text="取消"
-/>

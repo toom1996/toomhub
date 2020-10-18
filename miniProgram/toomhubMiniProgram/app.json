@@ -58,6 +58,7 @@
     "van-tree-select": "@vant/weapp/tree-select/index",
     "van-cell": "@vant/weapp/cell/index",
     "van-cell-group": "@vant/weapp/cell-group/index",
-    "iconfont": "/iconfont/iconfont"
+    "iconfont": "/iconfont/iconfont",
+    "van-loading": "@vant/weapp/loading/index"
   }
 }
