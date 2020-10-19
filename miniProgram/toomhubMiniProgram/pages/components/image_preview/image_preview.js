@@ -21,21 +21,6 @@ Page({
     let swiperIndex = parseInt(options.index);
     let swiperIndexLast = this.getLastIndex(swiperIndex);
     let swiperIndexNext = this.getNextIndex(swiperIndex);
-    console.log(options.index)
-
-    let that = this
-    wx.getSystemInfo({
-      success: function (res) {
-        var scrollViewHeight = 750 * res.windowHeight / res.windowWidth; //rpx
-        console.log(res.windowWidth)
-        var scrollTop = res.windowWidth * 400 / 750; //矢量转换后的高度
-        that.setData({
-          scrollViewHeight: scrollViewHeight,
-          scrollTop: scrollTop,
-          fixedTop: false
-        });
-      }
-    });
 
     this.setData({
       index: options.index

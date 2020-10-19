@@ -1,6 +1,6 @@
 Component({
   properties: {
-    // toomhub-like-n | toomhub-like-y | toomhub-tag | biaoqian | toomhub-share | toomhub-argument
+    // toomhub-like-y | toomhub-like-n | toomhub-argument | toomhub-tag | biaoqian | toomhub-share
     name: {
       type: String,
     },

@@ -32,6 +32,11 @@ Page({
       url: '../logs/logs'
     })
   },
+  viewHandle(){
+    // wx.navigateTo({
+    //   url: '../view/view'
+    // })
+  },
   onLoad: function () {
     let that = this
     wx.getSystemInfo({

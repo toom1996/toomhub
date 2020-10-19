@@ -10,32 +10,35 @@
       </span>
     </view>
   </view>
-  <van-tabs active="{{ active }}" bind:change="onChange" style='--toomhub__tabs-top:{{navTop + 30}}px;' border="{{ false }}" color="#fad55a" custom-class="toom__tag" active="finder">
+  <van-tabs active="{{ active }}" bind:change="onChange" style='--toomhub__tabs-top:{{navTop + 30}}px;'
+    border="{{ false }}" color="#fad55a" custom-class="toom__tag" active="finder">
     <van-tab title="发现" name="finder"></van-tab>
     <van-tab title="关注"></van-tab>
   </van-tabs>
 </view>
 <!-- 自定义顶部导航 E -->
 <block wx:if="{{ showPubButton === true }}">
-  <van-button color="#f8cd55" icon="edit" round class="add" custom-style="color:#000000;font-weight: bold;" bindtap="addHandle">发布</van-button>
+  <van-button color="#f8cd55" icon="edit" round class="add" custom-style="color:#000000;font-weight: bold;"
+    bindtap="addHandle">发布</van-button>
 </block>
 <view wx:for="{{10}}" wx:key="skeletonIndex">
   <van-skeleton title avatar row="3" loading="{{ skeletonShow }}" />
 </view>
 <!-- height:{{scrollViewHeight}}rpx" -->
 <scroll-view>
-  <view slot="refresher" class="refresh-container" style="display: block; width: 100%; height: 70px; background: rgb(36, 26, 36); display: flex; align-items: center;opacity:1; transform: scale(1)">
+  <view slot="refresher" class="refresh-container"
+    style="display: block; width: 100%; height: 70px; background: rgb(36, 26, 36); display: flex; align-items: center;opacity:1; transform: scale(1)">
     <view class="view1" style="position: absolute; color: white; text-align: center; width: 100%;">
       {{ refreshTag }}
     </view>
   </view>
-  <view style="height:{{navHeight + navTop + 30}}px;"></view>
+  <view style="height:{{navHeight + navTop}}px;"></view>
   <view wx:for="{{ data }}" wx:for-index="dataIndex" wx:key="dataIndex">
     <view class="box">
       <!-- operatingBar -->
       <van-row>
-        <view class="post_box">
-          <view style="width:100%;padding-top: 20rpx;">
+        <view class="post_box" bindtap="viewHandle">
+          <view style="width:100%;padding-top: 30rpx;">
             <!-- 头像和昵称 -->
             <van-row class="top">
               <van-col span="3">
@@ -65,10 +68,12 @@
             <van-row>
               <van-col span="24" gutter="20">
                 <view class="__content" style="text-align:center;">
-                  <view wx:for="{{ item.image }}" wx:for-item="imageItem" wx:key="itemImageKey" wx:for-index="itemImageIndex" >
+                  <view wx:for="{{ item.image }}" wx:for-item="imageItem" wx:key="itemImageKey"
+                    wx:for-index="itemImageIndex">
                     <van-col span="8">
-                      <van-image image-class="content-image" fit="cover" lazy-load bindtap="previewImage" error="加载失败" src="{{ imageItem.host + imageItem.name + imageItem.param }}" data-list="{{ item.list }}" data-src="{{ imageItem.host + imageItem.name }}" data-index="{{ itemImageIndex }}"
-                      />
+                      <van-image image-class="content-image" fit="cover" lazy-load catchtap="previewImage" error="加载失败"
+                        src="{{ imageItem.host + imageItem.name + imageItem.param }}" data-list="{{ item.list }}"
+                        data-src="{{ imageItem.host + imageItem.name }}" data-index="{{ itemImageIndex }}" />
                     </van-col>
                   </view>
                 </view>
@@ -78,24 +83,29 @@
             <view>
               <view wx:if="{{item.tag != ''}}">
                 <van-tag round color="#fef5d8" text-color="#ce9d35" size="mini" custom-class="toomhub__square-tag">
-                  <iconfont name="toomhub-tag"></iconfont>
                   {{ item.tag }}
                 </van-tag>
               </view>
               <van-row>
                 <van-col span="24">
                   <view class="operatingBar">
-                    <van-col span="6">
-                      <iconfont style="float:left;" bindtap="{{ likeHandle == true ? 'likeHandle' : '' }}" data-like="{{ item.is_like }}" data-index="{{ dataIndex }}" data-id="{{ item.id }}" name="{{ item.is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
+                    <van-col span="4" style="height: 30px;line-height: 30px;">
+                      <iconfont style="float:left;vertical-align:middle;"
+                        catchtap="{{ likeHandle == true ? 'likeHandle' : '' }}" data-like="{{ item.is_like }}"
+                        data-index="{{ dataIndex }}" data-id="{{ item.id }}"
+                        name="{{ item.is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
                       <text>{{ item.like_count }}</text>
                     </van-col>
-                    <!-- <van-col span="6" offset="2">
+                    <van-col span="4" offset="2" style="height: 30px;line-height: 30px;">
                       <iconfont style="float:left;" name="toomhub-argument"></iconfont>
                       <text>{{ item.argument_count }}</text>
                     </van-col>
-                    <van-col span="2" offset="8">
-                      <iconfont style="float:left;" name="toomhub-share"></iconfont>
-                    </van-col> -->
+                    <van-col span="4" offset="10" style="height: 30px;line-height: 30px;">
+                      <button open-type="share" class="share-button">
+                        <iconfont style="float:left;" name="toomhub-share"></iconfont>
+                        <text>分享</text>
+                      </button>
+                    </van-col>
                   </view>
                 </van-col>
               </van-row>
