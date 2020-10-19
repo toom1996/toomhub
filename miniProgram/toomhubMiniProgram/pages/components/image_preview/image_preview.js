@@ -55,6 +55,11 @@ Page({
     })
   },
 
+
+  redirectToIndex() {
+    app.redirectToIndex()
+  },
+
   /**
    * 获取顶部固定高度
    */
