@@ -10,13 +10,13 @@ import (
 	"time"
 	ModelMiniV1 "toomhub/model/mini/v1"
 	"toomhub/util"
-	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
+	"toomhub/validatorRules"
 )
 
 // @title	通过OPENID获取用户信息
 // @description
 // @auth	toom <1023150697@qq.com>
-func GetUser(openid string, validator *validatorMiniprogramV1.Login) (interface{}, error) {
+func GetUser(openid string, validator *validatorRules.Login) (interface{}, error) {
 	db := util.DB
 	user, err := HasUser(openid)
 
@@ -88,7 +88,7 @@ type UserInfo struct {
 // @title	创建一个新的小程序用户
 // @desc
 // @auth toom <1023150697@qq.com>
-func UserCreate(openid string, DB *gorm.DB, validator *validatorMiniprogramV1.Login) (interface{}, error) {
+func UserCreate(openid string, DB *gorm.DB, validator *validatorRules.Login) (interface{}, error) {
 	fmt.Println("not found this user")
 	createTime := time.Now().Unix()
 	//开启事务
@@ -313,7 +313,7 @@ func UpdateUserInfoToRedis(miniId int64) (interface{}, error) {
 	}, nil
 }
 
-func Refresh(validator *validatorMiniprogramV1.Refresh) (bool, error) {
+func Refresh(validator *validatorRules.Refresh) (bool, error) {
 
 	db := util.DB
 

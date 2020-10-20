@@ -37,7 +37,7 @@
     <view class="box">
       <!-- operatingBar -->
       <van-row>
-        <view class="post_box" bindtap="viewHandle">
+        <view class="post_box" bindtap="viewHandle" data-list="{{ item.list }}">
           <view style="width:100%;padding-top: 30rpx;">
             <!-- 头像和昵称 -->
             <van-row class="top">
@@ -60,7 +60,7 @@
             <van-row>
               <van-col span="24">
                 <view>
-                  <text class="__content">{{item.content}}</text>
+                  <text class="__content">{{ item.content }}</text>
                 </view>
               </van-col>
             </van-row>
@@ -100,8 +100,8 @@
                       <iconfont style="float:left;" name="toomhub-argument"></iconfont>
                       <text>{{ item.argument_count }}</text>
                     </van-col>
-                    <van-col span="4" offset="10" style="height: 30px;line-height: 30px;">
-                      <button open-type="share" class="share-button">
+                    <van-col span="4" offset="10" style="height: 30px;line-height: 30px;" catchtap="emptyHandle">
+                      <button open-type="share" class="share-button" data-title="{{ item.content }}" data-list="{{ item.list }}">
                         <iconfont style="float:left;" name="toomhub-share"></iconfont>
                         <text>分享</text>
                       </button>

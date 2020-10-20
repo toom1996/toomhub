@@ -5,14 +5,21 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    image:[
+    ]
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    wx.setNavigationBarTitle({
+      title: '详情',
+      }) 
+    console.log(options)
+    this.setData({
+      image: options.list.split(",")
+    })
   },
 
   /**
@@ -60,7 +67,17 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function (options) {
+    let title = options.target.dataset.title;
+    let list = options.target.dataset.list;
 
-  }
+    if (app.strlen(title) > 14 ) {
+      title = title.substring(0,14) + '...';
+    }
+    return {
+      title: title,
+      path: '/pages/view/view',
+      imageUrl: list[0] + app.globalData.imageThumbnailParam
+    }
+  },
 })

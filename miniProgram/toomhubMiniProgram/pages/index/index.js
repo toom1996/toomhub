@@ -7,6 +7,22 @@ let myStyle = `
 `
 
 Page({
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function (options) {
+    let title = options.target.dataset.title;
+    let list = options.target.dataset.list;
+
+    if (app.strlen(title) > 14) {
+      title = title.substring(0, 14) + '...';
+    }
+    return {
+      title: title,
+      path: '/pages/view/view',
+      imageUrl: list[0] + app.globalData.imageThumbnailParam
+    }
+  },
   data: {
     // 自定义顶部导航
     navHeight: app.globalData.navHeight,
@@ -15,27 +31,30 @@ Page({
       style: myStyle //顶部搜索栏样式
     },
     skeletonShow: true, //是否展示骨架图
-    data:[], //页面数据
+    data: [], //页面数据
     likeHandle: true, //是否加载点赞处理器, 防止连续点击出现问题
     page: 1, //上拉页码
     loadingText: "正在加载更多....", //上拉加载文字
     showPubButtom: false
   },
-  navigationSwitch: function(event) {
+  navigationSwitch: function (event) {
     wx.navigateTo({
       url: '../user/user'
     })
   },
   //事件处理函数
-  bindViewTap: function() {
+  bindViewTap: function () {
     wx.navigateTo({
       url: '../logs/logs'
     })
   },
-  viewHandle(){
-    // wx.navigateTo({
-    //   url: '../view/view'
-    // })
+  viewHandle(event) {
+    wx.navigateTo({
+      url: '../view/view?list=' + event.currentTarget.dataset.list
+    })
+  },
+  emptyHandle() {
+
   },
   onLoad: function () {
     let that = this
@@ -54,7 +73,7 @@ Page({
     this.setData({ 'viewData.style': myStyle + '40px;' })
     this.refreshIndex(1, true);
   },
-  getUserInfo: function(e) {
+  getUserInfo: function (e) {
     console.log(e)
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
@@ -119,7 +138,7 @@ Page({
         } else {
           var responseData = res.data.data
           let d = this.data.data
-    
+
           if (responseData.list.length > 0) {
             responseData.list.forEach(item => {
               d.push(item);
@@ -132,10 +151,10 @@ Page({
             skeletonShow: false,
           })
         }
-        
+
       }
 
-      
+
     })
   },
   onPullDownRefresh: function () {
@@ -189,21 +208,21 @@ Page({
     let isLike = e.target.dataset.like;
     if (isLike === 0) {
       isLike = 1;
-    }else {
+    } else {
       isLike = 0;
     }
-    
+
     app.httpClient.post(app.getApi('squareLike'), {
       'id': e.target.dataset.id,
       'o': isLike,
-      'page':this.data.page
+      'page': this.data.page
     }).then(res => {
       let response = res.data
       if (response.code == 200) {
         newList[e.target.dataset.index].is_like = isLike
         if (isLike === 1) {
           newList[e.target.dataset.index].like_count += 1
-        }else{
+        } else {
           newList[e.target.dataset.index].like_count -= 1
         }
         this.setData({
@@ -214,7 +233,7 @@ Page({
           icon: 'none',
           duration: 1000,
         })
-      }else if(response.code != 401){
+      } else if (response.code != 401) {
         wx.showToast({
           title: '操作失败',
           icon: 'none',

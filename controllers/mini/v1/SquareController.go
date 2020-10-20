@@ -16,7 +16,7 @@ import (
 	LogicMiniV1 "toomhub/logic/mini/v1"
 	v1MiniMiddleware "toomhub/middware/mini/v1"
 	"toomhub/util"
-	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
+	"toomhub/validatorRules"
 )
 
 type SquareController struct {
@@ -26,12 +26,13 @@ type SquareController struct {
 func (square *SquareController) Register(engine *gin.Engine) {
 
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		_ = v.RegisterValidation("countValidate", validatorMiniprogramV1.CountValidate)
+		_ = v.RegisterValidation("countValidate", validatorRules.CountValidate)
 	}
 
 	user := engine.Group("/v1/mini/sq")
 	// 广场首页接口
 	user.GET("/index", square.index)
+	user.GET("/view", square.view)
 	user.Use(v1MiniMiddleware.CheckIdentity())
 	{
 		// 发布一条广场信息
@@ -46,7 +47,7 @@ func (square *SquareController) Register(engine *gin.Engine) {
 // @title	广场首页
 func (square *SquareController) index(Context *gin.Context) {
 	//验证器
-	formValidator := validatorMiniprogramV1.SquareIndex{}
+	formValidator := validatorRules.SquareIndex{}
 	err := Context.BindQuery(&formValidator)
 	if err != nil {
 		Context.String(http.StatusBadRequest, "参数错误:%s", err.Error())
@@ -76,13 +77,13 @@ func (square *SquareController) index(Context *gin.Context) {
 func (square *SquareController) create(Context *gin.Context) {
 	//var commonValidator validator2.CommonValidator
 	//验证器
-	formValidator := validatorMiniprogramV1.SquareCreate{}
+	formValidator := validatorRules.SquareCreate{}
 	err := Context.ShouldBind(&formValidator)
 
 	if err != nil {
 		Context.JSON(http.StatusOK, gin.H{
 			"code": 400,
-			//"message": commonValidator.TransError(err.(validator.ValidationErrors)),
+			//"message": commonvalidatorRules.TransError(err.(validatorRules.ValidationErrors)),
 			"message": err.Error(),
 			"data":    "",
 		})
@@ -204,7 +205,7 @@ func (square *SquareController) TagSearch(Context *gin.Context) {
 // @title	点赞
 func (square *SquareController) Like(Context *gin.Context) {
 
-	formValidator := validatorMiniprogramV1.LikeValidator{}
+	formValidator := validatorRules.LikeValidator{}
 	err := Context.ShouldBind(&formValidator)
 
 	if err != nil {
@@ -217,6 +218,40 @@ func (square *SquareController) Like(Context *gin.Context) {
 
 	logic := LogicMiniV1.SquareLogic{}
 	_, err = logic.SquareLike(&formValidator)
+
+	if err != nil {
+		Context.JSON(http.StatusOK, gin.H{
+			"code":    400,
+			"message": "fail",
+		})
+		return
+	}
+
+	Context.JSON(http.StatusOK, gin.H{
+		"code":    200,
+		"message": "OK",
+	})
+
+	return
+
+}
+
+//详情
+func (square *SquareController) view(Context *gin.Context) {
+
+	formValidator := validatorRules.View{}
+	err := Context.ShouldBind(&formValidator)
+
+	if err != nil {
+		Context.JSON(http.StatusOK, gin.H{
+			"code":    400,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	logic := LogicMiniV1.SquareLogic{}
+	_, err = logic.SquareView(&formValidator)
 
 	if err != nil {
 		Context.JSON(http.StatusOK, gin.H{

@@ -1,2 +1,77 @@
 <!--pages/view/view.wxml-->
-<text>pages/view/view.wxml</text>
+<view class="box">
+      <!-- operatingBar -->
+      <van-row>
+        <view class="post_box">
+          <view style="width:100%;padding-top: 30rpx;">
+            <!-- 头像和昵称 -->
+            <van-row class="top">
+              <van-col span="3">
+                <view class="top__avatar">
+                  <image src='https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLwQss0dlpIGgHUe0hjdkL8lMAz0wAa9QnyAukWEDnm5jS2ga0GZTwb33hcHN34YkZrdaM8qtAP6A/132'></image>
+                </view>
+              </van-col>
+              <van-col span="12">
+                <view style="overflow:hidden;width: 100%;overflow: hidden;text-overflow: ellipsis;">
+                  <text class="font__username">123456</text>
+                </view>
+                <text style="display:block;" class="font__time">123456</text>
+              </van-col>
+              <!-- <van-col span="4" offset="5">
+                <van-button color="#f5d56f" custom-style="color:#000000;" icon="plus" size="mini" round>关注</van-button>
+              </van-col> -->
+            </van-row>
+            <!-- 文字内容 -->
+            <van-row>
+              <van-col span="24">
+                <view>
+                  <text class="__content">test</text>
+                </view>
+              </van-col>
+            </van-row>
+            <!-- 附件 图片 视频 -->
+            <van-row>
+              <van-col span="24">
+                  <view wx:for="{{ image }}" wx:for-item="imageItem" wx:key="itemImageKey"
+                    wx:for-index="itemImageIndex">
+                      <image image-class="content-image" mode="widthFix" lazy-load catchtap="previewImage" error="加载失败"
+                        src="{{ imageItem }}" data-list="{{ item.list }}"
+                        data-src="{{ imageItem.host + imageItem.name }}" data-index="{{ itemImageIndex }}" style="width:100%" />
+                  </view>
+              </van-col>
+            </van-row>
+            <!-- 标签 -->
+            <!-- <view>
+              <view wx:if="{{item.tag != ''}}">
+                <van-tag round color="#fef5d8" text-color="#ce9d35" size="mini" custom-class="toomhub__square-tag">
+                  {{ item.tag }}
+                </van-tag>
+              </view>
+              <van-row>
+                <van-col span="24">
+                  <view class="operatingBar">
+                    <van-col span="4" style="height: 30px;line-height: 30px;">
+                      <iconfont style="float:left;vertical-align:middle;"
+                        catchtap="{{ likeHandle == true ? 'likeHandle' : '' }}" data-like="{{ item.is_like }}"
+                        data-index="{{ dataIndex }}" data-id="{{ item.id }}"
+                        name="{{ item.is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
+                      <text>{{ item.like_count }}</text>
+                    </van-col>
+                    <van-col span="4" offset="2" style="height: 30px;line-height: 30px;">
+                      <iconfont style="float:left;" name="toomhub-argument"></iconfont>
+                      <text>{{ item.argument_count }}</text>
+                    </van-col>
+                    <van-col span="4" offset="10" style="height: 30px;line-height: 30px;">
+                      <button open-type="share" class="share-button">
+                        <iconfont style="float:left;" name="toomhub-share"></iconfont>
+                        <text>分享</text>
+                      </button>
+                    </van-col>
+                  </view>
+                </van-col>
+              </van-row>
+            </view> -->
+          </view>
+        </view>
+      </van-row>
+    </view>

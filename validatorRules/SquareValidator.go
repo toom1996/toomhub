@@ -1,6 +1,6 @@
 // @Description
 // @Author    2020/8/26 10:01
-package validatorMiniprogramV1
+package validatorRules
 
 import (
 	"encoding/json"
@@ -30,6 +30,11 @@ type CreateImageInfo struct {
 type LikeValidator struct {
 	Id int64 `json:"id" form:"id" binding:"required"`
 	O  int8  `json:"o" form:"o" binding:"omitempty"`
+}
+
+// @title 浏览详情内容结数据验证结构体
+type View struct {
+	Id int64 `json:"id" from:"id" binding:"required"`
 }
 
 //图片数量验证

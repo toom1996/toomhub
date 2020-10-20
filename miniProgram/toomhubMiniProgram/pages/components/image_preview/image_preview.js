@@ -14,7 +14,7 @@ Page({
     imageList: [],
     image: [],
     tmpImage: [],
-    loadedImageList:[]
+    loadedImageList: []
   },
 
   onLoad(options) {
@@ -30,10 +30,10 @@ Page({
     let image = this.data.tmpImage;
     let loaded = this.data.loadedImageList;
     this.setData({
-      imageList:options.list.split(",")
+      imageList: options.list.split(",")
     })
     console.log(this.data.imageList)
-    for (let i = 0; i < this.data.imageList.length; i ++) {
+    for (let i = 0; i < this.data.imageList.length; i++) {
       image.push('');
       loaded.push('');
     }
@@ -79,7 +79,7 @@ Page({
     console.log(this.data.loadedImageList)
   },
   //长按事件, 抑制退出事件触发
-  imageLongTapHandle(){
+  imageLongTapHandle() {
     console.log(121211)
     this.setData({
       flag: true,
@@ -107,7 +107,7 @@ Page({
       wx.navigateBack({
         delta: -1
       })
-    }else{
+    } else {
       this.setData({
         flag: false,
       })

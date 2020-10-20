@@ -10,14 +10,14 @@ import (
 	"time"
 	ServiceMiniV1 "toomhub/service/mini/v1"
 	"toomhub/util"
-	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
+	"toomhub/validatorRules"
 )
 
 type UserLogic struct {
 }
 
 // @title	小程序登陆
-func (logic *UserLogic) Login(validator *validatorMiniprogramV1.Login) (interface{}, error) {
+func (logic *UserLogic) Login(validator *validatorRules.Login) (interface{}, error) {
 
 	cacheInfo, err := util.Rdb.Get(util.Ctx, validator.AuthKey).Result()
 	fmt.Println("cacheInfo -> ", cacheInfo)
@@ -50,7 +50,7 @@ func (logic *UserLogic) Login(validator *validatorMiniprogramV1.Login) (interfac
 }
 
 // @title	检查token
-func (logic *UserLogic) Check(validator *validatorMiniprogramV1.Refresh, c *gin.Context) (interface{}, error) {
+func (logic *UserLogic) Check(validator *validatorRules.Refresh, c *gin.Context) (interface{}, error) {
 	tokenClaims, err := jwt.ParseWithClaims(validator.Token, &util.Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(util.GetConfig().Jwt.Secret), nil
 	})

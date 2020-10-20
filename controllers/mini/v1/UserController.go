@@ -13,8 +13,7 @@ import (
 	LogicMiniV1 "toomhub/logic/mini/v1"
 	v1MiniMiddleware "toomhub/middware/mini/v1"
 	"toomhub/util"
-	validator2 "toomhub/validator"
-	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
+	validator2 "toomhub/validatorRules"
 )
 
 type UserController struct {
@@ -99,7 +98,7 @@ func (u *UserController) GetSessionKey(Context *gin.Context) {
 // @return
 func (u *UserController) Login(Context *gin.Context) {
 	//validator验证
-	formValidator := validatorMiniprogramV1.Login{}
+	formValidator := validator2.Login{}
 	err := Context.ShouldBind(&formValidator)
 	if err != nil {
 		Context.String(http.StatusOK, "参数错误:%s", err.Error())
@@ -129,7 +128,7 @@ func (u *UserController) Login(Context *gin.Context) {
 func (u *UserController) tokenChecker(Context *gin.Context) {
 	var commonValidator validator2.CommonValidator
 
-	formValidator := validatorMiniprogramV1.Refresh{}
+	formValidator := validator2.Refresh{}
 	err := Context.ShouldBind(&formValidator)
 	if err != nil {
 		Context.JSON(http.StatusOK, gin.H{

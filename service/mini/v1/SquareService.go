@@ -11,17 +11,18 @@ import (
 	"github.com/jinzhu/gorm"
 	"strconv"
 	"time"
+	"toomhub/validatorRules"
+
 	//LogicMiniV1 "toomhub/logic/mini/v1"
 	ModelMiniV1 "toomhub/model/mini/v1"
 	"toomhub/util"
-	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
 )
 
 const SquareCacheKey = "square:id:"
 const SquareLikeKey = "square:like:"
 
 // @title
-func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex, c *gin.Context) ([]interface{}, error) {
+func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]interface{}, error) {
 	type imageModel struct {
 		Ext   string `json:"ext"`
 		Name  string `json:"name"`
@@ -111,7 +112,7 @@ func GetSquareIndex(validator *validatorMiniprogramV1.SquareIndex, c *gin.Contex
 }
 
 // @title	创建广场信息
-func SquareCreate(v *validatorMiniprogramV1.SquareCreate, image map[string]interface{}) (bool, error) {
+func SquareCreate(v *validatorRules.SquareCreate, image map[string]interface{}) (bool, error) {
 	identity := util.GetIdentity()
 
 	createTime := time.Now()

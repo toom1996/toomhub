@@ -38,7 +38,8 @@ App({
   },
   globalData: {
     userInfo: null, //全局用户信息,
-    forceRefresh:false
+    forceRefresh: false,
+    imageThumbnailParam: '?imageMogr2/auto-orient/format/webp'
   },
   httpClient: {
     request: function (method, url, data) {
@@ -153,5 +154,20 @@ App({
   //获取api
   getApi: function(name) {
     return toomhubApi[name]
-  }
+  },
+
+  strlen: function(str) {
+    var len = 0;
+    for (var i=0; i<str.length; i++) {
+     var c = str.charCodeAt(i);
+    //单字节加1
+     if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) {
+       len++;
+     }
+     else {
+      len+=2;
+     }
+    }
+    return len;
+}
 })

@@ -16,14 +16,14 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath": "static/icon/icon_component.png",
-        "selectedIconPath": "static/icon/icon_component_HL.png",
+        "iconPath": "static/icon/home.png",
+        "selectedIconPath": "static/icon/home_HL.png",
         "text": "首页"
       },
       {
         "pagePath": "pages/user/user",
-        "iconPath": "static/icon/icon_API.png",
-        "selectedIconPath": "static/icon/icon_API_HL.png",
+        "iconPath": "static/icon/personal.png",
+        "selectedIconPath": "static/icon/personal_HL.png",
         "text": "个人中心"
       }
     ]
@@ -31,7 +31,7 @@
   "window": {
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "0.0",
+    "navigationBarTitleText": "",
     "navigationBarTextStyle": "black"
   },
   "sitemapLocation": "sitemap.json",

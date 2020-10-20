@@ -9,14 +9,14 @@ import (
 	"github.com/gin-gonic/gin"
 	ServiceMiniV1 "toomhub/service/mini/v1"
 	"toomhub/util"
-	validatorMiniprogramV1 "toomhub/validator/miniprogram/v1"
+	"toomhub/validatorRules"
 )
 
 type SquareLogic struct {
 }
 
 // @title	获取图片广场信息
-func (logic *SquareLogic) SquareIndex(validator *validatorMiniprogramV1.SquareIndex, c *gin.Context) ([]interface{}, error) {
+func (logic *SquareLogic) SquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]interface{}, error) {
 
 	query, err := ServiceMiniV1.GetSquareIndex(validator, c)
 
@@ -27,7 +27,7 @@ func (logic *SquareLogic) SquareIndex(validator *validatorMiniprogramV1.SquareIn
 	return query, nil
 }
 
-func (logic *SquareLogic) SquareCreate(validator *validatorMiniprogramV1.SquareCreate) (bool, error) {
+func (logic *SquareLogic) SquareCreate(validator *validatorRules.SquareCreate) (bool, error) {
 
 	fmt.Println(validator)
 
@@ -42,7 +42,7 @@ func (logic *SquareLogic) SquareCreate(validator *validatorMiniprogramV1.SquareC
 	return true, nil
 }
 
-func (logic *SquareLogic) SquareLike(validator *validatorMiniprogramV1.LikeValidator) (bool, error) {
+func (logic *SquareLogic) SquareLike(validator *validatorRules.LikeValidator) (bool, error) {
 	likeKey := ServiceMiniV1.SquareLikeKey + fmt.Sprintf("%d", validator.Id)
 	SquareKey := ServiceMiniV1.SquareCacheKey + fmt.Sprintf("%d", validator.Id)
 	ctx := util.Ctx
@@ -85,4 +85,8 @@ func (logic *SquareLogic) SquareLike(validator *validatorMiniprogramV1.LikeValid
 	//fmt.Println("rr -> ", rr)
 
 	return true, nil
+}
+
+func (logic *SquareLogic) SquareView(validator *validatorRules.View) (interface{}, error) {
+	return gin.H{}, nil
 }

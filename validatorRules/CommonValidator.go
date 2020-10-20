@@ -1,6 +1,6 @@
 // @Description
 // @Author    2020/8/31 17:35
-package validator
+package validatorRules
 
 import (
 	"github.com/go-playground/validator/v10"
