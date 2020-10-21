@@ -25,18 +25,16 @@ Page({
   onLoad: function (options) {
     console.log(options)
     let id = options.id
-    Toast.loading({
-      message: '加载中...',
-      forbidClick: true,
-      loadingType: 'spinner',
-    });
+    wx.showLoading({
+      title: '加载中...',
+    })
     wx.setNavigationBarTitle({
       title: '详情',
     })
     app.httpClient.get(app.getApi('getView') + '?id=' + id).then(res => {
       console.log(res.data.code)
       if (res.data.code == 200) {
-        Toast.clear()
+        wx.hideLoading();
       }
 
       let response = res.data.data;
@@ -51,6 +49,7 @@ Page({
         argument_count: response.argument_count,
         collect_count: response.collect_count,
         like_count: response.like_count,
+        list: response.list,
       })
     })
 
@@ -105,8 +104,8 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function (options) {
-    let title = options.target.dataset.title;
-    let list = options.target.dataset.list;
+    let title = this.data.title;
+    let list = this.data.image;
 
     if (app.strlen(title) > 14 ) {
       title = title.substring(0,14) + '...';
@@ -116,5 +115,21 @@ Page({
       path: '/pages/view/view',
       imageUrl: list[0] + app.globalData.imageThumbnailParam
     }
+  },
+  // 图片点击事件
+  previewImage: function (event) {
+    console.log(event)
+    wx.navigateTo({
+      url: '../components/image_preview/image_preview?list=' + event.currentTarget.dataset.list + '&index=' + event.currentTarget.dataset.index
+    })
+    // var src = event.currentTarget.dataset.src;//获取data-src
+    // console.log(src)
+    // var imgList = event.currentTarget.dataset.list;//获取data-list
+    // console.log(imgList)
+    // //图片预览
+    // wx.previewImage({
+    //   current: src, // 当前显示图片的http链接
+    //   urls: imgList // 需要预览的图片http链接列表
+    // })
   },
 })

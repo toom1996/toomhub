@@ -1,78 +1,72 @@
 <!--pages/view/view.wxml-->
 <van-toast id="van-toast" />
 <view class="box">
-      <!-- operatingBar -->
-      <van-row>
-        <view class="post_box">
-          <view style="width:100%;padding-top: 30rpx;">
-            <!-- 头像和昵称 -->
-            <van-row class="top">
-              <van-col span="3">
-                <view class="top__avatar">
-                  <image src='{{ avatar_url }}'></image>
-                </view>
-              </van-col>
-              <van-col span="12">
-                <view style="overflow:hidden;width: 100%;overflow: hidden;text-overflow: ellipsis;">
-                  <text class="font__username">{{ created_by }}</text>
-                </view>
-                <text style="display:block;" class="font__time">{{ created_at }}</text>
-              </van-col>
-              <!-- <van-col span="4" offset="5">
+  <!-- operatingBar -->
+  <van-row>
+    <view class="post_box">
+      <view style="width:100%;padding-top: 30rpx;">
+        <!-- 头像和昵称 -->
+        <van-row class="top">
+          <van-col span="3">
+            <view class="top__avatar">
+              <image src='{{ avatar_url }}'></image>
+            </view>
+          </van-col>
+          <van-col span="12">
+            <view style="overflow:hidden;width: 100%;overflow: hidden;text-overflow: ellipsis;">
+              <text class="font__username">{{ created_by }}</text>
+            </view>
+            <text style="display:block;" class="font__time">{{ created_at }}</text>
+          </van-col>
+          <!-- <van-col span="4" offset="5">
                 <van-button color="#f5d56f" custom-style="color:#000000;" icon="plus" size="mini" round>关注</van-button>
               </van-col> -->
-            </van-row>
-            <!-- 文字内容 -->
-            <van-row>
-              <van-col span="24">
-                <view>
-                  <text class="__content">{{ content }}</text>
-                </view>
-              </van-col>
-            </van-row>
-            <!-- 附件 图片 视频 -->
-            <van-row>
-              <van-col span="24">
-                  <view wx:for="{{ image }}" wx:for-item="imageItem" wx:key="itemImageKey"
-                    wx:for-index="itemImageIndex">
-                      <image image-class="content-image" mode="widthFix" lazy-load error="加载失败"
-                        src="{{ imageItem.host + imageItem.name }}"
-                        data-src="{{ imageItem.host + imageItem.name }}" data-index="{{ itemImageIndex }}" style="width:100%" />
-                  </view>
-              </van-col>
-            </van-row>
-            <!-- 标签 -->
+        </van-row>
+        <!-- 文字内容 -->
+        <van-row>
+          <van-col span="24">
             <view>
-              <view wx:if="{{ tag != '' }}">
-                <van-tag round color="#fef5d8" text-color="#ce9d35" size="mini" custom-class="toomhub__square-tag">
-                  {{ tag }}
-                </van-tag>
-              </view>
-              <van-row>
-                <van-col span="24">
-                  <view class="operatingBar">
-                    <van-col span="4" style="height: 30px;line-height: 30px;">
-                      <iconfont style="float:left;vertical-align:middle;"
-                        catchtap="{{ likeHandle == true ? 'likeHandle' : '' }}" data-like="{{ is_like }}"
-                        data-index="{{ dataIndex }}" data-id="{{ id }}"
-                        name="{{ is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
-                      <text>{{ like_count }}</text>
-                    </van-col>
-                    <van-col span="4" offset="2" style="height: 30px;line-height: 30px;">
-                      <iconfont style="float:left;" name="toomhub-argument"></iconfont>
-                      <text>{{ argument_count }}</text>
-                    </van-col>
-                    <van-col span="4" offset="10" style="height: 30px;line-height: 30px;">
-                      <button open-type="share" class="share-button">
-                        <iconfont style="float:left;" name="toomhub-share"></iconfont>
-                        <text>分享</text>
-                      </button>
-                    </van-col>
-                  </view>
-                </van-col>
-              </van-row>
+              <text class="__content">{{ content }}</text>
             </view>
+          </van-col>
+        </van-row>
+        <!-- 附件 图片 视频 -->
+        <van-row>
+          <van-col span="24">
+            <view wx:for="{{ image }}" wx:for-item="imageItem" wx:key="itemImageKey" wx:for-index="itemImageIndex">
+              <image image-class="content-image" mode="widthFix" src="{{ imageItem.host + imageItem.name + imageItem.param }}" lazy-load error="加载失败" catchtap="previewImage" data-list="{{ list }}" data-index="{{ itemImageIndex }}" style="width:100%" />
+            </view>
+          </van-col>
+        </van-row>
+        <!-- 标签 -->
+        <view>
+          <view wx:if="{{ tag != '' }}">
+            <van-tag round color="#fef5d8" text-color="#ce9d35" size="mini" custom-class="toomhub__square-tag">
+              {{ tag }}
+            </van-tag>
           </view>
+          <van-row>
+            <van-col span="24">
+              <view class="operatingBar">
+                <van-col span="4" style="height: 30px;line-height: 30px;">
+                  <iconfont style="float:left;vertical-align:middle;" catchtap="{{ likeHandle == true ? 'likeHandle' : '' }}" data-like="{{ is_like }}" data-index="{{ dataIndex }}" data-id="{{ id }}" name="{{ is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
+                  <text>{{ like_count }}</text>
+                </van-col>
+                <van-col span="4" offset="2" style="height: 30px;line-height: 30px;">
+                  <iconfont style="float:left;" name="toomhub-argument"></iconfont>
+                  <text>{{ argument_count }}</text>
+                </van-col>
+                <van-col span="4" offset="10" style="height: 30px;line-height: 30px;">
+                  <button open-type="share" class="share-button">
+                    <iconfont style="float:left;" name="toomhub-share"></iconfont>
+                    <text>分享</text>
+                  </button>
+                </van-col>
+              </view>
+            </van-col>
+          </van-row>
         </view>
-      </van-row>
+      </view>
     </view>
+  </van-row>
+</view>

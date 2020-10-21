@@ -215,10 +215,12 @@ func GetSquareView(id int64) (interface{}, error) {
 
 	list, _ := util.JsonDecode(res[7].(string))
 	var tmp []interface{}
+	var tmpL []interface{}
 	dat := imageModel{}
-	for index, _ := range list {
+	for index := range list {
 		_ = mapstructure.Decode(list[index], &dat)
 		tmp = append(tmp, dat)
+		tmpL = append(tmpL, dat.Host+dat.Name)
 	}
 	createdBy, _ := rdb.HMGet(util.Ctx, util.UserCacheKey+res[1].(string), []string{"nick_name", "avatar_url"}...).Result()
 	intCreatedAt, _ := strconv.ParseInt(res[2].(string), 10, 64)
@@ -233,5 +235,6 @@ func GetSquareView(id int64) (interface{}, error) {
 		"like_count":     util.ToInt(res[4].(string)),
 		"argument_count": util.ToInt(res[5].(string)),
 		"collect_count":  util.ToInt(res[3].(string)),
+		"list":           tmpL,
 	}, nil
 }

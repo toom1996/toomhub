@@ -200,12 +200,13 @@ Page({
 
   //点赞处理函数
   likeHandle: function (e) {
+    console.log(e)
     this.setData({
       likeHandle: false
     })
 
     let newList = this.data.data;
-    let isLike = e.target.dataset.like;
+    let isLike = e.currentTarget.dataset.like;
     if (isLike === 0) {
       isLike = 1;
     } else {
@@ -213,17 +214,17 @@ Page({
     }
 
     app.httpClient.post(app.getApi('squareLike'), {
-      'id': e.target.dataset.id,
+      'id': e.currentTarget.dataset.id,
       'o': isLike,
       'page': this.data.page
     }).then(res => {
       let response = res.data
       if (response.code == 200) {
-        newList[e.target.dataset.index].is_like = isLike
+        newList[e.currentTarget.dataset.index].is_like = isLike
         if (isLike === 1) {
-          newList[e.target.dataset.index].like_count += 1
+          newList[e.currentTarget.dataset.index].like_count += 1
         } else {
-          newList[e.target.dataset.index].like_count -= 1
+          newList[e.currentTarget.dataset.index].like_count -= 1
         }
         this.setData({
           data: newList
