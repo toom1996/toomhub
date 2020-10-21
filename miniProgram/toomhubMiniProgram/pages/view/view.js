@@ -104,12 +104,14 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function (options) {
-    let title = this.data.title;
-    let list = this.data.image;
+    
+    let title = this.data.content;
+    let list = this.data.list;
 
     if (app.strlen(title) > 14 ) {
       title = title.substring(0,14) + '...';
     }
+    console.log(list)
     return {
       title: title,
       path: '/pages/view/view',
