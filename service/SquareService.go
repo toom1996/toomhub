@@ -1,6 +1,6 @@
 // @Description
 // @Author    2020/8/26 10:51
-package ServiceMiniV1
+package service
 
 import (
 	"encoding/json"
@@ -18,7 +18,6 @@ import (
 	"toomhub/util"
 )
 
-const SquareCacheKey = "square:id:"
 const SquareLikeKey = "square:like:"
 
 // @title
@@ -43,7 +42,7 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 	var commands []*redis.StringStringMapCmd
 
 	for _, v := range model {
-		commands = append(commands, pipe.HGetAll(util.Ctx, SquareCacheKey+fmt.Sprintf("%d", v.Id)))
+		commands = append(commands, pipe.HGetAll(util.Ctx, util.SquareCacheKey+fmt.Sprintf("%d", v.Id)))
 	}
 
 	_, _ = pipe.Exec(util.Ctx)
@@ -148,7 +147,7 @@ func SquareCreate(v *validatorRules.SquareCreate, image map[string]interface{}) 
 
 	imageJson, _ := json.Marshal(image)
 	//写入缓存
-	_, _ = util.Rdb.HMSet(util.Ctx, SquareCacheKey+fmt.Sprintf("%d", squareModel.Id), map[string]interface{}{
+	_, _ = util.Rdb.HMSet(util.Ctx, util.SquareCacheKey+fmt.Sprintf("%d", squareModel.Id), map[string]interface{}{
 		"id":             squareModel.Id,
 		"created_at":     squareModel.CreatedAt,
 		"created_by":     squareModel.CreatedBy,
@@ -199,4 +198,40 @@ func SquareCreate(v *validatorRules.SquareCreate, image map[string]interface{}) 
 	}
 
 	return true, nil
+}
+
+// @title 获取信息详情信息及热门评论
+func GetSquareView(id int64) (interface{}, error) {
+	type imageModel struct {
+		Ext   string `json:"ext"`
+		Name  string `json:"name"`
+		Param string `json:"param"`
+		Size  int64  `json:"size"`
+		Host  string `json:"host"`
+	}
+
+	rdb := util.Rdb
+	res, _ := rdb.HMGet(util.Ctx, util.SquareCacheKey+fmt.Sprintf("%d", id), []string{"content", "created_by", "created_at", "collect_count", "likes_count", "argument_count", "created_at", "image", "tag"}...).Result()
+
+	list, _ := util.JsonDecode(res[7].(string))
+	var tmp []interface{}
+	dat := imageModel{}
+	for index, _ := range list {
+		_ = mapstructure.Decode(list[index], &dat)
+		tmp = append(tmp, dat)
+	}
+	createdBy, _ := rdb.HMGet(util.Ctx, util.UserCacheKey+res[1].(string), []string{"nick_name", "avatar_url"}...).Result()
+	intCreatedAt, _ := strconv.ParseInt(res[2].(string), 10, 64)
+	createdAt := util.StrTime(intCreatedAt)
+	return gin.H{
+		"created_by":     createdBy[0],
+		"avatar_url":     createdBy[1],
+		"created_at":     createdAt,
+		"content":        res[0],
+		"image":          tmp,
+		"tag":            res[8],
+		"like_count":     util.ToInt(res[4].(string)),
+		"argument_count": util.ToInt(res[5].(string)),
+		"collect_count":  util.ToInt(res[3].(string)),
+	}, nil
 }

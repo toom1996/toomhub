@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	ServiceMiniV1 "toomhub/service/mini/v1"
+	"toomhub/service"
 	"toomhub/util"
 	"toomhub/validatorRules"
 )
@@ -18,7 +18,7 @@ type SquareLogic struct {
 // @title	获取图片广场信息
 func (logic *SquareLogic) SquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]interface{}, error) {
 
-	query, err := ServiceMiniV1.GetSquareIndex(validator, c)
+	query, err := service.GetSquareIndex(validator, c)
 
 	if err != nil {
 		fmt.Println("000000")
@@ -37,14 +37,14 @@ func (logic *SquareLogic) SquareCreate(validator *validatorRules.SquareCreate) (
 		fmt.Println(err)
 	}
 
-	_, _ = ServiceMiniV1.SquareCreate(validator, dat)
+	_, _ = service.SquareCreate(validator, dat)
 
 	return true, nil
 }
 
 func (logic *SquareLogic) SquareLike(validator *validatorRules.LikeValidator) (bool, error) {
-	likeKey := ServiceMiniV1.SquareLikeKey + fmt.Sprintf("%d", validator.Id)
-	SquareKey := ServiceMiniV1.SquareCacheKey + fmt.Sprintf("%d", validator.Id)
+	likeKey := service.SquareLikeKey + fmt.Sprintf("%d", validator.Id)
+	SquareKey := util.SquareCacheKey + fmt.Sprintf("%d", validator.Id)
 	ctx := util.Ctx
 	//先验证redisKey是否存在
 	r, err := util.Rdb.Exists(util.Ctx, likeKey).Result()
@@ -88,5 +88,12 @@ func (logic *SquareLogic) SquareLike(validator *validatorRules.LikeValidator) (b
 }
 
 func (logic *SquareLogic) SquareView(validator *validatorRules.View) (interface{}, error) {
-	return gin.H{}, nil
+
+	query, err := service.GetSquareView(validator.Id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return query, nil
 }

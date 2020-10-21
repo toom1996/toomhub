@@ -3,8 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"toomhub/controllers/common"
-	ControllersMiniV1 "toomhub/controllers/mini/v1"
+	"toomhub/controllers"
 	"toomhub/util"
 )
 
@@ -33,7 +32,7 @@ func main() {
 
 //路由设置
 func registerRouter(router *gin.Engine) {
-	new(ControllersMiniV1.UserController).Register(router)
-	new(ControllersMiniV1.SquareController).Register(router)
-	new(common.ImageController).Register(router)
+	new(controllers.UserController).Register(router)
+	new(controllers.SquareController).Register(router)
+	new(controllers.ImageController).Register(router)
 }

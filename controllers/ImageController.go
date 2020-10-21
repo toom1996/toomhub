@@ -1,6 +1,6 @@
 // @Description
 // @Author    2020/8/27 15:27
-package common
+package controllers
 
 import (
 	"fmt"

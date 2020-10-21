@@ -26,7 +26,7 @@
   -webkit-flex: 1%;
   flex: 1;
   font-size: 80%;
-  /* margin: 30rpx 0rpx 30rpx 0rpx; */
+  margin: 30rpx 0rpx 30rpx 0rpx;
 }
 
 .post_box .__attach {

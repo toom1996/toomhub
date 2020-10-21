@@ -50,7 +50,7 @@ Page({
   },
   viewHandle(event) {
     wx.navigateTo({
-      url: '../view/view?list=' + event.currentTarget.dataset.list
+      url: '../view/view?id=' + event.currentTarget.dataset.id
     })
   },
   emptyHandle() {

@@ -1,6 +1,6 @@
 // @Description
 // @Author    2020/8/19 15:59
-package ControllersMiniV1
+package controllers
 
 import (
 	"encoding/json"

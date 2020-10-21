@@ -1,5 +1,5 @@
 var api = {
-  requestHost: 'https://toomhub.23cm.cn', //hhttps://ost
+  requestHost: 'http://192.168.10.113:8080', //hhttps://ost
   tokenCheck: '/v1/mini/user/token-checker', //token过期验证
   squareIndex: '/v1/mini/sq/index', //说说首页
   squareCreate: '/v1/mini/sq/create', //发布一条说说
@@ -8,6 +8,7 @@ var api = {
   getSession: '/v1/mini/user/get-session', //获取小程序session
   login: '/v1/mini/user/login', //用户登陆
   getUserInfo: '/v1/mini/user/get-info', //刷新用户粉丝数点赞数啥的
+  getView: '/v1/mini/sq/view',
 }
 
 module.exports.api = api;

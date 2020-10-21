@@ -1,7 +1,9 @@
 {
-  "usingComponents": {},
-    "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "asdasdsa",
-    "navigationBarTextStyle": "black"
+  "usingComponents": {
+    "van-toast": "@vant/weapp/toast/index"
+  },
+  "backgroundTextStyle": "dark",
+  "navigationBarBackgroundColor": "#fff",
+  "navigationBarTitleText": "asdasdsa",
+  "navigationBarTextStyle": "black"
 }

@@ -1,6 +1,6 @@
 // @Description
 // @Author    2020/8/26 9:18
-package ControllersMiniV1
+package controllers
 
 import (
 	"encoding/json"
@@ -25,6 +25,7 @@ type SquareController struct {
 //当前控制器注册的路由
 func (square *SquareController) Register(engine *gin.Engine) {
 
+	//绑定自定义验证器
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		_ = v.RegisterValidation("countValidate", validatorRules.CountValidate)
 	}
@@ -32,7 +33,10 @@ func (square *SquareController) Register(engine *gin.Engine) {
 	user := engine.Group("/v1/mini/sq")
 	// 广场首页接口
 	user.GET("/index", square.index)
+	//详情页面接口
 	user.GET("/view", square.view)
+
+	//中间件
 	user.Use(v1MiniMiddleware.CheckIdentity())
 	{
 		// 发布一条广场信息
@@ -240,7 +244,7 @@ func (square *SquareController) Like(Context *gin.Context) {
 func (square *SquareController) view(Context *gin.Context) {
 
 	formValidator := validatorRules.View{}
-	err := Context.ShouldBind(&formValidator)
+	err := Context.BindQuery(&formValidator)
 
 	if err != nil {
 		Context.JSON(http.StatusOK, gin.H{
@@ -251,7 +255,7 @@ func (square *SquareController) view(Context *gin.Context) {
 	}
 
 	logic := LogicMiniV1.SquareLogic{}
-	_, err = logic.SquareView(&formValidator)
+	query, err := logic.SquareView(&formValidator)
 
 	if err != nil {
 		Context.JSON(http.StatusOK, gin.H{
@@ -264,6 +268,7 @@ func (square *SquareController) view(Context *gin.Context) {
 	Context.JSON(http.StatusOK, gin.H{
 		"code":    200,
 		"message": "OK",
+		"data":    query,
 	})
 
 	return

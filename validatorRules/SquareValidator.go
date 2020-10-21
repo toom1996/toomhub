@@ -34,7 +34,7 @@ type LikeValidator struct {
 
 // @title 浏览详情内容结数据验证结构体
 type View struct {
-	Id int64 `json:"id" from:"id" binding:"required"`
+	Id int64 `json:"id" form:"id" binding:"required"`
 }
 
 //图片数量验证

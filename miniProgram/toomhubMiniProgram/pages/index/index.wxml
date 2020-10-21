@@ -37,7 +37,7 @@
     <view class="box">
       <!-- operatingBar -->
       <van-row>
-        <view class="post_box" bindtap="viewHandle" data-list="{{ item.list }}">
+        <view class="post_box" bindtap="viewHandle" data-id="{{ item.id }}">
           <view style="width:100%;padding-top: 30rpx;">
             <!-- 头像和昵称 -->
             <van-row class="top">
@@ -89,11 +89,9 @@
               <van-row>
                 <van-col span="24">
                   <view class="operatingBar">
-                    <van-col span="4" style="height: 30px;line-height: 30px;">
-                      <iconfont style="float:left;vertical-align:middle;"
-                        catchtap="{{ likeHandle == true ? 'likeHandle' : '' }}" data-like="{{ item.is_like }}"
-                        data-index="{{ dataIndex }}" data-id="{{ item.id }}"
-                        name="{{ item.is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
+                    <van-col span="4" style="height: 30px;line-height: 30px;" catchtap="{{ likeHandle == true ? 'likeHandle' : '' }}" data-like="{{ item.is_like }}"
+                        data-index="{{ dataIndex }}" data-id="{{ item.id }}">
+                      <iconfont style="float:left;vertical-align:middle;" ></iconfont>
                       <text>{{ item.like_count }}</text>
                     </van-col>
                     <van-col span="4" offset="2" style="height: 30px;line-height: 30px;">
