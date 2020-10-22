@@ -8,6 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    likeHandle: true, //是否加载点赞处理器, 防止连续点击出现问题
     avatar_url: '',
     created_by: '',
     created_at: '',
@@ -50,6 +51,8 @@ Page({
         collect_count: response.collect_count,
         like_count: response.like_count,
         list: response.list,
+        id: response.id,
+        is_like: response.is_like
       })
     })
 
@@ -111,10 +114,10 @@ Page({
     if (app.strlen(title) > 14 ) {
       title = title.substring(0,14) + '...';
     }
-    console.log(list)
+    console.log('/pages/view/view?id=' + this.data.id)
     return {
       title: title,
-      path: '/pages/view/view',
+      path: '/pages/view/view?id=' + this.data.id,
       imageUrl: list[0] + app.globalData.imageThumbnailParam
     }
   },
@@ -134,4 +137,55 @@ Page({
     //   urls: imgList // 需要预览的图片http链接列表
     // })
   },
+
+  //点赞处理函数
+  likeHandle: function (e) {
+    console.log(e)
+    this.setData({
+      likeHandle: false
+    })
+
+    let likeCount = this.data.like_count;
+    let isLike = e.currentTarget.dataset.like;
+    if (isLike === 0) {
+      isLike = 1;
+    } else {
+      isLike = 0;
+    }
+
+    app.httpClient.post(app.getApi('squareLike'), {
+      'id': e.currentTarget.dataset.id,
+      'o': isLike,
+    }).then(res => {
+      let response = res.data
+      if (response.code == 200) {
+        this.setData({
+          is_like: isLike
+        })
+        if (isLike === 1) {
+          likeCount += 1
+        } else {
+          likeCount -= 1
+        }
+        this.setData({
+          like_count: likeCount
+        })
+        wx.showToast({
+          title: '操作成功',
+          icon: 'none',
+          duration: 1000,
+        })
+      } else if (response.code != 401) {
+        wx.showToast({
+          title: '操作失败',
+          icon: 'none',
+          duration: 1000,
+        })
+      }
+      console.log('set like handle')
+      this.setData({
+        likeHandle: true
+      })
+    })
+  }
 })

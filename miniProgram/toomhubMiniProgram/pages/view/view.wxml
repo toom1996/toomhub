@@ -4,7 +4,7 @@
   <!-- operatingBar -->
   <van-row>
     <view class="post_box">
-      <view style="width:100%;padding-top: 30rpx;">
+      <view style="width:100%;padding-top: 15rpx;">
         <!-- 头像和昵称 -->
         <van-row class="top">
           <van-col span="3">
@@ -25,7 +25,7 @@
         <!-- 文字内容 -->
         <van-row>
           <van-col span="24">
-            <view>
+            <view style="padding-bottom:30rpx">
               <text class="__content">{{ content }}</text>
             </view>
           </van-col>
@@ -48,10 +48,11 @@
           <van-row>
             <van-col span="24">
               <view class="operatingBar">
-                <van-col span="4" style="height: 30px;line-height: 30px;">
-                  <iconfont style="float:left;vertical-align:middle;" catchtap="{{ likeHandle == true ? 'likeHandle' : '' }}" data-like="{{ is_like }}" data-index="{{ dataIndex }}" data-id="{{ id }}" name="{{ is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
-                  <text>{{ like_count }}</text>
-                </van-col>
+                <van-col span="4" style="height: 30px;line-height: 30px;" catchtap="{{ likeHandle == true ? 'likeHandle' : '' }}" data-like="{{ is_like }}" data-id="{{ id }}">
+                      <iconfont style="float:left;vertical-align:middle;"
+                        name="{{ is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
+                      <text>{{ like_count }}</text>
+                    </van-col>
                 <van-col span="4" offset="2" style="height: 30px;line-height: 30px;">
                   <iconfont style="float:left;" name="toomhub-argument"></iconfont>
                   <text>{{ argument_count }}</text>

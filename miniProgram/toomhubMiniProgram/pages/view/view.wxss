@@ -87,3 +87,16 @@
 button::after{
   border: none;
 }
+
+.operatingBar {
+  /* border-top:1rpx solid  #ccc!important; */
+  background-color: white;
+  height: 50rpx;
+  text-align: center;
+  line-height: 50rpx;
+  padding: 20rpx 0rpx 30rpx 0rpx;
+}
+
+.operatingBar text {
+  font-size: x-small
+}

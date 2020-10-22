@@ -87,9 +87,9 @@ func (logic *SquareLogic) SquareLike(validator *validatorRules.LikeValidator) (b
 	return true, nil
 }
 
-func (logic *SquareLogic) SquareView(validator *validatorRules.View) (interface{}, error) {
+func (logic *SquareLogic) SquareView(validator *validatorRules.View, c *gin.Context) (interface{}, error) {
 
-	query, err := service.GetSquareView(validator.Id)
+	query, err := service.GetSquareView(validator.Id, c)
 
 	if err != nil {
 		return nil, err

@@ -201,7 +201,7 @@ func SquareCreate(v *validatorRules.SquareCreate, image map[string]interface{}) 
 }
 
 // @title 获取信息详情信息及热门评论
-func GetSquareView(id int64) (interface{}, error) {
+func GetSquareView(id int64, c *gin.Context) (interface{}, error) {
 	type imageModel struct {
 		Ext   string `json:"ext"`
 		Name  string `json:"name"`
@@ -211,7 +211,7 @@ func GetSquareView(id int64) (interface{}, error) {
 	}
 
 	rdb := util.Rdb
-	res, _ := rdb.HMGet(util.Ctx, util.SquareCacheKey+fmt.Sprintf("%d", id), []string{"content", "created_by", "created_at", "collect_count", "likes_count", "argument_count", "created_at", "image", "tag"}...).Result()
+	res, _ := rdb.HMGet(util.Ctx, util.SquareCacheKey+fmt.Sprintf("%d", id), []string{"content", "created_by", "created_at", "collect_count", "likes_count", "argument_count", "created_at", "image", "tag", "id"}...).Result()
 
 	list, _ := util.JsonDecode(res[7].(string))
 	var tmp []interface{}
@@ -225,6 +225,24 @@ func GetSquareView(id int64) (interface{}, error) {
 	createdBy, _ := rdb.HMGet(util.Ctx, util.UserCacheKey+res[1].(string), []string{"nick_name", "avatar_url"}...).Result()
 	intCreatedAt, _ := strconv.ParseInt(res[2].(string), 10, 64)
 	createdAt := util.StrTime(intCreatedAt)
+	uid := 0
+	//判断浏览首页的用户是否登录
+	token := c.GetHeader("Toomhub-Token")
+	if token != "" {
+		r, _ := util.ParseToken(c.GetHeader("Toomhub-Token"), c)
+		uid = int(r.MiniId)
+	}
+	isLikeRes, err := rdb.HMGet(util.Ctx, util.SquareLikeKey+res[9].(string), fmt.Sprintf("%d", uid)).Result()
+	fmt.Println(util.SquareLikeKey + res[9].(string))
+	fmt.Println(fmt.Sprintf("%d", uid))
+	fmt.Println(isLikeRes)
+	if err != nil {
+		fmt.Println(err)
+	}
+	isLike := 0
+	if len(isLikeRes) == 1 && isLikeRes[0] == "1" {
+		isLike = 1
+	}
 	return gin.H{
 		"created_by":     createdBy[0],
 		"avatar_url":     createdBy[1],
@@ -236,5 +254,7 @@ func GetSquareView(id int64) (interface{}, error) {
 		"argument_count": util.ToInt(res[5].(string)),
 		"collect_count":  util.ToInt(res[3].(string)),
 		"list":           tmpL,
+		"id":             res[9],
+		"is_like":        isLike,
 	}, nil
 }

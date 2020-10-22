@@ -30,6 +30,7 @@ App({
         this.globalData.navHeight = navHeight;
         this.globalData.navTop = navTop;        //navTop
         this.globalData.windowHeight = res.windowHeight;
+        this.globalData.windowWidth = res.windowWidth;
       },
       fail(err) {
         console.log(err);

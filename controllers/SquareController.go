@@ -255,7 +255,7 @@ func (square *SquareController) view(Context *gin.Context) {
 	}
 
 	logic := LogicMiniV1.SquareLogic{}
-	query, err := logic.SquareView(&formValidator)
+	query, err := logic.SquareView(&formValidator, Context)
 
 	if err != nil {
 		Context.JSON(http.StatusOK, gin.H{
