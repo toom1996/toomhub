@@ -8,7 +8,6 @@ App({
     
     //初始化用户信息
     let userInfo = wx.getStorageSync('userInfo');
-    console.log(userInfo)
     if (userInfo !== '') {
       //赋值
       this.globalData.userInfo = userInfo
@@ -33,7 +32,6 @@ App({
         this.globalData.windowWidth = res.windowWidth;
       },
       fail(err) {
-        console.log(err);
       }
     })
   },
@@ -56,7 +54,6 @@ App({
             'Toomhub-Token': wx.getStorageSync('userInfo').token != undefined ? wx.getStorageSync('userInfo').token :''
           },
           success: (res) => {
-            console.log(res)
             if (res.data.code == 401) {
               wx.navigateTo({
                 url: '/pages/login/login'
@@ -68,7 +65,6 @@ App({
             reject(res)
           },
           complete(res) {
-            console.log('1223143234')
           }
         })
       })
@@ -82,26 +78,11 @@ App({
   },
   //判断用户是否登陆, 未登陆则跳转到登陆界面
   isLogin:function () {
-    console.log(this.globalData.userInfo)
     if (this.globalData.userInfo == null) {
       wx.navigateTo({
         url: '/pages/login/login'
       })
     }
-    // wx.checkSession({
-    //   success() {
-    //     console.log('success')
-    //     return true;
-    //     //session_key 未过期，并且在本生命周期一直有效
-    //   },
-    //   fail() {
-    //     console.log('fail')
-    //     wx.navigateTo({
-    //       url: '/pages/login/login'
-    //     })
-    //     return false;
-    //   }
-    // }) 
   },
 
   //跳转到登陆页面
@@ -120,12 +101,10 @@ App({
 
   //设置缓存
   setCache: function(key, value) {
-    console.log(key)
-    console.log(value)
-    console.log(wx.setStorage({
+    wx.setStorage({
       key: key,
       data: value,
-    }))
+    })
   },
   //设置验证定时器
   setTokenCheckTimer: function () {
@@ -140,7 +119,6 @@ App({
   //验证token接口
   tokenRefresh: function () {
     let p = this.globalData.userInfo;
-    console.log(p)
     this.httpClient.post(toomhubApi.tokenCheck, {
       token: p.token,
       r: p.refreshToken
@@ -149,7 +127,6 @@ App({
           this.redirectToLogin();
         }
     })
-    console.log('refreshToken')
   },
 
   //获取api

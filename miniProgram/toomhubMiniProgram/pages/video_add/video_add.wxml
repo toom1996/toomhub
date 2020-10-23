@@ -1,0 +1,54 @@
+
+<block wx:if="{{ userInfo.MiniId ==  123162}}">
+  <view class="box">
+  <view class="head-read">
+  <view class="flex">
+    <view class="read-img">
+      <image class="userinfo-avatar" src="{{userInfo === null ? '/static/avatar/defaultAvatar.jpg': userInfo.avatar_url }}" mode="cover"></image>
+    </view>
+    <view class="flex-box">
+      <van-row>
+        <van-col span="12">
+          <text class="h2">{{ userInfo.nick_name }}</text>
+        </van-col>
+      </van-row>
+    </view>
+    <view class="arrow arrow-one">
+      <van-button round color="#ED3333" size="mini" bindtap="send">发布</van-button>
+    </view>
+  </view>
+</view>
+  <view hidden="{{ content_show }}">
+  <van-cell-group>
+    <van-field maxlength="255" show-word-limit bind:input="conetentHandel" autosize="{{autosize}}" value="" type="textarea" placeholder="🐂说点什么吧..." border="{{ false }}" />
+  </van-cell-group>
+  </view>
+  <van-row>
+      <!-- 图片 -->
+      <van-uploader accept="video" file-list="{{ imageList }}" max-count="9" multiple bind:after-read="afterRead" bind:delete="imageDelete" upload-icon="add-o" />
+  </van-row>
+  <van-cell title="标签" icon="flag-o" title-style="font-weight: bold;" custom-class="meCell" title-class="myTitle" value-class="myValue" >
+  <view wx:if="{{ tag == '' }}" bindtap="onTagAddDialogShow">
+    <text>不写点啥吗~</text>
+    </view>
+  <view wx:else>
+  <van-tag round color="rgb(255,245,213)" text-color="rgb(214,158,5)"  size="large" closeable custom-class="toomhub__tag" bind:close="onClose">
+        <van-icon name="label-o" color="rgb(254,205,51)" custom-style="margin-right:10rpx" /><view class="tagBox" bindtap="onTagAddDialogShow">{{ tag }}</view>
+      </van-tag>
+      </view>
+    <van-icon slot="right-icon" name="arrow" class="custom-icon" bindtap="onTagAddDialogShow"  />
+</van-cell>
+
+  <!-- 标签 -->
+  <van-popup show="{{ tagShow }}" close-icon-position="top-left" round duration="{{200}}" position="bottom" custom-style="height: 90%;" closeable bind:close="onTagAddDialogClose">
+  <van-button round color="#ED3333" size="mini" bindtap="send" custom-style="top:var(--popup-close-icon-margin,14px);right:var(--popup-close-icon-margin,16px);float:right;" bindtap="tagClick" data-value="{{ tag }}">确定</van-button>
+  <view style="padding-top:80rpx">
+    <van-search value="{{ tag }}" placeholder="请输入搜索关键词" bind:change="onChange" />
+  </view>
+  <view wx:for="{{ tagList }}" wx:for-item="tagListItem">
+        <van-cell title="{{ tagListItem.Member }}" size="large" bindtap="tagClick" data-value="{{ tagListItem.Member }}" value="约{{tagListItem.Score}}人参与" />
+      </view>
+  </van-popup>
+  <van-toast id="van-toast" />
+</view>
+</block>

@@ -2,14 +2,14 @@
 <view class="navbar custom-class" style='height:{{navHeight + 40}}px;'>
   <view class="navbar-action-wrap navbar-action-group row item-center" style='top:{{navTop}}px;'>
   </view>
-  <view class='navbar-title' style='top:{{navTop}}px'>
+  <!-- <view class='navbar-title' style='top:{{navTop}}px'>
     <view class="search-input">
       <span class="search-con">
         <view class="search-name" bindtap="chooseValue" data-inputvalue="{{postname}}">{{postname}}</view>
 
       </span>
     </view>
-  </view>
+  </view> -->
   <van-tabs active="{{ active }}" bind:change="onChange" style='--toomhub__tabs-top:{{navTop + 30}}px;'
     border="{{ false }}" color="#fad55a" custom-class="toom__tag" active="finder">
     <van-tab title="发现" name="finder"></van-tab>
@@ -99,7 +99,7 @@
                       <text>{{ item.argument_count }}</text>
                     </van-col>
                     <van-col span="4" offset="10" style="height: 30px;line-height: 30px;" catchtap="emptyHandle">
-                      <button open-type="share" class="share-button" data-title="{{ item.content }}" data-list="{{ item.list }}">
+                      <button open-type="share" class="share-button" data-title="{{ item.content }}" data-list="{{ item.list }}" data-id="{{ item.id }}">
                         <iconfont style="float:left;" name="toomhub-share"></iconfont>
                         <text>分享</text>
                       </button>
@@ -114,4 +114,14 @@
     </view>
   </view>
   <view class="loading">{{ loadingText }}</view>
+  <van-action-sheet
+    show="{{ show }}"
+    actions="{{ actions }}"
+    cancel-text="取消"
+    bind:cancel="sheetOnCancleHandle"
+    bind:close="sheetOnCloseHandle"
+    catchtouchmove
+    bind:select="SheetSelectHandle"
+    close-on-click-overlay="{{ true }}"
+  />
 </scroll-view>

@@ -13,13 +13,15 @@ Page({
   onShareAppMessage: function (options) {
     let title = options.target.dataset.title;
     let list = options.target.dataset.list;
+    let id = options.target.dataset.id;
 
     if (app.strlen(title) > 14) {
       title = title.substring(0, 14) + '...';
     }
+
     return {
       title: title,
-      path: '/pages/view/view',
+      path: '/pages/view/view?id=' + id,
       imageUrl: list[0] + app.globalData.imageThumbnailParam
     }
   },
@@ -35,7 +37,12 @@ Page({
     likeHandle: true, //是否加载点赞处理器, 防止连续点击出现问题
     page: 1, //上拉页码
     loadingText: "正在加载更多....", //上拉加载文字
-    showPubButtom: false
+    showPubButtom: false,
+    show: false,
+    actions: [
+      { name: '发图片', openType: 'imageAddHandle' },
+      { name: '发视频', openType: 'videoAddHandle' },
+    ],
   },
   navigationSwitch: function (event) {
     wx.navigateTo({
@@ -56,60 +63,71 @@ Page({
   emptyHandle() {
 
   },
+  sheetOnCancleHandle() {
+    this.setData({
+      show: false
+    })
+  },
+  sheetOnCloseHandle() {
+    this.setData({
+      show: false
+    })
+  },
   onLoad: function () {
     let that = this
-    wx.getSystemInfo({
-      success: function (res) {
-        var scrollViewHeight = 750 * res.windowHeight / res.windowWidth; //rpx
-        console.log(res.windowWidth)
-        var scrollTop = res.windowWidth * 400 / 750; //矢量转换后的高度
-        that.setData({
-          scrollViewHeight: scrollViewHeight,
-          scrollTop: scrollTop,
-          fixedTop: false
-        });
-      }
-    });
     this.setData({ 'viewData.style': myStyle + '40px;' })
     this.refreshIndex(1, true);
   },
   getUserInfo: function (e) {
-    console.log(e)
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
   },
-  addHandle: function () {
+  SheetSelectHandle(event) {
+    console.log(event)
+    let openType = event.detail.openType;
+    switch (openType) {
+      case "imageAddHandle":
+        this.imageAddHandle();
+        break;
+      case "videoAddHandle":
+        this.videoAddHandle();
+        break;
+    }
+  },
+  //发图片点击事件
+  imageAddHandle () {
     wx.navigateTo({
-      url: '../square_add/square_add'
+      url: '../image_add/image_add'
+    })
+  },
+  //发布按钮点击事件
+  addHandle: function () {
+    this.setData({
+      show: true
+    })
+  },
+  videoAddHandle () {
+    wx.navigateTo({
+      url: '../video_add/video_add'
     })
   },
   // 图片点击事件
   previewImage: function (event) {
-    console.log('212112')
     wx.navigateTo({
       url: '../components/image_preview/image_preview?list=' + event.currentTarget.dataset.list + '&index=' + event.currentTarget.dataset.index
     })
-    // var src = event.currentTarget.dataset.src;//获取data-src
-    // console.log(src)
-    // var imgList = event.currentTarget.dataset.list;//获取data-list
-    // console.log(imgList)
-    // //图片预览
-    // wx.previewImage({
-    //   current: src, // 当前显示图片的http链接
-    //   urls: imgList // 需要预览的图片http链接列表
-    // })
   },
+  //滑动到底部刷新事件
   onReachBottom: function () {
-    console.log('000000')
     this.refreshIndex(this.data.page);
   },
 
   onRestore(e) {
-    console.log('onRestore:', e)
   },
+  //页面数据刷新函数
   refreshIndex: function (page, refresh) {
     this.setData({
       skeletonShow: false
@@ -119,7 +137,6 @@ Page({
     }
     //下拉刷新
     if (refresh === true) {
-      console.log("sdfsdsf")
       this.setData({
         skeletonShow: true,
         data: [],
@@ -129,7 +146,6 @@ Page({
     }
     //请求首页接口
     app.httpClient.get(app.getApi('squareIndex') + '?page=' + page).then(res => {
-
       if (res.data.code == 200) {
         if (res.data.data.count == 0) {
           this.setData({
@@ -151,14 +167,11 @@ Page({
             skeletonShow: false,
           })
         }
-
       }
-
-
     })
   },
+  //下拉刷新接口
   onPullDownRefresh: function () {
-    console.log('onPullDownRefresh')
     this.refreshIndex(1, true);
     wx.stopPullDownRefresh();
   },
@@ -177,17 +190,6 @@ Page({
       }
     }
   },
-  goBack: function () {
-    let pages = getCurrentPages();   //获取小程序页面栈
-    let beforePage = pages[pages.length - 2];  //获取上个页面的实例对象
-    beforePage.setData({      //直接修改上个页面的数据（可通过这种方式直接传递参数）
-      txt: '修改数据了'
-    })
-    beforePage.goUpdate();   //触发上个页面自定义的go_update方法
-    wx.navigateBack({         //返回上一页  
-      delta: 1
-    })
-  },
   /**
    * 获取顶部固定高度
    */
@@ -200,7 +202,6 @@ Page({
 
   //点赞处理函数
   likeHandle: function (e) {
-    console.log(e)
     this.setData({
       likeHandle: false
     })
@@ -241,7 +242,6 @@ Page({
           duration: 1000,
         })
       }
-      console.log('set like handle')
       this.setData({
         likeHandle: true
       })

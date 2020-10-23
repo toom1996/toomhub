@@ -32,7 +32,6 @@ Page({
     this.setData({
       imageList: options.list.split(",")
     })
-    console.log(this.data.imageList)
     for (let i = 0; i < this.data.imageList.length; i++) {
       image.push('');
       loaded.push({});
@@ -76,7 +75,6 @@ Page({
     })
   },
   imageLoadedHandle(event) {
-    console.log(event)
     let loadedIndex = event.currentTarget.dataset.index;
     let tmp = this.data.loadedImageList;
     let height = event.detail.height;
@@ -91,11 +89,9 @@ Page({
     this.setData({
       loadedImageList: tmp
     });
-    console.log(this.data.loadedImageList)
   },
   //长按事件, 抑制退出事件触发
   imageLongTapHandle() {
-    console.log(121211)
     this.setData({
       flag: true,
     })
@@ -114,7 +110,6 @@ Page({
   },
 
   onSelect(event) {
-    console.log(event.detail);
   },
 
   imageClickHandle() {
@@ -149,7 +144,6 @@ Page({
       image[swiperIndex + 1] = this.data.imageList[swiperIndex + 1];
       loaded[swiperIndex + 1]['is_load'] = 1;
     }
-    console.log(loaded)
     this.setData({
       image: image,
       loadedImageList: loaded

@@ -1,6 +1,5 @@
 const app = getApp()
 
-// pages/square_add/square_add.js
 import Toast from '../../miniprogram_npm/@vant/weapp/toast/toast';
 Page({
 
@@ -36,7 +35,6 @@ Page({
 
   //显示添加标签的dialog
   onTagAddDialogShow() {
-    console.log('onTagAddDialogShow')
     this.setData({
       // content_show: true,
       tagShow: true,
@@ -58,7 +56,6 @@ Page({
   },
   //显示添加标签的dialog
   onTagAddDialogClose() {
-    console.log('onTagAddDialogClose');
     this.setData({
       // content_show: false,
       tagShow: false,
@@ -66,7 +63,6 @@ Page({
   },
 
   tagClick(event) {
-    console.log(event.currentTarget.dataset)
     this.setData({
       tag: event.currentTarget.dataset.value
     });
@@ -78,7 +74,6 @@ Page({
 
   //上传图片触发事件
   afterRead(event) {
-    console.log('所有文件', event.detail.file)
     let list = event.detail.file;
     for (let i = 0; i < list.length; i++) {
       if (list[i].size > 1024 * 1024) {
@@ -116,21 +111,17 @@ Page({
         //   }
         // })
 
-        console.log(baseData)
-
         let uploadTask = wx.uploadFile({
           url: app.getApi('requestHost') + '/c/image/upload',
           filePath: item.path,
           name: 'file',
           success: (res) => {
-            console.log(res)
             try{
               let data = JSON.parse(res.data)
               if (res.statusCode == 200 && data.code == 200) {
                 //上传成功后更换空图的内容
-                console.log(data.data)
                 let tmp = _this.data.imageList
-                tmp[index - 1].url = data.data.url;
+                tmp[index - 1].url = item.path//data.data.url;
                 tmp[index - 1].deletable = true;
                 tmp[index - 1].status = 'done'
                 tmp[index - 1].message = '0%'
@@ -216,7 +207,6 @@ Page({
           }
         })
       }
-      console.log(11111111)
     })
   },
 
@@ -242,7 +232,6 @@ Page({
     wx.getStorage({
       key: 'userInfo',
       success (res) {
-      console.log(res.data)
       }
       })
     if (app.globalData.userInfo) {

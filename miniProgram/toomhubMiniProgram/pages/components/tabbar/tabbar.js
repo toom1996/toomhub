@@ -14,10 +14,8 @@ Component({
   },
   // 组件生命周期：一打开页面就执行
   attached:function (){
-    console.log('tabbar')
     let pages = getCurrentPages()
     let currentPages = pages[pages.length - 1]
-    console.log('currentpages', currentPages.route);
     this.setData({
       active: currentPages.route
     })
@@ -27,7 +25,6 @@ Component({
    */
   methods: {
     navigationSwitch:function (event) {
-      console.log('event.detail', event.detail)
       wx.reLaunch({
         url: '/' + event.detail,
       })

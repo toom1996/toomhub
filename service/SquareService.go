@@ -217,8 +217,8 @@ func GetSquareView(id int64, c *gin.Context) (interface{}, error) {
 	var tmp []interface{}
 	var tmpL []interface{}
 	dat := imageModel{}
-	for index := range list {
-		_ = mapstructure.Decode(list[index], &dat)
+	for t := 0; t < len(list); t++ {
+		_ = mapstructure.Decode(list[fmt.Sprintf("%d", t)], &dat)
 		tmp = append(tmp, dat)
 		tmpL = append(tmpL, dat.Host+dat.Name)
 	}

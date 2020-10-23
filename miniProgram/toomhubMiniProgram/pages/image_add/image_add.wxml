@@ -1,4 +1,4 @@
-<!--pages/square_add/square_add.wxml-->
+
 <block wx:if="{{ userInfo.MiniId ==  123162}}">
   <view class="box">
   <view class="head-read">

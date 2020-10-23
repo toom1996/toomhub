@@ -26,7 +26,6 @@ Page({
             if (res.code == 200 && res.errcode == 0) {
               wx.getUserInfo({
                 success: function (userinfo) {
-                  console.log(userinfo)
                   app.httpClient.post(app.getApi('login'), {
                     rawData: userinfo.rawData,
                     signature: userinfo.signature,
@@ -36,7 +35,6 @@ Page({
                   }).then(res => {
                     //登陆成功后缓存token, refreshToken, nickname
                     let info = res.data.data
-                    console.log(info)
                     app.setCache('userInfo', info)
                     app.globalData.userInfo = info
                     wx.hideToast();
@@ -48,7 +46,6 @@ Page({
                 }
               })
             } else {
-              console.log(res.message)
             }
           })
         }
@@ -63,7 +60,6 @@ Page({
         success: function (res) {
           // 用户没有授权成功，不需要改变 isHide 的值
           if (res.confirm) {
-            console.log('用户点击了“返回授权”');
           }
         }
       });

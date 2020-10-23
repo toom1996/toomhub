@@ -24,7 +24,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options)
     let id = options.id
     wx.showLoading({
       title: '加载中...',
@@ -33,13 +32,11 @@ Page({
       title: '详情',
     })
     app.httpClient.get(app.getApi('getView') + '?id=' + id).then(res => {
-      console.log(res.data.code)
       if (res.data.code == 200) {
         wx.hideLoading();
       }
 
       let response = res.data.data;
-      console.log(response)
       this.setData({
         avatar_url: response.avatar_url,
         created_by: response.created_by,
@@ -114,7 +111,6 @@ Page({
     if (app.strlen(title) > 14 ) {
       title = title.substring(0,14) + '...';
     }
-    console.log('/pages/view/view?id=' + this.data.id)
     return {
       title: title,
       path: '/pages/view/view?id=' + this.data.id,
@@ -123,24 +119,13 @@ Page({
   },
   // 图片点击事件
   previewImage: function (event) {
-    console.log(event)
     wx.navigateTo({
       url: '../components/image_preview/image_preview?list=' + event.currentTarget.dataset.list + '&index=' + event.currentTarget.dataset.index
     })
-    // var src = event.currentTarget.dataset.src;//获取data-src
-    // console.log(src)
-    // var imgList = event.currentTarget.dataset.list;//获取data-list
-    // console.log(imgList)
-    // //图片预览
-    // wx.previewImage({
-    //   current: src, // 当前显示图片的http链接
-    //   urls: imgList // 需要预览的图片http链接列表
-    // })
   },
 
   //点赞处理函数
   likeHandle: function (e) {
-    console.log(e)
     this.setData({
       likeHandle: false
     })
@@ -182,7 +167,6 @@ Page({
           duration: 1000,
         })
       }
-      console.log('set like handle')
       this.setData({
         likeHandle: true
       })

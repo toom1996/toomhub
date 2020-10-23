@@ -8,14 +8,16 @@ page{
 .swiper-item{
   height: 100%;
   overflow-y: scroll;
-  display: flex;
+  line-height: 100vh;
+  /* display: flex; */
   /* align-items: center; */
-  justify-content: center;
+  /* justify-content: center; */
   background: rgba(0,0,0,1);
 }
 .swiper-item image{
   width: 100%;
   display: inline-block;
+  vertical-align: middle;
 }
 
 .canui-head-box{

@@ -20,11 +20,8 @@ Page({
   },
 
   onShow: function () {
-    console.log(app.globalData.userInfo)
     if (app.globalData.userInfo != null) {
       app.httpClient.get(app.getApi('getUserInfo')).then(res=> {
-        console.log(res.data.data.likes_count)
-        console.log(app.globalData.userInfo)
         app.globalData.userInfo.likes_count = res.data.data.likes_count
 
         this.setData({
@@ -35,6 +32,5 @@ Page({
     this.setData({
       userInfo: app.globalData.userInfo
     })
-    console.log(this.data.userInfo)
   }
 })

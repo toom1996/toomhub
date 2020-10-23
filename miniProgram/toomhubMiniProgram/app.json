@@ -4,9 +4,10 @@
     "pages/logs/logs",
     "pages/user/user",
     "pages/login/login",
-    "pages/square_add/square_add",
+    "pages/image_add/image_add",
     "pages/components/image_preview/image_preview",
-    "pages/view/view"
+    "pages/view/view",
+    "pages/video_add/video_add"
   ],
   "tabBar": {
     "custom": false,
@@ -60,6 +61,7 @@
     "van-cell": "@vant/weapp/cell/index",
     "van-cell-group": "@vant/weapp/cell-group/index",
     "iconfont": "/iconfont/iconfont",
-    "van-loading": "@vant/weapp/loading/index"
+    "van-loading": "@vant/weapp/loading/index",
+    "van-action-sheet": "@vant/weapp/action-sheet/index"
   }
 }
