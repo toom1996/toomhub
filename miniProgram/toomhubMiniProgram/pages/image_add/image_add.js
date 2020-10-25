@@ -74,6 +74,8 @@ Page({
 
   //上传图片触发事件
   afterRead(event) {
+    
+    console.log(event)
     let list = event.detail.file;
     for (let i = 0; i < list.length; i++) {
       if (list[i].size > 1024 * 1024) {

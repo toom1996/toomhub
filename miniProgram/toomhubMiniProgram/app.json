@@ -7,8 +7,16 @@
     "pages/image_add/image_add",
     "pages/components/image_preview/image_preview",
     "pages/view/view",
-    "pages/video_add/video_add"
+    "pages/video_add/video_add",
+    "pages/clip/clip",
+    "pages/video_priview/video_priview"
   ],
+  "plugins": {
+    "myPlugin": {
+      "version": "1.3.5",
+      "provider": "wx76f1d77827f78beb"
+    }
+  },
   "tabBar": {
     "custom": false,
     "color": "#7A7E83",

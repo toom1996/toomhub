@@ -1,92 +1,23 @@
-
-page {
-  background-color: rgb(36, 26, 36);
-}
-
-.box {
-  background-color: white;
-  margin: 20rpx;
-  padding: 20rpx;
-  border-radius: 20rpx;
-}
-
-.classTagInput {
-  border: 1px solid rgb(36, 26, 36) !important;
-}
-
-.van-tag {
-  margin: 5rpx;
-}
-
-.model{
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: #000;
-  z-index: 999;
-  opacity: 0.5;
+/* pages/index/index.wxss */
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
   top: 0;
-  left:0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000;
+}
+#nav {
+  text-align: center;
+  background: #eeeeee;
+  margin: 1em;
+  padding: 1em;
+  border-radius: 5px;
 }
 
-.read-img {
-	width:30px;
-	height:30px;
-	border-radius:100%;
-	overflow:hidden;
-	margin-right:.4rem;
-	border:2px solid rgba(255,255,255,.3)
-}
-
-.flex-box {
-	-webkit-box-flex:1;
-	-webkit-flex:1;
-	flex:1;
-	min-width:0;
-	font-size:14px;
-	color:#333
-}
-
-.flex {
-	display:-webkit-box;
-	display:-webkit-flex;
-	display:flex;
-	-webkit-box-align:center;
-	-webkit-align-items:center;
-	align-items:center;
-	position:relative
-}
-
-image {
-	width:100%;
-	height: 100%;
-	display:block;
-	border:0
-}
-
-.van-uploader{
-  margin-top: 20rpx;
-}
-
-.van-cell .van-icon{
-  font-weight: bold;
-}
-
-.van-cell{
-    border-bottom: 0px;
-}
-
-.meCell {
-		position: unset !important;
-		width: 100%;
-}
-
-.myValue {
-  font-size: x-small;
-}
-.toomhub__tag .tagBox {
-	max-width: 140rpx;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+#add {
+  margin: 1em;
 }
