@@ -1,0 +1,37 @@
+<view class="page">
+  <view bindtap="test">test</view>
+  <view bindtap="test1">test1</view>
+  <view>
+  <view class="player-wrapper">
+		<!-- 播放器 -->
+		<wj-player
+			id="player"
+			mode="default"
+			containerStyleConfig="{{playerStyleConfig}}"
+			enablePauseIcon="{{showPauseIcon}}"
+			bindready="onPlayerReady"
+			bindtimeupdate="onTimeUpdate"/>
+	</view>
+    <view class="clipper-wrapper">
+		<!-- 视频裁切 -->
+		<wj-clipper
+			id="clipper"
+			settings="{{clipperSettings}}"
+			time="{{currentTime}}"
+			trackInfo="{{currentVideoTrack}}"
+			bindthumbtouchstart="onThumbTouchStart"
+			bindthumbscroll="onThumbScroll"
+			bindtimerollertouchstart="onTimeRollerTouchStart"
+			bindtimerollertouchend="onTimeRollerTouchEnd"
+			bindtimerollermove="onTimeRollerMove"
+			bindhandlertouchstart="onHandlerTouchStart"
+			bindhandlermove="onHandlerMove"
+			bindended="onMediaEnded"
+			bindclipped="onMediaClipped"/>
+	</view>
+	<view class="footer-wrapper">
+		<view class="selected-time">已选取{{selectedTime}}秒</view>
+		<view class="next-button" bindtap="onClickNext">下一步</view>
+	</view></view>
+	
+</view>

@@ -110,6 +110,16 @@ Page({
     })
   },
   videoAddHandle () {
+    // wx.chooseMedia({
+    //   count: 9,
+    //   mediaType: ['image', 'video'],
+    //   sourceType: ['album', 'camera'],
+    //   maxDuration: 30,
+    //   camera: 'back',
+    //   success(res) {
+    //     console.log(res)
+    //   }
+    // })
     wx.navigateTo({
       url: '../video_add/video_add'
     })
