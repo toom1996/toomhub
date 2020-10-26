@@ -90,3 +90,29 @@ image {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
+
+.video_container{
+  position: relative;
+  background: #000;
+}
+.video_play{
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 50%;
+}
+.mask_img{
+  width: 100rpx;
+  height: 100rpx;
+  position: absolute;
+}
+.mask_view{
+  width: 100%;
+  height: 100%;
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 85%;
+  z-index: 100;
+}
