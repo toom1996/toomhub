@@ -1,16 +1,10 @@
 
 //app.js
 var toomhubApi = require("./api.js");
-var myPluginInterface = requirePlugin('myPlugin');
 
 var _this = this;
 App({
   onLaunch: function () {
-    let types = myPluginInterface.types
-    global['wj-types'] = types
-    
-    this.globalData.trackTypes = global['wj-types']
-    console.log(this.globalData.trackTypes)
     toomhubApi = toomhubApi.api;
     
     //初始化用户信息

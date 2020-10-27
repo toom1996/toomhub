@@ -9,7 +9,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-    imageList: [],
     content: '',
     autosize: {
       maxHeight: 350,
@@ -22,13 +21,13 @@ Page({
     tag: '', //添加进来的标签数组
     tagList: '', //标签数组
     tagShow: false, //是否显示添加标签dialog
-    mainActiveIndex: 0,
-    activeId: null,
     content_show: false,
     keyword: '',
     videoSrc: '',
     isHiddenvideoContainer: true,
-    isHiddenUploader: false
+    isHiddenUploader: false,
+    duration: 0,
+    videoCdnSrc: ''
   },
 
 
@@ -84,16 +83,37 @@ Page({
     if (file.size > 1024 * 1024 * 25) {
       Toast('文件太大啦~~~');
     }
-    wx.openVideoEditor({
-      filePath: file.tempFilePath,
-      complete: res => {
-        this.setData({
-          videoSrc: res.tempFilePath,
-          isHiddenvideoContainer: false,
-          isHiddenUploader: true
-        })
-      }
-    })
+    // wx.openVideoEditor({
+    //   filePath: file.tempFilePath,
+    //   complete: res => {
+        let uploadTask = wx.uploadFile({
+          url: app.getApi('requestHost') + app.getApi('videoUpload'),
+          filePath: file.tempFilePath,
+          name: 'file',
+          success: (res) => {
+            let data = JSON.parse(res.data)
+            console.log(data)
+              if (res.statusCode == 200 && data.code == 200) {
+                this.setData({
+                  videoSrc: file.tempFilePath,
+                  isHiddenvideoContainer: false,
+                  isHiddenUploader: true,
+                  videoCdnSrc: data.data.url,
+                  duration: file.duration
+                })
+              }
+          },
+          fail: (res) => {
+            console.log(res)
+          }
+        });
+        // this.setData({
+        //   videoSrc: file.tempFilePath,
+        //   isHiddenvideoContainer: false,
+        //   isHiddenUploader: true
+        // })
+    //   }
+    // })
   },
   send() {
     
@@ -220,7 +240,7 @@ Page({
   },
   reditectToVideoScreenHandle: function () {
     wx.navigateTo({
-      url: '../video_screen/video_screen'
+      url: '../video_screen/video_screen?duration=' + this.data.duration + '&src=' + this.data.videoCdnSrc
     })
   }
 })

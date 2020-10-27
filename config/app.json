@@ -7,8 +7,8 @@
     "secret": "toomhub"
   },
   "mini": {
-    "app_id": "wxa9a7f53bff2fc937",
-    "app_secret": "971869511ee44662c56bcf8a833bd679"
+    "app_id": "wxcdc6c2edd30c27ff",
+    "app_secret": "4f9636773505a593329aa8fbf6b7a69f"
   },
   "es": {
     "host": "http://192.168.10.207:9200/"
@@ -33,6 +33,7 @@
     "secretKey": "gmg6PLgg666Cme-gsyTlsBLhshDv-6_zsEmW4jRY",
     "fileServer": "http://toomhub.image.23cm.cn/",
     "imageMaxSize": 1,
+    "videoMaxSize": 50,
     "allowExtension": ["gif", "png", "jpg", "jpeg"]
   },
   "es": {

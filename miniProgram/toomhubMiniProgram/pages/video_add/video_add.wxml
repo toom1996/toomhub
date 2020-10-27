@@ -25,15 +25,17 @@
       </van-cell-group>
     </view>
     <van-row>
-      <view class='video_container' style='width:100%;height:{{device_height}}px;'
+      <view style="margin: 10px">
+        <view class='video_container' style='width:100%;height:{{device_height}}px;'
         hidden="{{ isHiddenvideoContainer }}">
         <video id="myVideo" class='video_play' src="{{ videoSrc }}" poster="" controls="{{false}}" show-center-play-btn="{{true}}"></video>
         <!-- <cover-view class='mask_view'> -->
           <cover-image class='mask_img' style="right:0;top:0" catchtouchend="maskTouchendCallback" src='../../static/icon/ban.png'>
           </cover-image>
         <!-- </cover-view> -->
-        <cover-image class='mask_img' style="bottom:0px" catchtouchend="reditectToVideoScreenHandle" src='../../static/icon/updateCover.png'>
+        <cover-image class='mask_img' style="bottom:0px;width:150rpx;height:70rpx" catchtouchend="reditectToVideoScreenHandle" src='../../static/icon/updateCover.png'>
           </cover-image>
+      </view>
       </view>
       <!-- 图片 -->
       <view hidden="{{ isHiddenUploader }}">

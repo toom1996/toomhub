@@ -35,4 +35,5 @@ func registerRouter(router *gin.Engine) {
 	new(controllers.UserController).Register(router)
 	new(controllers.SquareController).Register(router)
 	new(controllers.ImageController).Register(router)
+	new(controllers.VideoController).Register(router)
 }

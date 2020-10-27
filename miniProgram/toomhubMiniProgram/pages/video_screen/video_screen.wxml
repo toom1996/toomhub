@@ -1,2 +1,27 @@
-<!--pages/video_screen/video_screen.wxml-->
-<text>pages/video_screen/video_screen.wxml</text>
+<view class="box">
+  <view style="text-align:center">
+  <image mode="aspectFit" src="{{ defaultCover }}"></image>
+</view>
+<van-tabs bind:click="onClick">
+  <van-tab title="视频截图">
+    <scroll-view scroll-y="true"> 
+<view class="uploadWrap" scroll-x="true"> 
+  <block  wx:for="{{ duration }}" wx:item="{{ item }}">
+    <view class="upload_Item" data-index="{{ item }}" bindtap="selectCoverHandle">
+    <block wx:if="{{ checkedCover == item }}">
+      <image class="upload_Item_img checked" src="{{ videoUrl + '?vframe/jpg/offset/' + item}}">
+        <van-icon name="success" size="3rem" class="checkedIcon" color="#07c160" />
+      </image> 
+    </block>
+    <block wx:else>
+      <image class="upload_Item_img" src="{{ videoUrl + '?vframe/jpg/offset/' + item}}">
+      </image> 
+    </block>
+  </view>
+  </block>
+</view> 
+</scroll-view> 
+  </van-tab>
+  <van-tab title="本地上传">内容 2</van-tab>
+</van-tabs>
+</view>

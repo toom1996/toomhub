@@ -29,6 +29,7 @@ type Qiniu struct {
 	SecretKey    string `json:"secretKey"`    //七牛云AS
 	FileServer   string `json:"fileServer"`   //cdn地址
 	ImageMaxSize int8   `json:"imageMaxSize"` //上传最大图片尺寸 M为单位
+	VideoMaxSize int8   `json:"videoMaxSize"`
 }
 
 type Mini struct {

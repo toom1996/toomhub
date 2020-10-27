@@ -5,14 +5,23 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    videoUrl: '',
+    duration: 0,
+    defaultCover: '',
+    checkedCover: 0
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    console.log(options)
+    this.setData({
+      videoUrl: options.src,
+      duration: parseInt(options.duration),
+      defaultCover: options.src + '?vframe/jpg/offset/' + this.data.checkedCover
+    })
+    console.log(this.data.duration)
   },
 
   /**
@@ -62,5 +71,14 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  selectCoverHandle(event) {
+    let index = event.currentTarget.dataset.index;
+    this.setData({
+      checkedCover: index,
+    })
+    this.setData({
+      defaultCover: this.data.videoUrl + '?vframe/jpg/offset/' + this.data.checkedCover
+    })
   }
 })

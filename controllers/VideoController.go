@@ -1,31 +1,32 @@
 // @Description
-// @Author    2020/8/27 15:27
+// @Author    2020/10/27 9:19
 package controllers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
+	v1MiniMiddleware "toomhub/middware/mini/v1"
 	"toomhub/service"
 	"toomhub/util"
 )
 
-type ImageController struct {
+type VideoController struct {
 }
 
 //当前控制器注册的路由
-func (image *ImageController) Register(engine *gin.Engine) {
-	user := engine.Group("/c/image")
+func (image *VideoController) Register(engine *gin.Engine) {
+
+	controller := engine.Group("/video")
 	{
-		//小程序用户登陆接口
-		user.POST("/upload", image.Upload)
+		controller.POST("/upload", image.Upload)
+	}
+
+	controller.Use(v1MiniMiddleware.CheckIdentity())
+	{
+		//controller.POST("/upload", image.Upload)
 	}
 }
 
-// @title	广场图片上传接口
-// @desc	图片对接到七牛云
-func (*ImageController) Upload(context *gin.Context) {
-	param := "?imageMogr2/auto-orient/format/webp"
-
+func (*VideoController) Upload(context *gin.Context) {
 	file, header, err := context.Request.FormFile("file")
 	if err != nil {
 		context.JSON(200, gin.H{
@@ -36,8 +37,8 @@ func (*ImageController) Upload(context *gin.Context) {
 	}
 
 	uploader := service.QiniuUploader{}
-	//
-	res, err := uploader.Upload(file, header.Filename)
+
+	res, err := uploader.VideoUpload(file, header.Filename)
 	if err != nil {
 		context.JSON(200, gin.H{
 			"code":    400,
@@ -46,12 +47,11 @@ func (*ImageController) Upload(context *gin.Context) {
 		return
 	}
 
-	fmt.Println(res)
 	var mm interface{}
 	mm = res["url"]
 	name := mm.(string)
 
-	url := util.GetConfig().Qiniu.FileServer + name + param
+	url := util.GetConfig().Qiniu.FileServer + name
 	context.JSON(200, gin.H{
 		"code":    200,
 		"message": "上传成功",
@@ -60,7 +60,6 @@ func (*ImageController) Upload(context *gin.Context) {
 			"size":         res["size"],
 			"extension":    res["extension"],
 			"request_host": util.GetConfig().Qiniu.FileServer,
-			"param":        param,
 			"name":         res["url"],
 		},
 	})
