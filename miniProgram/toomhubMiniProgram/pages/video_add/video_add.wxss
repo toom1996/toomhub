@@ -101,8 +101,8 @@ image {
   transform-origin: 50% 50%;
 }
 .mask_img{
-  width: 100rpx;
-  height: 100rpx;
+  width: 80rpx;
+  height: 80rpx;
   position: absolute;
 }
 .mask_view{
@@ -115,4 +115,15 @@ image {
   top: 0;
   left: 85%;
   z-index: 100;
+}
+
+.cover-view{
+  text-align: center;
+  bottom:10rpx;
+  left:10rpx;
+  width:150rpx;
+  height:70rpx;
+  line-height: 65rpx;
+  background-color: darkgray;
+  color: white;
 }

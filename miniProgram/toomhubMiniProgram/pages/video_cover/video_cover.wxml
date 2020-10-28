@@ -1,0 +1,32 @@
+<view class="box">
+  <view style="text-align:center;">
+    <van-button round color="#ED3333" size="mini" style="float:right" bindtap="checkedCoverHandel">完成</van-button>
+    <image mode="aspectFit" src="{{ defaultCover }}"></image>
+  </view>
+  <van-tabs bind:click="onClick">
+      <van-tab title="视频截图">
+        <view class="uploadWrap" scroll-x="true">
+          <van-row>
+            <block wx:for="{{ duration }}" wx:item="{{ item }}">
+              <van-col span="6">
+                <view class="upload_Item" data-index="{{ item }}" bindtap="selectCoverHandle">
+                  <block wx:if="{{ checkedCover == item }}">
+                    <image class="upload_Item_img checked" mode="aspectFill" style="height:{{coverHeight}}px"
+                      src="{{ videoUrl + '?vframe/jpg/offset/' + item}}">
+                      <!-- <van-icon name="success" size="3rem" class="checkedIcon" color="#07c160" /> -->
+                    </image>
+                  </block>
+                  <block wx:else>
+                    <image class="upload_Item_img" mode="aspectFill" style="height:{{coverHeight}}px"
+                      src="{{ videoUrl + '?vframe/jpg/offset/' + item}}">
+                    </image>
+                  </block>
+                </view>
+              </van-col>
+            </block>
+          </van-row>
+        </view>
+      </van-tab>
+      <van-tab title="本地上传">内容 2</van-tab>
+    </van-tabs>
+</view>

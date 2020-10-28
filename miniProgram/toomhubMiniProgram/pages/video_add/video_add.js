@@ -24,10 +24,14 @@ Page({
     content_show: false,
     keyword: '',
     videoSrc: '',
-    isHiddenvideoContainer: true,
-    isHiddenUploader: false,
-    duration: 0,
-    videoCdnSrc: ''
+    isHiddenvideoContainer: true, //是否隐藏视频播放容器
+    isHiddenUploader: false, //是否显示上传组件
+    duration: 0, //视频时长
+    videoCdnSrc: '', //视频cdn链接
+    videoProcessTime: 0,//视频初始播放进度
+    videoCover: '', //视频封面截图,
+    videoWidth:0,
+    videoHeight:0
   },
 
 
@@ -80,7 +84,7 @@ Page({
   afterRead(event) {
     let file = event.detail.file;
     console.log(file)
-    if (file.size > 1024 * 1024 * 25) {
+    if (file.size > 1024 * 1024 * 50) {
       Toast('文件太大啦~~~');
     }
     // wx.openVideoEditor({
@@ -131,8 +135,10 @@ Page({
     let obj = {...this.data.imageList}
     
     app.httpClient.post(app.getApi('squareCreate'), {
+      'duration': this.data.duration,
+      'src': this.data.videoCdnSrc,
+      'videoCover': app.globalData.videoCover,
       'content': this.data.content,
-      'image_list': JSON.stringify(obj),
       'tag': this.data.tag,
     }).then(res=>{
       let response = res.data
@@ -157,6 +163,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    console.log(options)
     this.setData({
       device_height: device_height,
       device_width: device_width
@@ -238,9 +245,9 @@ Page({
       isHiddenUploader: false
     })
   },
-  reditectToVideoScreenHandle: function () {
+  redirectToVideoCoverHandle: function () {
     wx.navigateTo({
-      url: '../video_screen/video_screen?duration=' + this.data.duration + '&src=' + this.data.videoCdnSrc
+      url: '../video_cover/video_cover?duration=' + this.data.duration + '&src=' + this.data.videoCdnSrc
     })
   }
 })

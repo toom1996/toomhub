@@ -8,7 +8,7 @@
     "pages/components/image_preview/image_preview",
     "pages/view/view",
     "pages/video_add/video_add",
-    "pages/video_screen/video_screen"
+    "pages/video_cover/video_cover"
   ],
   "tabBar": {
     "custom": false,

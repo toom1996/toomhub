@@ -1,4 +1,4 @@
-// pages/video_screen/video_screen.js
+const app = getApp();
 Page({
 
   /**
@@ -8,14 +8,15 @@ Page({
     videoUrl: '',
     duration: 0,
     defaultCover: '',
-    checkedCover: 0
+    checkedCover: 0,
+    coverHeight: ( app.globalData.windowWidth - 40 ) / 4 
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options)
+    console.log(app.globalData.windowWidth)
     this.setData({
       videoUrl: options.src,
       duration: parseInt(options.duration),
@@ -73,12 +74,19 @@ Page({
 
   },
   selectCoverHandle(event) {
+    console.log(event)
     let index = event.currentTarget.dataset.index;
     this.setData({
       checkedCover: index,
     })
     this.setData({
       defaultCover: this.data.videoUrl + '?vframe/jpg/offset/' + this.data.checkedCover
+    })
+  },
+  checkedCoverHandel() {
+    app.globalData.videoCover = this.data.videoUrl + '?vframe/jpg/offset/' + this.data.checkedCover;
+    wx.navigateBack({
+      delta: -1
     })
   }
 })
