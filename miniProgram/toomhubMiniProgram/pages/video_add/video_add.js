@@ -30,8 +30,8 @@ Page({
     videoCdnSrc: '', //视频cdn链接
     videoProcessTime: 0,//视频初始播放进度
     videoCover: '', //视频封面截图,
-    videoWidth:0,
-    videoHeight:0
+    host: '',
+    size: 0
   },
 
 
@@ -102,8 +102,10 @@ Page({
                   videoSrc: file.tempFilePath,
                   isHiddenvideoContainer: false,
                   isHiddenUploader: true,
-                  videoCdnSrc: data.data.url,
-                  duration: file.duration
+                  videoCdnSrc: data.data.name,
+                  duration: file.duration,
+                  host: data.data.request_host,
+                  size: data.data.size
                 })
               }
           },
@@ -134,12 +136,14 @@ Page({
     
     let obj = {...this.data.imageList}
     
-    app.httpClient.post(app.getApi('squareCreate'), {
+    app.httpClient.post(app.getApi('videoCreate'), {
       'duration': this.data.duration,
-      'src': this.data.videoCdnSrc,
-      'videoCover': app.globalData.videoCover,
+      'host': this.data.host,
+      'name': this.data.videoCdnSrc,
+      'cover': app.globalData.videoCover,
       'content': this.data.content,
       'tag': this.data.tag,
+      'size': this.data.size
     }).then(res=>{
       let response = res.data
       Toast.clear();
@@ -163,6 +167,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    app.globalData.videoCover = '';
     console.log(options)
     this.setData({
       device_height: device_height,
@@ -247,7 +252,7 @@ Page({
   },
   redirectToVideoCoverHandle: function () {
     wx.navigateTo({
-      url: '../video_cover/video_cover?duration=' + this.data.duration + '&src=' + this.data.videoCdnSrc
+      url: '../video_cover/video_cover?duration=' + this.data.duration + '&name=' + this.data.videoCdnSrc +'&host=' + this.data.host
     })
   }
 })

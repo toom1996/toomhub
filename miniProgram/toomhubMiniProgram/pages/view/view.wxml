@@ -33,9 +33,19 @@
         <!-- 附件 图片 视频 -->
         <van-row>
           <van-col span="24">
-            <view wx:for="{{ image }}" wx:for-item="imageItem" wx:key="itemImageKey" wx:for-index="itemImageIndex">
-              <image image-class="content-image" mode="widthFix" src="{{ imageItem.host + imageItem.name + imageItem.param }}" lazy-load error="加载失败" catchtap="previewImage" data-list="{{ list }}" data-index="{{ itemImageIndex }}" style="width:100%" />
-            </view>
+            <block wx:if="{{ type == 1 }}">
+              <view catchtap="emptyHandle" style="text-align:center">
+                <video src="{{ video }}" poster="{{ cover }}"></video>
+              </view>
+            </block>
+            <block wx:else>
+              {{ item.type }}
+              <view wx:for="{{ image }}" wx:for-item="imageItem" wx:key="itemImageKey" wx:for-index="itemImageIndex">
+                <image image-class="content-image" mode="widthFix"
+                  src="{{ imageItem.host + imageItem.name + imageItem.param }}" lazy-load error="加载失败"
+                  catchtap="previewImage" data-list="{{ list }}" data-index="{{ itemImageIndex }}" style="width:100%" />
+              </view>
+            </block>
           </van-col>
         </van-row>
         <!-- 标签 -->
@@ -48,11 +58,12 @@
           <van-row>
             <van-col span="24">
               <view class="operatingBar">
-                <van-col span="4" style="height: 30px;line-height: 30px;" catchtap="{{ likeHandle == true ? 'likeHandle' : '' }}" data-like="{{ is_like }}" data-id="{{ id }}">
-                      <iconfont style="float:left;vertical-align:middle;"
-                        name="{{ is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
-                      <text>{{ like_count }}</text>
-                    </van-col>
+                <van-col span="4" style="height: 30px;line-height: 30px;"
+                  catchtap="{{ likeHandle == true ? 'likeHandle' : '' }}" data-like="{{ is_like }}" data-id="{{ id }}">
+                  <iconfont style="float:left;vertical-align:middle;"
+                    name="{{ is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
+                  <text>{{ like_count }}</text>
+                </van-col>
                 <van-col span="4" offset="2" style="height: 30px;line-height: 30px;">
                   <iconfont style="float:left;" name="toomhub-argument"></iconfont>
                   <text>{{ argument_count }}</text>

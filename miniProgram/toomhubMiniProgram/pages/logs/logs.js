@@ -1,15 +1,26 @@
-//logs.js
-const util = require('../../utils/util.js')
-
 Page({
   data: {
-    logs: []
+    appear: false
   },
-  onLoad: function () {
-    this.setData({
-      logs: (wx.getStorageSync('logs') || []).map(log => {
-        return util.formatTime(new Date(log))
+  onLoad() {
+    this._observer = wx.createIntersectionObserver(this, {observeAll:true})
+    this._observer
+      .relativeTo('.scroll-view')
+      .observe('.ball', (res) => {
+        // console.log(res);
+        if (res.intersectionRatio > 0) {
+          // var videoContextPrev = wx.createVideoContext('这里写videoid');
+          // videoContextPrev.pause();
+          let query = wx.createSelectorQuery()
+            query.select('#'+ res.id).boundingClientRect( (rect) => {
+                console.log(rect.top)
+            }).exec(function(res) {
+              console.log(res)
+            })
+        }
       })
-    })
+  },
+  onUnload() {
+    if (this._observer) this._observer.disconnect()
   }
 })

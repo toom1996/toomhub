@@ -74,6 +74,12 @@ Page({
     })
   },
   onLoad: function () {
+    this._observer = wx.createIntersectionObserver(this)
+    this._observer
+      .relativeTo('.scroll-view')
+      .observe('.ball', (res) => {
+        console.log(res);
+      })
     let that = this
     this.setData({ 'viewData.style': myStyle + '40px;' })
     this.refreshIndex(1, true);
@@ -108,6 +114,9 @@ Page({
     this.setData({
       show: true
     })
+  },
+  onUnload() {
+    if (this._observer) this._observer.disconnect()
   },
   videoAddHandle () {
     // wx.chooseMedia({

@@ -6,7 +6,7 @@ var _this = this;
 App({
   onLaunch: function () {
     toomhubApi = toomhubApi.api;
-    
+
     //初始化用户信息
     let userInfo = wx.getStorageSync('userInfo');
     if (userInfo !== '') {
@@ -14,7 +14,7 @@ App({
       this.globalData.userInfo = userInfo
       //设置定时器
       this.setTokenCheckTimer();
-    }else{
+    } else {
 
     }
 
@@ -52,7 +52,7 @@ App({
           method: method,
           header: {
             'Content-Type': 'application/x-www-form-urlencoded', // 默认值
-            'Toomhub-Token': wx.getStorageSync('userInfo').token != undefined ? wx.getStorageSync('userInfo').token :''
+            'Toomhub-Token': wx.getStorageSync('userInfo').token != undefined ? wx.getStorageSync('userInfo').token : ''
           },
           success: (res) => {
             if (res.data.code == 401) {
@@ -78,7 +78,7 @@ App({
     }
   },
   //判断用户是否登陆, 未登陆则跳转到登陆界面
-  isLogin:function () {
+  isLogin: function () {
     if (this.globalData.userInfo == null) {
       wx.navigateTo({
         url: '/pages/login/login'
@@ -101,7 +101,7 @@ App({
   },
 
   //设置缓存
-  setCache: function(key, value) {
+  setCache: function (key, value) {
     wx.setStorage({
       key: key,
       data: value,
@@ -124,29 +124,30 @@ App({
       token: p.token,
       r: p.refreshToken
     }).then(res => {
-        if (res.data.code != 200) {
-          this.redirectToLogin();
-        }
+      if (res.data.code != 200) {
+        this.redirectToLogin();
+      }
     })
   },
 
   //获取api
-  getApi: function(name) {
+  getApi: function (name) {
     return toomhubApi[name]
   },
 
-  strlen: function(str) {
+  //获取字符串长度
+  strlen: function (str) {
     var len = 0;
-    for (var i=0; i<str.length; i++) {
-     var c = str.charCodeAt(i);
-    //单字节加1
-     if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) {
-       len++;
-     }
-     else {
-      len+=2;
-     }
+    for (var i = 0; i < str.length; i++) {
+      var c = str.charCodeAt(i);
+      //单字节加1
+      if ((c >= 0x0001 && c <= 0x007e) || (0xff60 <= c && c <= 0xff9f)) {
+        len++;
+      }
+      else {
+        len += 2;
+      }
     }
     return len;
-}
+  }
 })

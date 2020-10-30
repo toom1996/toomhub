@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 	LogicMiniV1 "toomhub/logic/mini/v1"
-	v1MiniMiddleware "toomhub/middware/mini/v1"
+	"toomhub/middware"
 	"toomhub/util"
 	"toomhub/validatorRules"
 )
@@ -37,7 +37,7 @@ func (square *SquareController) Register(engine *gin.Engine) {
 	user.GET("/view", square.view)
 
 	//中间件
-	user.Use(v1MiniMiddleware.CheckIdentity())
+	user.Use(middware.CheckIdentity())
 	{
 		// 发布一条广场信息
 		user.POST("/create", square.create)
@@ -45,6 +45,8 @@ func (square *SquareController) Register(engine *gin.Engine) {
 		user.GET("/tag-search", square.TagSearch)
 		//广场消息点赞
 		user.POST("/like", square.Like)
+		//发布一条视频消息
+		user.POST("/create-video", square.createVideo)
 	}
 }
 
@@ -97,6 +99,38 @@ func (square *SquareController) create(Context *gin.Context) {
 	//logic
 	logic := LogicMiniV1.SquareLogic{}
 	_, err = logic.SquareCreate(&formValidator)
+
+	if err != nil {
+		Context.JSON(200, gin.H{
+			"message": err,
+			"code":    400,
+		})
+	}
+	Context.JSON(200, gin.H{
+		"message": "OK",
+		"code":    200,
+	})
+}
+
+// @title	创建一条广场消息
+func (square *SquareController) createVideo(Context *gin.Context) {
+	//验证器
+	formValidator := validatorRules.SquareVideoCreate{}
+	err := Context.ShouldBind(&formValidator)
+
+	if err != nil {
+		Context.JSON(http.StatusOK, gin.H{
+			"code": 400,
+			//"message": commonvalidatorRules.TransError(err.(validatorRules.ValidationErrors)),
+			"message": err.Error(),
+			"data":    "",
+		})
+		return
+	}
+
+	//logic
+	logic := LogicMiniV1.SquareLogic{}
+	_, err = logic.SquareVideoCreate(&formValidator)
 
 	if err != nil {
 		Context.JSON(200, gin.H{

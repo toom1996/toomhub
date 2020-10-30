@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    host: '',
     videoUrl: '',
     duration: 0,
     defaultCover: '',
@@ -16,11 +17,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(app.globalData.windowWidth)
+    console.log(options.host + options.name + '?vframe/jpg/offset/' + this.data.checkedCover)
     this.setData({
-      videoUrl: options.src,
+      videoUrl: options.host + options.name,
       duration: parseInt(options.duration),
-      defaultCover: options.src + '?vframe/jpg/offset/' + this.data.checkedCover
+      defaultCover: options.host + options.name + '?vframe/jpg/offset/' + this.data.checkedCover
     })
     console.log(this.data.duration)
   },

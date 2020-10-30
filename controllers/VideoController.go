@@ -4,7 +4,7 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	v1MiniMiddleware "toomhub/middware/mini/v1"
+	"toomhub/middware"
 	"toomhub/service"
 	"toomhub/util"
 )
@@ -20,7 +20,7 @@ func (image *VideoController) Register(engine *gin.Engine) {
 		controller.POST("/upload", image.Upload)
 	}
 
-	controller.Use(v1MiniMiddleware.CheckIdentity())
+	controller.Use(middware.CheckIdentity())
 	{
 		//controller.POST("/upload", image.Upload)
 	}

@@ -28,9 +28,6 @@ func (logic *SquareLogic) SquareIndex(validator *validatorRules.SquareIndex, c *
 }
 
 func (logic *SquareLogic) SquareCreate(validator *validatorRules.SquareCreate) (bool, error) {
-
-	fmt.Println(validator)
-
 	var dat map[string]interface{}
 	err := json.Unmarshal([]byte(validator.ImageList), &dat)
 	if err != nil {
@@ -39,6 +36,11 @@ func (logic *SquareLogic) SquareCreate(validator *validatorRules.SquareCreate) (
 
 	_, _ = service.SquareCreate(validator, dat)
 
+	return true, nil
+}
+
+func (logic *SquareLogic) SquareVideoCreate(validator *validatorRules.SquareVideoCreate) (bool, error) {
+	_, _ = service.SquareVideoCreate(validator)
 	return true, nil
 }
 

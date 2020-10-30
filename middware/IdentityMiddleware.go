@@ -1,6 +1,6 @@
 // @Description
 // @Author    2020/9/2 15:33
-package v1MiniMiddleware
+package middware
 
 import (
 	"fmt"

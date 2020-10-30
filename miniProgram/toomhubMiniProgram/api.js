@@ -8,8 +8,9 @@ var api = {
   getSession: '/v1/mini/user/get-session', //获取小程序session
   login: '/v1/mini/user/login', //用户登陆
   getUserInfo: '/v1/mini/user/get-info', //刷新用户粉丝数点赞数啥的
-  getView: '/v1/mini/sq/view',
-  videoUpload: '/video/upload'
+  getView: '/v1/mini/sq/view', //获取消息详情信息
+  videoUpload: '/video/upload', //上传视频文件
+  videoCreate: '/v1/mini/sq/create-video'
 }
 
 module.exports.api = api;

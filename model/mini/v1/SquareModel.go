@@ -13,6 +13,7 @@ type ToomhubSquare struct {
 	CollectCount  int64  `json:"collection_count"` //收藏数
 	ShareCount    int64  `json:"share_count"`      //分享数
 	Tag           string `json:"tag"`
+	Type          int64  `json:"type"`
 }
 
 // TABLE `toomhub_square_image` 结构体
@@ -23,6 +24,14 @@ type ToomhubSquareImage struct {
 	Ext   string
 	Param string
 	Name  string
+}
+
+type ToomhubSquareVideo struct {
+	Rid      int64
+	Host     string `json:"host"`
+	Size     int64  `json:"size"`
+	Name     string
+	Duration float32
 }
 
 type ToomhubSquareTag struct {

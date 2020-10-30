@@ -17,7 +17,8 @@ Page({
     collect_count: 0,
     like_count: 0,
     image:[
-    ]
+    ],
+    type:0
   },
 
   /**
@@ -49,7 +50,10 @@ Page({
         like_count: response.like_count,
         list: response.list,
         id: response.id,
-        is_like: response.is_like
+        is_like: response.is_like,
+        type: response.type,
+        video: response.video,
+        cover: response.cover
       })
     })
 

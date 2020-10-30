@@ -19,6 +19,17 @@ type SquareCreate struct {
 	Tag       string `form:"tag"`
 }
 
+// @description	label是输出错误信息时显示的字段中文名
+type SquareVideoCreate struct {
+	Host     string  `form:"host"`
+	Name     string  `form:"name"`
+	Cover    string  `form:"cover"`
+	Content  string  `form:"content"`
+	Tag      string  `form:"tag"`
+	Size     int64   `form:"size"`
+	Duration float32 `form:"duration"`
+}
+
 type CreateImageInfo struct {
 	Param       string `json:"param"`
 	RequestHost int    `json:"request_host"`

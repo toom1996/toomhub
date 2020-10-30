@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"time"
 	LogicMiniV1 "toomhub/logic/mini/v1"
-	v1MiniMiddleware "toomhub/middware/mini/v1"
+	"toomhub/middware"
 	"toomhub/util"
 	validator2 "toomhub/validatorRules"
 )
@@ -30,7 +30,7 @@ func (u *UserController) Register(engine *gin.Engine) {
 		user.POST("/token-checker", u.tokenChecker)
 		user.GET("/get-session", u.GetSessionKey)
 	}
-	user.Use(v1MiniMiddleware.CheckIdentity())
+	user.Use(middware.CheckIdentity())
 	{
 		user.GET("/get-info", u.refreshInfo)
 	}
