@@ -60,7 +60,7 @@
                         <!-- video -->
                         <block wx:if="{{ item.type == 1 }}">
                           <view catchtap="emptyHandle">
-                            <video show-center-play-btn="{{ true }}" controls="{{ true }}" loop="{{ true }}" id="videoContainer{{dataIndex}}" class="video" src="{{ item.video }}" poster="{{ item.cover }}" object-fit="contain"></video>
+                            <video show-mute-btn="{{ true }}" muted="{{ true }}" show-center-play-btn="{{ true }}" controls="{{ true }}" loop="{{ true }}" id="videoContainer{{dataIndex}}" class="video" src="{{ item.video }}" poster="{{ item.cover }}" object-fit="contain"></video>
                           </view>
                         </block>
                         <block wx:else>
