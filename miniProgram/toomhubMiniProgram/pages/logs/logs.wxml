@@ -1,13 +1,13 @@
 <view class="container">
   <view class="page-body">
-    <view class="page-section message">
+    <!-- <view class="page-section message">
       <text wx:if="{{appear}}">
         小球出现
       </text>
       <text wx:else>
         小球消失
       </text>
-    </view>
+    </view> -->
     <view class="page-section">
       <scroll-view class="scroll-view" scroll-y>
         <view class="scroll-area" style="{{appear ? 'background: #ccc' : ''}}">

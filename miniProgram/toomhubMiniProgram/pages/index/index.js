@@ -74,13 +74,7 @@ Page({
     })
   },
   onLoad: function () {
-    this._observer = wx.createIntersectionObserver(this)
-    this._observer
-      .relativeTo('.scroll-view')
-      .observe('.ball', (res) => {
-        console.log(res);
-      })
-    let that = this
+    this._observer = wx.createIntersectionObserver(this, {observeAll:true})
     this.setData({ 'viewData.style': myStyle + '40px;' })
     this.refreshIndex(1, true);
   },
@@ -185,6 +179,7 @@ Page({
             page: newPage,
             skeletonShow: false,
           })
+          this.bindObserver()
         }
       }
     })
@@ -264,6 +259,28 @@ Page({
       this.setData({
         likeHandle: true
       })
+    })
+  },
+
+  bindObserver() {
+    console.log(1111111)
+    wx.createIntersectionObserver(this, {observeAll:true}).relativeTo('.scroll-view').relativeToViewport({top: -300, bottom: -200}).observe('.video', (res) => {
+      this.videoContext = wx.createVideoContext(res.id)
+      if (res.intersectionRatio > 0) { 
+        console.log(res.id,'播放')
+        this.videoContext.play()//开始播放
+      //   console.log(res)
+      // console.log(res.intersectionRatio) // 相交区域占目标节点的布局区域的比例
+      // console.log(res.intersectionRect) // 相交区域
+      //   console.log(res.intersectionRect.left) // 相交区域的左边界坐标
+      //     console.log(res.intersectionRect.top) // 相交区域的上边界坐标
+      //       console.log(res.intersectionRect.width) // 相交区域的宽度
+      //         console.log(res.intersectionRect.height) // 相交区域的高度
+      } else{
+        this.videoContext.pause()//开始播放
+        console.log(res.id,'暂停')
+      }
+      
     })
   }
 })
