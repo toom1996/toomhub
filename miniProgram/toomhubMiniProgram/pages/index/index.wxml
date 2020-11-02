@@ -18,107 +18,105 @@
   <van-skeleton title avatar row="3" loading="{{ skeletonShow }}" />
 </view>
 
-<view class="container">
-  <view class="page-body">
-    <view class="page-section">
-      <scroll-view class="scroll-view">
-        <view class="ball" wx:for="{{ data }}" wx:for-index="dataIndex" wx:key="dataIndex">
-          <view class="box">
-            <!-- operatingBar -->
-            <van-row>
-              <view class="post_box" bindtap="viewHandle" data-id="{{ item.id }}">
-                <view style="width:100%;padding-top: 30rpx;">
-                  <!-- 头像和昵称 -->
-                  <van-row class="top">
-                    <van-col span="3">
-                      <view class="top__avatar">
-                        <image src='{{ item.avatar_url }}'></image>
-                      </view>
-                    </van-col>
-                    <van-col span="12">
-                      <view style="overflow:hidden;width: 100%;overflow: hidden;text-overflow: ellipsis;">
-                        <text class="font__username">{{item.created_by}}</text>
-                      </view>
-                      <text style="display:block;" class="font__time">{{item.created_at}}</text>
-                    </van-col>
-                    <!-- <van-col span="4" offset="5">
-                <van-button color="#f5d56f" custom-style="color:#000000;" icon="plus" size="mini" round>关注</van-button>
-              </van-col> -->
-                  </van-row>
-                  <!-- 文字内容 -->
-                  <van-row>
-                    <van-col span="24">
-                      <view>
-                        <text class="__content">{{ item.content }}</text>
-                      </view>
-                    </van-col>
-                  </van-row>
-                  <!-- 附件 图片 视频 -->
-                  <van-row>
-                    <van-col span="24" gutter="20">
-                      <view class="__content" style="text-align:center;">
-                        <!-- video -->
-                        <block wx:if="{{ item.type == 1 }}">
-                          <view catchtap="emptyHandle">
-                            <video show-mute-btn="{{ true }}" muted="{{ true }}" show-center-play-btn="{{ true }}" controls="{{ true }}" loop="{{ true }}" id="videoContainer{{dataIndex}}" class="video" src="{{ item.video }}" poster="{{ item.cover }}" object-fit="contain"></video>
-                          </view>
-                        </block>
-                        <block wx:else>
-                          <view wx:for="{{ item.image }}" wx:for-item="imageItem" wx:key="itemImageKey"
-                            wx:for-index="itemImageIndex">
-                            <van-col span="8">
-                              <van-image image-class="content-image" fit="cover" lazy-load catchtap="previewImage"
-                                error="加载失败" src="{{ imageItem.host + imageItem.name + imageItem.param }}"
-                                data-list="{{ item.list }}" data-index="{{ itemImageIndex }}" />
-                            </van-col>
-                          </view>
-                        </block>
-                      </view>
-                    </van-col>
-                  </van-row>
-                  <!-- 标签 -->
-                  <view>
-                    <view wx:if="{{item.tag != ''}}">
-                      <van-tag round color="#fef5d8" text-color="#ce9d35" size="mini"
-                        custom-class="toomhub__square-tag">
-                        {{ item.tag }}
-                      </van-tag>
-                    </view>
-                    <van-row>
-                      <van-col span="24">
-                        <view class="operatingBar">
-                          <van-col span="4" style="height: 30px;line-height: 30px;"
-                            catchtap="{{ likeHandle == true ? 'likeHandle' : '' }}" data-like="{{ item.is_like }}"
-                            data-index="{{ dataIndex }}" data-id="{{ item.id }}">
-                            <iconfont style="float:left;vertical-align:middle;"
-                              name="{{ item.is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
-                            <text>{{ item.like_count }}</text>
-                          </van-col>
-                          <van-col span="4" offset="2" style="height: 30px;line-height: 30px;">
-                            <iconfont style="float:left;" name="toomhub-argument"></iconfont>
-                            <text>{{ item.argument_count }}</text>
-                          </van-col>
-                          <van-col span="4" offset="10" style="height: 30px;line-height: 30px;" catchtap="emptyHandle">
-                            <button open-type="share" class="share-button" data-title="{{ item.content }}"
-                              data-list="{{ item.list }}" data-id="{{ item.id }}">
-                              <iconfont style="float:left;" name="toomhub-share"></iconfont>
-                              <text>分享</text>
-                            </button>
-                          </van-col>
-                        </view>
-                      </van-col>
-                    </van-row>
-                  </view>
+<scroll-view class="scroll-view">
+  <view style="height:{{navHeight + 40}}px;"></view>
+  <view class="ball" wx:for="{{ data }}" wx:for-index="dataIndex" wx:key="dataIndex">
+    <view class="box">
+      <!-- operatingBar -->
+      <van-row>
+        <view class="post_box" bindtap="viewHandle" data-id="{{ item.id }}">
+          <view style="width:100%;padding-top: 30rpx;">
+            <!-- 头像和昵称 -->
+            <van-row class="top">
+              <van-col span="3">
+                <view class="top__avatar">
+                  <image src='{{ item.avatar_url }}'></image>
                 </view>
-              </view>
+              </van-col>
+              <van-col span="12">
+                <view style="overflow:hidden;width: 100%;overflow: hidden;text-overflow: ellipsis;">
+                  <text class="font__username">{{item.created_by}}</text>
+                </view>
+                <text style="display:block;" class="font__time">{{item.created_at}}</text>
+              </van-col>
+              <!-- <van-col span="4" offset="5">
+                    <van-button color="#f5d56f" custom-style="color:#000000;" icon="plus" size="mini" round>关注</van-button>
+                  </van-col> -->
             </van-row>
+            <!-- 文字内容 -->
+            <van-row>
+              <van-col span="24">
+                <view>
+                  <text class="__content">{{ item.content }}</text>
+                </view>
+              </van-col>
+            </van-row>
+            <!-- 附件 图片 视频 -->
+            <van-row>
+              <van-col span="24" gutter="20">
+                <view class="__content" style="text-align:center;">
+                  <!-- video -->
+                  <block wx:if="{{ item.type == 1 }}">
+                    <view>
+                      <video show-mute-btn="{{ true }}" muted="{{ true }}" show-center-play-btn="{{ true }}"
+                      data-src="{{ item.video }}"
+                        controls="{{ false }}" loop="{{ true }}" id="videoContainer{{dataIndex}}" class="video"
+                        src="{{ item.video }}" poster="{{ item.cover }}" object-fit="contain"
+                        bindtimeupdate="videoTimeUpdateHandle" catchtap="videoContainerClickHandle"></video>
+                    </view>
+                  </block>
+                  <block wx:else>
+                    <view wx:for="{{ item.image }}" wx:for-item="imageItem" wx:key="itemImageKey"
+                      wx:for-index="itemImageIndex">
+                      <van-col span="8">
+                        <van-image image-class="content-image" fit="cover" lazy-load catchtap="previewImage"
+                          error="加载失败" src="{{ imageItem.host + imageItem.name + imageItem.param }}"
+                          data-list="{{ item.list }}" data-index="{{ itemImageIndex }}" />
+                      </van-col>
+                    </view>
+                  </block>
+                </view>
+              </van-col>
+            </van-row>
+            <!-- 标签 -->
+            <view>
+              <view wx:if="{{item.tag != ''}}">
+                <van-tag round color="#fef5d8" text-color="#ce9d35" size="mini" custom-class="toomhub__square-tag">
+                  {{ item.tag }}
+                </van-tag>
+              </view>
+              <van-row>
+                <van-col span="24">
+                  <view class="operatingBar">
+                    <van-col span="4" style="height: 30px;line-height: 30px;"
+                      catchtap="{{ likeHandle == true ? 'likeHandle' : '' }}" data-like="{{ item.is_like }}"
+                      data-index="{{ dataIndex }}" data-id="{{ item.id }}">
+                      <iconfont style="float:left;vertical-align:middle;"
+                        name="{{ item.is_like == 1 ? 'toomhub-like-y' : 'toomhub-like-n' }}"></iconfont>
+                      <text>{{ item.like_count }}</text>
+                    </van-col>
+                    <van-col span="4" offset="2" style="height: 30px;line-height: 30px;">
+                      <iconfont style="float:left;" name="toomhub-argument"></iconfont>
+                      <text>{{ item.argument_count }}</text>
+                    </van-col>
+                    <van-col span="4" offset="10" style="height: 30px;line-height: 30px;" catchtap="emptyHandle">
+                      <button open-type="share" class="share-button" data-title="{{ item.content }}"
+                        data-list="{{ item.list }}" data-id="{{ item.id }}">
+                        <iconfont style="float:left;" name="toomhub-share"></iconfont>
+                        <text>分享</text>
+                      </button>
+                    </van-col>
+                  </view>
+                </van-col>
+              </van-row>
+            </view>
           </view>
         </view>
-        <view class="loading">{{ loadingText }}</view>
-        <van-action-sheet show="{{ show }}" actions="{{ actions }}" cancel-text="取消" bind:cancel="sheetOnCancleHandle"
-          bind:close="sheetOnCloseHandle" catchtouchmove bind:select="SheetSelectHandle"
-          close-on-click-overlay="{{ true }}" />
-      </scroll-view>
+      </van-row>
     </view>
   </view>
-</view>
+  <view class="loading">{{ loadingText }}</view>
+  <van-action-sheet show="{{ sheetShow }}" actions="{{ actions }}" cancel-text="取消" bind:cancel="sheetOnCancleHandle"
+    bind:close="sheetOnCloseHandle" catchtouchmove bind:select="SheetSelectHandle"
+    close-on-click-overlay="{{ true }}" />
+</scroll-view>

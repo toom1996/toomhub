@@ -356,7 +356,7 @@ func GetSquareView(id int64, c *gin.Context) (interface{}, error) {
 		response["type"] = 0
 	} else {
 		response["video"] = res[10]
-		response["cover"] = res[11]
+		response["cover+-/"] = res[11]
 		response["type"] = 1
 	}
 

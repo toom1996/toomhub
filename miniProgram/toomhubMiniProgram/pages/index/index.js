@@ -37,12 +37,13 @@ Page({
     likeHandle: true, //是否加载点赞处理器, 防止连续点击出现问题
     page: 1, //上拉页码
     loadingText: "正在加载更多....", //上拉加载文字
-    showPubButtom: false,
-    show: false,
-    actions: [
+    showPubButtom: false, //是否显示发布按钮
+    sheetShow: false, //是否显示发布sheet
+    actions: [ //发布sheet选项
       { name: '发图片', openType: 'imageAddHandle' },
       { name: '发视频', openType: 'videoAddHandle' },
     ],
+    videoTime: {}, //video当前播放时间
   },
   navigationSwitch: function (event) {
     wx.navigateTo({
@@ -61,16 +62,40 @@ Page({
     })
   },
   emptyHandle() {
-
   },
+
+  //视频点击事件
+  videoContainerClickHandle(e){
+    console.log(e)
+    let videoId = e.currentTarget.id;
+    let videoTime = this.data.videoTime[videoId] == undefined ? 0 : this.data.videoTime[videoId] ;
+    let videoSrc = e.currentTarget.dataset.src;
+    wx.navigateTo({
+      url: '../video_preview/video_preview?time=' + videoTime + '&src=' + videoSrc
+    })
+  },
+
+  //发布按钮sheet取消事件
   sheetOnCancleHandle() {
     this.setData({
       show: false
     })
   },
+  
+  //发布按钮sheet关闭事件
   sheetOnCloseHandle() {
     this.setData({
       show: false
+    })
+  },
+
+  //video进度条change事件
+  videoTimeUpdateHandle(e) {
+    let videoId = e.currentTarget.id;
+    let videoTime = this.data.videoTime;
+    videoTime[videoId] = e.detail.currentTime;
+    this.setData({
+      videoTime: videoTime
     })
   },
   onLoad: function () {
@@ -263,19 +288,15 @@ Page({
   },
 
   bindObserver() {
-    console.log(1111111)
-    wx.createIntersectionObserver(this, {observeAll:true}).relativeTo('.scroll-view').relativeToViewport({top: -300, bottom: -200}).observe('.video', (res) => {
+    let viewportBottom = app.globalData.windowHeight / 3 * - 1
+    let viewportTop = app.globalData.windowHeight / 2 * - 1
+    console.log(viewportBottom)
+    console.log(viewportTop)
+    wx.createIntersectionObserver(this, {observeAll:true}).relativeTo('.scroll-view').relativeToViewport({top: viewportTop, bottom: viewportBottom}).observe('.video', (res) => {
       this.videoContext = wx.createVideoContext(res.id)
       if (res.intersectionRatio > 0) { 
         console.log(res.id,'播放')
         this.videoContext.play()//开始播放
-      //   console.log(res)
-      // console.log(res.intersectionRatio) // 相交区域占目标节点的布局区域的比例
-      // console.log(res.intersectionRect) // 相交区域
-      //   console.log(res.intersectionRect.left) // 相交区域的左边界坐标
-      //     console.log(res.intersectionRect.top) // 相交区域的上边界坐标
-      //       console.log(res.intersectionRect.width) // 相交区域的宽度
-      //         console.log(res.intersectionRect.height) // 相交区域的高度
       } else{
         this.videoContext.pause()//开始播放
         console.log(res.id,'暂停')

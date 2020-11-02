@@ -1,0 +1,13 @@
+<back-component></back-component>
+<view class="video-contain" style="overflow:hidden;width:100%;height:100vh;background: #000;">
+    <video bindloadedmetadata="bindloadedmetadata" style="width:100%;height:100%" id="video"
+        wx:if="{{index==swiperCurrent || index==swiperCurrent+1 || index==swiperCurrent-1}}" binderror="binderror"
+        muted="{{vioce}}" show-fullscreen-btn="{{false}}" src="{{ videoSrc }}" controls="{{true}}" loop="{{true}}"
+        data-index="{{index}}" data-id="{{item.itemid}}" custom-cache="{{false}}"
+        object-fit="contain" show-center-play-btn="{{false}}" autoplay="{{ false }}" poster="http://toomhub.image.23cm.cn/wxcdc6c2edd30c27ff.o6zAJs9GQfEwWV4owMxmcCISEn60.RZDIBDQmmWQ65e9300dbda05a490ea12bdb792eecfca.mp4?vframe/jpg/offset/10" initial-time="{{ videoInitTime }}" bindseekcomplete="videoSeekHandel"></video>
+</view>
+
+<!-- <view class='load-progress {{loadProgress!=0?"show":"hide"}}' style="bottom:0px;top: inherit;">
+        <view class='load-progress-bar bg-red' style="transform: translate3d(-{{100-loadProgress}}%, 0px, 0px);height:6rpx;"></view>
+        <view class='load-progress-spinner text-green'></view>
+    </view> -->

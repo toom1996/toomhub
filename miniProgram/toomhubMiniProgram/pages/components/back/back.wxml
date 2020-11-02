@@ -1,0 +1,8 @@
+<view class="back-component" style="top:{{navTop}}px;">
+    <navigator class='icon-back' open-type="navigateBack" hover-class="none">
+      <van-icon name="arrow-left" />
+    </navigator>
+    <navigator open-type="navigate" target="self" url="/pages/index/index" class='icon-home' hover-class="none" bindtap="redirectToIndex">
+      <van-icon name="wap-home-o" />
+    </navigator>
+</view>
