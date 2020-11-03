@@ -4,7 +4,7 @@
         wx:if="{{index==swiperCurrent || index==swiperCurrent+1 || index==swiperCurrent-1}}" binderror="binderror"
         muted="{{vioce}}" show-fullscreen-btn="{{false}}" src="{{ videoSrc }}" controls="{{true}}" loop="{{true}}"
         data-index="{{index}}" data-id="{{item.itemid}}" custom-cache="{{false}}"
-        object-fit="contain" show-center-play-btn="{{false}}" autoplay="{{ false }}" poster="http://toomhub.image.23cm.cn/wxcdc6c2edd30c27ff.o6zAJs9GQfEwWV4owMxmcCISEn60.RZDIBDQmmWQ65e9300dbda05a490ea12bdb792eecfca.mp4?vframe/jpg/offset/10" initial-time="{{ videoInitTime }}" bindseekcomplete="videoSeekHandel"></video>
+        object-fit="contain" show-center-play-btn="{{false}}" autoplay="{{ false }}" poster="{{ videoPoster }}" initial-time="{{ videoInitTime }}" bindseekcomplete="videoSeekHandel"></video>
 </view>
 
 <!-- <view class='load-progress {{loadProgress!=0?"show":"hide"}}' style="bottom:0px;top: inherit;">

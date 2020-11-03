@@ -59,10 +59,10 @@
                   <block wx:if="{{ item.type == 1 }}">
                     <view>
                       <video show-mute-btn="{{ true }}" muted="{{ true }}" show-center-play-btn="{{ true }}"
-                      data-src="{{ item.video }}"
-                        controls="{{ false }}" loop="{{ true }}" id="videoContainer{{dataIndex}}" class="video"
-                        src="{{ item.video }}" poster="{{ item.cover }}" object-fit="contain"
-                        bindtimeupdate="videoTimeUpdateHandle" catchtap="videoContainerClickHandle"></video>
+                        data-src="{{ item.video }}" data-poster="{{ item.cover }}" controls="{{ false }}"
+                        loop="{{ true }}" id="videoContainer{{dataIndex}}" class="video" src="{{ item.video }}"
+                        poster="{{ item.cover }}" object-fit="contain" bindtimeupdate="videoTimeUpdateHandle"
+                        catchtap="videoContainerClickHandle"></video>
                     </view>
                   </block>
                   <block wx:else>
@@ -81,7 +81,7 @@
             <!-- 标签 -->
             <view>
               <view wx:if="{{item.tag != ''}}">
-                <van-tag round color="#fef5d8" text-color="#ce9d35" size="mini" custom-class="toomhub__square-tag">
+                <van-tag color="#eaf5ff" text-color="#0366d6" size="mini" custom-class="toomhub__square-tag">
                   {{ item.tag }}
                 </van-tag>
               </view>
@@ -101,7 +101,7 @@
                     </van-col>
                     <van-col span="4" offset="10" style="height: 30px;line-height: 30px;" catchtap="emptyHandle">
                       <button open-type="share" class="share-button" data-title="{{ item.content }}"
-                        data-list="{{ item.list }}" data-id="{{ item.id }}">
+                        data-list="{{ item.list }}" data-id="{{ item.id }}" data-type="{{ item.type }}" data-cover="{{ item.cover }}">
                         <iconfont style="float:left;" name="toomhub-share"></iconfont>
                         <text>分享</text>
                       </button>

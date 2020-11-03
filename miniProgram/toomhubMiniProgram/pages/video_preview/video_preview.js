@@ -7,7 +7,8 @@ Page({
   data: {
     videoSrc: '',
     videoInitTime: '',
-    videoContext: {}
+    videoContext: {},
+    videoPoster: ''
   },
 
   /**
@@ -19,7 +20,8 @@ Page({
     let videoContext = this.data.videoContext
     this.setData({
       videoSrc: options.src,
-      videoInitTime: options.time
+      videoInitTime: options.time,
+      videoPoster: options.poster.replace("*", "?")
     });
     videoContext.seek(options.time);
     console.log(this.data.videoInitTime)
@@ -73,8 +75,9 @@ Page({
   onShareAppMessage: function () {
 
   },
+  
+  //模拟器上不会触发
   videoSeekHandel() {
-    console.log("seek final")
     let videoContext = this.data.videoContext;
     videoContext.play();
   }

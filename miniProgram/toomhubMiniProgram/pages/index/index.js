@@ -11,9 +11,22 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function (options) {
+    console.log(options)
     let title = options.target.dataset.title;
     let list = options.target.dataset.list;
     let id = options.target.dataset.id;
+    let type = options.target.dataset.type;
+    let cover = options.target.dataset.cover;
+    let imageUrl = '';
+
+    console.log(type)
+    if (type == 1) {
+      imageUrl = cover;
+    } else {
+      imageUrl = list[0] + app.globalData.imageThumbnailParam;
+    }
+
+    console.log(imageUrl)
 
     if (app.strlen(title) > 14) {
       title = title.substring(0, 14) + '...';
@@ -22,7 +35,7 @@ Page({
     return {
       title: title,
       path: '/pages/view/view?id=' + id,
-      imageUrl: list[0] + app.globalData.imageThumbnailParam
+      imageUrl: '/static/avatar/defaultAvatar.jpg'
     }
   },
   data: {
@@ -70,8 +83,11 @@ Page({
     let videoId = e.currentTarget.id;
     let videoTime = this.data.videoTime[videoId] == undefined ? 0 : this.data.videoTime[videoId] ;
     let videoSrc = e.currentTarget.dataset.src;
+    let videoPoster = e.currentTarget.dataset.poster.replace('?', '*');
+    console.log(videoPoster)
+    console.log ('../video_preview/video_preview?time=' + videoTime + '&src=' + videoSrc + '&poster=' + videoPoster)
     wx.navigateTo({
-      url: '../video_preview/video_preview?time=' + videoTime + '&src=' + videoSrc
+      url: '../video_preview/video_preview?time=' + videoTime + '&src=' + videoSrc + '&poster=' + videoPoster
     })
   },
 

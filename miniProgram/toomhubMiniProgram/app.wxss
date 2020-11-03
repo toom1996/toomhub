@@ -1,6 +1,6 @@
 /**app.wxss**/
 page {
-  background-color: rgb(242,242,242);
+  background-color: rgb(246, 248, 250);
 }
 
 .container {
