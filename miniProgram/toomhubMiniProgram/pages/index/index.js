@@ -22,21 +22,70 @@ Page({
     console.log(type)
     if (type == 1) {
       imageUrl = cover;
+
+      wx.showLoading({
+        title: '图片生成中',
+      })
+
+    const context = wx.createCanvasContext('videoCanvas', self);
+    context.setStrokeStyle("#00ff00")
+    context.setLineWidth(5)
+    context.rect(0, 0, 200, 200)
+    context.stroke()
+    context.setStrokeStyle("#ff0000")
+    context.setLineWidth(2)
+    context.moveTo(160, 100)
+    context.arc(100, 100, 60, 0, 2 * Math.PI, true)
+    context.moveTo(140, 100)
+    context.arc(100, 100, 40, 0, Math.PI, false)
+    context.moveTo(85, 80)
+    context.arc(80, 80, 5, 0, 2 * Math.PI, true)
+    context.moveTo(125, 80)
+    context.arc(120, 80, 5, 0, 2 * Math.PI, true)
+    context.stroke()
+    context.draw()
+    wx.canvasToTempFilePath({
+      canvasId: 'videoCanvas',
+      x: 0,
+      y: 0,
+      width: 250,
+      height: 200,
+      success:res =>  {
+        console.log(res)
+        this.setData({
+          tmpImage: res.tempFilePath
+        })
+        console.log(this.data.tmpImage)
+        wx.uploadFile({
+          url: app.getApi('requestHost') + '/c/image/upload',
+          filePath: this.data.tmpImage,
+          name: 'file',
+          success: (res) => {
+            let data = JSON.parse(res.data)
+            console.log(data.data.host+data.data.name)
+            return {
+              title: title,
+              path: '/pages/view/view?id=' + id,
+              imageUrl: data.data.host+data.data.name
+            }
+          }
+        })
+        
+      },
+  }, this);
+
+
     } else {
       imageUrl = list[0] + app.globalData.imageThumbnailParam;
     }
 
-    console.log(imageUrl)
+    console.log(this.data.tmpImage)
 
     if (app.strlen(title) > 14) {
       title = title.substring(0, 14) + '...';
     }
-
-    return {
-      title: title,
-      path: '/pages/view/view?id=' + id,
-      imageUrl: '/static/avatar/defaultAvatar.jpg'
-    }
+    console.log(this.data.tmpImage)
+    
   },
   data: {
     // 自定义顶部导航
@@ -171,7 +220,7 @@ Page({
   // 图片点击事件
   previewImage: function (event) {
     wx.navigateTo({
-      url: '../components/image_preview/image_preview?list=' + event.currentTarget.dataset.list + '&index=' + event.currentTarget.dataset.index
+      url: '/pages/image_preview/image_preview?list=' + event.currentTarget.dataset.list + '&index=' + event.currentTarget.dataset.index
     })
   },
   //滑动到底部刷新事件

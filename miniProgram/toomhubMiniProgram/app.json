@@ -5,7 +5,7 @@
     "pages/user/user",
     "pages/login/login",
     "pages/image_add/image_add",
-    "pages/components/image_preview/image_preview",
+    "pages/image_preview/image_preview",
     "pages/view/view",
     "pages/video_add/video_add",
     "pages/video_cover/video_cover",

@@ -68,7 +68,8 @@ button::after{
   -webkit-flex: 1%;
   flex: 1;
   font-size: 80%;
-  margin: 30rpx 0rpx 30rpx 0rpx;
+  margin: 30rpx 0rpx 0rpx 0rpx;
+  font-weight: bold;
 }
 
 .__content image{
@@ -96,7 +97,7 @@ button::after{
 }
 
 .post_box .font__username {
-  font-weight: 600;
+  font-weight: 300;
   font-size: 30rpx;
   overflow: hidden;
   text-overflow: ellipsis;

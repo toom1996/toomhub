@@ -9,9 +9,10 @@
   </van-tabs>
 </view>
 <!-- 自定义顶部导航 E -->
+<canvas style="width: 286px;height: 415px;background:white;position: fixed;z-index: 999999;" canvas-id="videoCanvas"></canvas>
 
 <block wx:if="{{ showPubButton === true }}">
-  <van-button color="#f8cd55" icon="edit" round class="add" custom-style="color:#000000;font-weight: bold;"
+  <van-button color="#54a158" icon="edit" round class="add" custom-style="color:#ffffff;font-weight: bold;"
     bindtap="addHandle">发布</van-button>
 </block>
 <view wx:for="{{10}}" wx:key="skeletonIndex">
