@@ -1,5 +1,6 @@
 //index.js
 //获取应用实例
+import { getThumbnail } from '../../api/func'
 const app = getApp()
 import Toast from '../../miniprogram_npm/@vant/weapp/toast/toast';
 let myStyle = `
@@ -12,80 +13,16 @@ Page({
    */
   onShareAppMessage: function (options) {
     console.log(options)
-    let title = options.target.dataset.title;
-    let list = options.target.dataset.list;
-    let id = options.target.dataset.id;
-    let type = options.target.dataset.type;
-    let cover = options.target.dataset.cover;
-    let imageUrl = '';
-
-    console.log(type)
-    if (type == 1) {
-      imageUrl = cover;
-
-      wx.showLoading({
-        title: '图片生成中',
-      })
-
-    const context = wx.createCanvasContext('videoCanvas', self);
-    context.setStrokeStyle("#00ff00")
-    context.setLineWidth(5)
-    context.rect(0, 0, 200, 200)
-    context.stroke()
-    context.setStrokeStyle("#ff0000")
-    context.setLineWidth(2)
-    context.moveTo(160, 100)
-    context.arc(100, 100, 60, 0, 2 * Math.PI, true)
-    context.moveTo(140, 100)
-    context.arc(100, 100, 40, 0, Math.PI, false)
-    context.moveTo(85, 80)
-    context.arc(80, 80, 5, 0, 2 * Math.PI, true)
-    context.moveTo(125, 80)
-    context.arc(120, 80, 5, 0, 2 * Math.PI, true)
-    context.stroke()
-    context.draw()
-    wx.canvasToTempFilePath({
-      canvasId: 'videoCanvas',
-      x: 0,
-      y: 0,
-      width: 250,
-      height: 200,
-      success:res =>  {
-        console.log(res)
-        this.setData({
-          tmpImage: res.tempFilePath
+    return new Promise((resolve, reject) => {
+        getThumbnail(options, data=>{
+          console.log('图片', data.src, data.id);
+          resolve ({
+            title: data.title,
+            path: '/pages/view/view?id=' + data.id,
+            imageUrl: data.src
+          })
         })
-        console.log(this.data.tmpImage)
-        wx.uploadFile({
-          url: app.getApi('requestHost') + '/c/image/upload',
-          filePath: this.data.tmpImage,
-          name: 'file',
-          success: (res) => {
-            let data = JSON.parse(res.data)
-            console.log(data.data.host+data.data.name)
-            return {
-              title: title,
-              path: '/pages/view/view?id=' + id,
-              imageUrl: data.data.host+data.data.name
-            }
-          }
-        })
-        
-      },
-  }, this);
-
-
-    } else {
-      imageUrl = list[0] + app.globalData.imageThumbnailParam;
-    }
-
-    console.log(this.data.tmpImage)
-
-    if (app.strlen(title) > 14) {
-      title = title.substring(0, 14) + '...';
-    }
-    console.log(this.data.tmpImage)
-    
+    })
   },
   data: {
     // 自定义顶部导航
@@ -106,6 +43,7 @@ Page({
       { name: '发视频', openType: 'videoAddHandle' },
     ],
     videoTime: {}, //video当前播放时间
+    videoShareTmpImage: ''
   },
   navigationSwitch: function (event) {
     wx.navigateTo({
@@ -125,16 +63,15 @@ Page({
   },
   emptyHandle() {
   },
-
   //视频点击事件
-  videoContainerClickHandle(e){
+  videoContainerClickHandle(e) {
     console.log(e)
     let videoId = e.currentTarget.id;
-    let videoTime = this.data.videoTime[videoId] == undefined ? 0 : this.data.videoTime[videoId] ;
+    let videoTime = this.data.videoTime[videoId] == undefined ? 0 : this.data.videoTime[videoId];
     let videoSrc = e.currentTarget.dataset.src;
-    let videoPoster = e.currentTarget.dataset.poster.replace('?', '*');
-    console.log(videoPoster)
-    console.log ('../video_preview/video_preview?time=' + videoTime + '&src=' + videoSrc + '&poster=' + videoPoster)
+    let videoPoster = e.currentTarget.dataset.poster.indexOf('?') !== -1 ? e.currentTarget.dataset.poster.replace('?', '*') : e.currentTarget.dataset.src + '?vframe/jpg/offset/10';
+    console.log('videoPoster', videoPoster)
+    console.log('../video_preview/video_preview?time=' + videoTime + '&src=' + videoSrc + '&poster=' + videoPoster)
     wx.navigateTo({
       url: '../video_preview/video_preview?time=' + videoTime + '&src=' + videoSrc + '&poster=' + videoPoster
     })
@@ -146,7 +83,7 @@ Page({
       show: false
     })
   },
-  
+
   //发布按钮sheet关闭事件
   sheetOnCloseHandle() {
     this.setData({
@@ -164,7 +101,7 @@ Page({
     })
   },
   onLoad: function () {
-    this._observer = wx.createIntersectionObserver(this, {observeAll:true})
+    this._observer = wx.createIntersectionObserver(this, { observeAll: true })
     this.setData({ 'viewData.style': myStyle + '40px;' })
     this.refreshIndex(1, true);
   },
@@ -188,7 +125,7 @@ Page({
     }
   },
   //发图片点击事件
-  imageAddHandle () {
+  imageAddHandle() {
     wx.navigateTo({
       url: '../image_add/image_add'
     })
@@ -202,7 +139,7 @@ Page({
   onUnload() {
     if (this._observer) this._observer.disconnect()
   },
-  videoAddHandle () {
+  videoAddHandle() {
     // wx.chooseMedia({
     //   count: 9,
     //   mediaType: ['image', 'video'],
@@ -357,16 +294,16 @@ Page({
     let viewportTop = app.globalData.windowHeight / 2 * - 1
     console.log(viewportBottom)
     console.log(viewportTop)
-    wx.createIntersectionObserver(this, {observeAll:true}).relativeTo('.scroll-view').relativeToViewport({top: viewportTop, bottom: viewportBottom}).observe('.video', (res) => {
+    wx.createIntersectionObserver(this, { observeAll: true }).relativeTo('.scroll-view').relativeToViewport({ top: viewportTop, bottom: viewportBottom }).observe('.video', (res) => {
       this.videoContext = wx.createVideoContext(res.id)
-      if (res.intersectionRatio > 0) { 
-        console.log(res.id,'播放')
+      if (res.intersectionRatio > 0) {
+        console.log(res.id, '播放')
         this.videoContext.play()//开始播放
-      } else{
+      } else {
         this.videoContext.pause()//开始播放
-        console.log(res.id,'暂停')
+        console.log(res.id, '暂停')
       }
-      
+
     })
   }
 })
