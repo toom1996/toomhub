@@ -9,7 +9,7 @@
   </van-tabs>
 </view>
 <!-- 自定义顶部导航 E -->
-<canvas style="width: 500px;height: 400px;background:white;position: fixed;z-index: 999999" canvas-id="videoCanvas"></canvas>
+<canvas style="width: 500px;height: 400px;background:white;position: fixed;z-index: 999999;top:-9999px" canvas-id="shareCanvas"></canvas>
 
 <block wx:if="{{ showPubButton === true }}">
   <van-button color="#54a158" icon="edit" round class="add" custom-style="color:#ffffff;font-weight: bold;"
@@ -102,7 +102,7 @@
                     </van-col>
                     <van-col span="4" offset="10" style="height: 30px;line-height: 30px;" catchtap="emptyHandle">
                       <button open-type="share" class="share-button" data-title="{{ item.content }}"
-                        data-list="{{ item.list }}" data-id="{{ item.id }}" data-type="{{ item.type }}" data-cover="{{ item.cover }}">
+                        data-list="{{ item.list }}" data-id="{{ item.id }}" data-type="{{ item.type }}" data-cover="{{ item.cover }}" data-createdBy="{{ item.created_by }}" data-avatar="{{ item.avatar_url }}">
                         <iconfont style="float:left;" name="toomhub-share"></iconfont>
                         <text>分享</text>
                       </button>

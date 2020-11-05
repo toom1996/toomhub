@@ -15,7 +15,7 @@ Page({
     console.log(options)
     return new Promise((resolve, reject) => {
         getThumbnail(options, data=>{
-          console.log('图片', data.src, data.id);
+          console.log('图片', data.title, data.id);
           resolve ({
             title: data.title,
             path: '/pages/view/view?id=' + data.id,

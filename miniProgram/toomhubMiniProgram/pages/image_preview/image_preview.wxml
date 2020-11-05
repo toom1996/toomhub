@@ -1,2 +1,36 @@
-<!--pages/image_preview/image_preview.wxml-->
-<text>pages/image_preview/image_preview.wxml</text>
+<back-component></back-component>
+
+<swiper class="box" duration="{{ 200 }}" current="{{ index }}" bindchange="swiperChangeHandle">
+  <block wx:for="{{ image }}" wx:key="*this" wx:for-index="imageIndex">
+    <swiper-item>
+      <!-- <block wx:if="{{ loadedImageList[imageIndex].is_overflow == true }}"> -->
+        <!-- 长图 -->
+        <view class="swiper-item">
+          <block wx:if="{{ loadedImageList[imageIndex].is_load == 1 }}">
+              <image bindtap="imageClickHandle" data-index="{{ imageIndex }}" src="{{item}}" bindlongtap="imageLongTapHandle" show-menu-by-longpress mode="widthFix" bindload="imageLoadedHandle">
+            </image>
+          </block >
+          <block wx:else>
+            <van-image use-loading-slot>
+              <van-loading slot="loading" type="spinner" size="20" vertical />
+            </van-image>
+          </block >
+        </view>
+      <!-- </block > -->
+      <!-- <block wx:else>
+        短图
+        <view class="swiper-item" style="align-items:center">
+          <block wx:if="{{ loadedImageList[imageIndex].is_load == 1 }}">
+              <image bindtap="imageClickHandle" data-index="{{ imageIndex }}" src="{{item}}" bindlongtap="imageLongTapHandle" show-menu-by-longpress mode="widthFix" bindload="imageLoadedHandle">
+            </image>
+          </block >
+          <block wx:else>
+            <van-image use-loading-slot>
+              <van-loading slot="loading" type="spinner" size="20" vertical />
+            </van-image>
+          </block >
+        </view>
+      </block> -->
+    </swiper-item>
+  </block>
+</swiper>

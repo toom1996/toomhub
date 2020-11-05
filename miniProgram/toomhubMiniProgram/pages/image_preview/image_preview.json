@@ -1,3 +1,7 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "back-component": "../components/back/back"
+  },
+  "navigationStyle": "custom",
+  "navigationBarTextStyle": "white"
 }

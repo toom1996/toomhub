@@ -1,66 +1,146 @@
-// pages/image_preview/image_preview.js
+const app = getApp()
+let myStyle = `
+--tooom__tag-top:
+`
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    flag: false,
+    // 自定义顶部导航
+    navHeight: app.globalData.navHeight,
+    navTop: app.globalData.navTop,
+    show: false,
+    index: 0,
+    imageList: [],
+    image: [],
+    tmpImage: [],
+    loadedImageList: []
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
+  onLoad(options) {
+    let swiperIndex = parseInt(options.index);
+    let swiperIndexLast = this.getLastIndex(swiperIndex);
+    let swiperIndexNext = this.getNextIndex(swiperIndex);
 
+    this.setData({
+      index: options.index
+    })
+
+    //插入空数组
+    let image = this.data.tmpImage;
+    let loaded = this.data.loadedImageList;
+    this.setData({
+      imageList: options.list.split(",")
+    })
+    for (let i = 0; i < this.data.imageList.length; i++) {
+      image.push('');
+      loaded.push({});
+    }
+    //修改当前索引及上下一个图片
+    image[swiperIndex] = this.data.imageList[swiperIndex];
+    loaded[swiperIndex] =  {
+      is_load: 1
+    };
+    if (swiperIndexLast >= 0) {
+      image[swiperIndex - 1] = this.data.imageList[swiperIndex - 1];
+      loaded[swiperIndex - 1] =  {
+        is_load: 1
+      };
+    }
+    if (swiperIndexNext <= this.data.imageList.length - 1) {
+      image[swiperIndex + 1] = this.data.imageList[swiperIndex + 1];
+      loaded[swiperIndex + 1] =  {
+        is_load: 1
+      };
+    }
+    this.setData({
+      image: image,
+      tmpImage: image,
+      loadedImageList: loaded
+    })
+  },
+  /**
+   * 获取顶部固定高度
+   */
+  attached: function () {
+    this.setData({
+      navHeight: app.globalData.navHeight,
+      navTop: app.globalData.navTop,
+    })
+  },
+  imageLoadedHandle(event) {
+    let loadedIndex = event.currentTarget.dataset.index;
+    let tmp = this.data.loadedImageList;
+    let height = event.detail.height;
+    let width = event.detail.width;
+
+    let widthP = (width / app.globalData.windowWidth).toFixed(2);
+    
+    tmp[loadedIndex] = {
+      is_load: 1,
+      is_overflow: height / widthP > app.globalData.windowHeight ? true : false 
+    };
+    this.setData({
+      loadedImageList: tmp
+    });
+  },
+  //长按事件, 抑制退出事件触发
+  imageLongTapHandle() {
+    this.setData({
+      flag: true,
+    })
+    var _this = this
+    setTimeout(function () {
+      _this.setData({
+        flag: false,
+      })
+    }, 300) //延迟时间 这里是1秒
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  onClose() {
+    this.setData({
+      show: false,
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  onSelect(event) {
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
+  imageClickHandle() {
+    if (this.data.flag == false) {
+      wx.navigateBack({
+        delta: -1
+      })
+    } else {
+      this.setData({
+        flag: false,
+      })
+    }
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
+  getLastIndex(index) {
+    return index - 1;
   },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
+  getNextIndex(index) {
+    return index + 1;
   },
+  swiperChangeHandle(event) {
+    let swiperIndex = event.detail.current
+    let swiperIndexLast = this.getLastIndex(swiperIndex);
+    let swiperIndexNext = this.getNextIndex(swiperIndex);
+    let image = this.data.tmpImage;
+    let loaded = this.data.loadedImageList;
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+    if (swiperIndexLast >= 0) {
+      image[swiperIndex - 1] = this.data.imageList[swiperIndex - 1];
+      loaded[swiperIndex - 1]['is_load'] = 1;
+    }
+    if (swiperIndexNext <= this.data.imageList.length - 1) {
+      image[swiperIndex + 1] = this.data.imageList[swiperIndex + 1];
+      loaded[swiperIndex + 1]['is_load'] = 1;
+    }
+    this.setData({
+      image: image,
+      loadedImageList: loaded
+    })
   }
 })
