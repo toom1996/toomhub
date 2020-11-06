@@ -1,5 +1,5 @@
 <!-- 自定义顶部导航 S -->
-<view class="navbar custom-class" style='height:{{navHeight + 40}}px;'>
+<!-- <view class="navbar custom-class" style='height:{{navHeight + 40}}px;'>
   <view class="navbar-action-wrap navbar-action-group row item-center" style='top:{{navTop}}px;'>
   </view>
   <van-tabs active="{{ active }}" bind:change="onChange" style='--toomhub__tabs-top:{{navTop + 30}}px;'
@@ -7,20 +7,20 @@
     <van-tab title="发现" name="finder"></van-tab>
     <van-tab title="关注"></van-tab>
   </van-tabs>
-</view>
+</view> -->
 <!-- 自定义顶部导航 E -->
-<canvas style="width: 500px;height: 400px;background:white;position: fixed;z-index: 999999;top:-9999px" canvas-id="shareCanvas"></canvas>
-
-<block wx:if="{{ showPubButton === true }}">
-  <van-button color="#54a158" icon="edit" round class="add" custom-style="color:#ffffff;font-weight: bold;"
+<canvas style="width: 500px;height: 400px;background:white;position: fixed;z-index: 999999;top:-9999px"
+  canvas-id="shareCanvas"></canvas>
+<!-- <block wx:if="{{ showPubButton === true }}"> -->
+  <van-button color="#28a745" icon="edit" round class="add" custom-style="color:#ffffff;font-weight: bold;"
     bindtap="addHandle">发布</van-button>
-</block>
+<!-- </block> -->
 <view wx:for="{{10}}" wx:key="skeletonIndex">
   <van-skeleton title avatar row="3" loading="{{ skeletonShow }}" />
 </view>
 
 <scroll-view class="scroll-view">
-  <view style="height:{{navHeight + 40}}px;"></view>
+  <!-- <view style="height:{{navHeight + 40}}px;"></view> -->
   <view class="ball" wx:for="{{ data }}" wx:for-index="dataIndex" wx:key="dataIndex">
     <view class="box">
       <!-- operatingBar -->
@@ -102,7 +102,9 @@
                     </van-col>
                     <van-col span="4" offset="10" style="height: 30px;line-height: 30px;" catchtap="emptyHandle">
                       <button open-type="share" class="share-button" data-title="{{ item.content }}"
-                        data-list="{{ item.list }}" data-id="{{ item.id }}" data-type="{{ item.type }}" data-cover="{{ item.cover }}" data-createdBy="{{ item.created_by }}" data-avatar="{{ item.avatar_url }}">
+                        data-list="{{ item.list }}" data-id="{{ item.id }}" data-type="{{ item.type }}"
+                        data-cover="{{ item.cover }}" data-createdBy="{{ item.created_by }}"
+                        data-avatar="{{ item.avatar_url }}">
                         <iconfont style="float:left;" name="toomhub-share"></iconfont>
                         <text>分享</text>
                       </button>

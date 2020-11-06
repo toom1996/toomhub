@@ -8,8 +8,8 @@ Page({
     host: '',
     videoUrl: '',
     duration: 0,
-    defaultCover: '',
-    checkedCover: 0,
+    currentCover: '', //当前选择的封面
+    checkedCover: 0, //默认选择第0帧
     coverHeight: ( app.globalData.windowWidth - 40 ) / 4 
   },
 
@@ -84,6 +84,8 @@ Page({
       defaultCover: this.data.videoUrl + '?vframe/jpg/offset/' + this.data.checkedCover
     })
   },
+  
+  //选择封面处理事件
   checkedCoverHandel() {
     app.globalData.videoCover = this.data.videoUrl + '?vframe/jpg/offset/' + this.data.checkedCover;
     wx.navigateBack({

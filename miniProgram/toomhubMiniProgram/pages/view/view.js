@@ -124,7 +124,7 @@ Page({
   // 图片点击事件
   previewImage: function (event) {
     wx.navigateTo({
-      url: '../components/image_preview/image_preview?list=' + event.currentTarget.dataset.list + '&index=' + event.currentTarget.dataset.index
+      url: '../image_preview/image_preview?list=' + event.currentTarget.dataset.list + '&index=' + event.currentTarget.dataset.index
     })
   },
 

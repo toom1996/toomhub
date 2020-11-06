@@ -12,16 +12,15 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function (options) {
-    console.log(options)
     return new Promise((resolve, reject) => {
-        getThumbnail(options, data=>{
-          console.log('图片', data.title, data.id);
-          resolve ({
-            title: data.title,
-            path: '/pages/view/view?id=' + data.id,
-            imageUrl: data.src
-          })
+      getThumbnail(options, data => {
+        console.log('图片', data.title, data.id);
+        resolve({
+          title: data.title,
+          path: '/pages/view/view?id=' + data.id,
+          imageUrl: data.src
         })
+      })
     })
   },
   data: {
@@ -43,7 +42,11 @@ Page({
       { name: '发视频', openType: 'videoAddHandle' },
     ],
     videoTime: {}, //video当前播放时间
-    videoShareTmpImage: ''
+    videoShareTmpImage: '',
+    list: [
+      { "name": "发现" },
+      { "name": "关注" },
+    ]
   },
   navigationSwitch: function (event) {
     wx.navigateTo({
@@ -61,8 +64,11 @@ Page({
       url: '../view/view?id=' + event.currentTarget.dataset.id
     })
   },
+
+  //空事件
   emptyHandle() {
   },
+
   //视频点击事件
   videoContainerClickHandle(e) {
     console.log(e)
@@ -80,14 +86,14 @@ Page({
   //发布按钮sheet取消事件
   sheetOnCancleHandle() {
     this.setData({
-      show: false
+      sheetShow: false
     })
   },
 
   //发布按钮sheet关闭事件
   sheetOnCloseHandle() {
     this.setData({
-      show: false
+      sheetShow: false
     })
   },
 
@@ -104,6 +110,19 @@ Page({
     this._observer = wx.createIntersectionObserver(this, { observeAll: true })
     this.setData({ 'viewData.style': myStyle + '40px;' })
     this.refreshIndex(1, true);
+  },
+  switchTab: function (e) {
+    console.log('switch',e.detail.current)
+    this.setData({ currentTab: e.detail.current });
+    this.setLeft();
+  },
+  swichNav: function (e) {
+    var current = e.target.dataset.current;
+    console.log('current',current)
+    if (this.data.currentTab != current) {
+      this.setData({ currentTab: current });
+    }
+    this.setLeft();
   },
   getUserInfo: function (e) {
     app.globalData.userInfo = e.detail.userInfo
@@ -133,33 +152,24 @@ Page({
   //发布按钮点击事件
   addHandle: function () {
     this.setData({
-      show: true
+      sheetShow: true
     })
   },
-  onUnload() {
-    if (this._observer) this._observer.disconnect()
-  },
+
+  //点击发布视频处理事件
   videoAddHandle() {
-    // wx.chooseMedia({
-    //   count: 9,
-    //   mediaType: ['image', 'video'],
-    //   sourceType: ['album', 'camera'],
-    //   maxDuration: 30,
-    //   camera: 'back',
-    //   success(res) {
-    //     console.log(res)
-    //   }
-    // })
     wx.navigateTo({
       url: '../video_add/video_add'
     })
   },
+
   // 图片点击事件
   previewImage: function (event) {
     wx.navigateTo({
       url: '/pages/image_preview/image_preview?list=' + event.currentTarget.dataset.list + '&index=' + event.currentTarget.dataset.index
     })
   },
+
   //滑动到底部刷新事件
   onReachBottom: function () {
     this.refreshIndex(this.data.page);
@@ -290,8 +300,8 @@ Page({
   },
 
   bindObserver() {
-    let viewportBottom = app.globalData.windowHeight / 3 * - 1
-    let viewportTop = app.globalData.windowHeight / 2 * - 1
+    let viewportBottom = app.globalData.windowHeight / 2 * - 1
+    let viewportTop = app.globalData.windowHeight / 2.5 * - 1
     console.log(viewportBottom)
     console.log(viewportTop)
     wx.createIntersectionObserver(this, { observeAll: true }).relativeTo('.scroll-view').relativeToViewport({ top: viewportTop, bottom: viewportBottom }).observe('.video', (res) => {
@@ -303,7 +313,6 @@ Page({
         this.videoContext.pause()//开始播放
         console.log(res.id, '暂停')
       }
-
     })
   }
 })

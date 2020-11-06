@@ -2,9 +2,8 @@
   "usingComponents": {
   },
   "backgroundTextStyle": "dark",
-  "navigationBarBackgroundColor": "#fff",
-  "navigationBarTitleText": "",
-  "navigationBarTextStyle": "black",
-  "navigationStyle": "custom",
+  "navigationBarBackgroundColor": "#24292E",
+  "navigationBarTitleText": "TOOMHUB",
+  "navigationBarTextStyle": "white",
   "enablePullDownRefresh": true
 }

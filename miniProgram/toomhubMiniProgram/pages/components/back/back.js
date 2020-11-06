@@ -12,7 +12,7 @@ Component({
    * 组件的初始数据
    */
   data: {
-    top: app.globalData.navTop
+    navTop: app.globalData.navTop
   },
 
   /**
