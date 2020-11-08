@@ -28,6 +28,8 @@ type SquareVideoCreate struct {
 	Tag      string  `form:"tag"`
 	Size     int64   `form:"size"`
 	Duration float32 `form:"duration"`
+	Height   float32 `form:"height"`
+	Width    float32 `form:"width"`
 }
 
 type CreateImageInfo struct {

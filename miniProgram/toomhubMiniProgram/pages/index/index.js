@@ -27,6 +27,8 @@ Page({
     // 自定义顶部导航
     navHeight: app.globalData.navHeight,
     navTop: app.globalData.navTop,
+    screenWidth: app.globalData.windowWidth,
+    screenHeight: app.globalData.windowHeight,
     viewData: {
       style: myStyle //顶部搜索栏样式
     },
@@ -107,6 +109,7 @@ Page({
     })
   },
   onLoad: function () {
+    console.log(this.data.screenHeight)
     this._observer = wx.createIntersectionObserver(this, { observeAll: true })
     this.setData({ 'viewData.style': myStyle + '40px;' })
     this.refreshIndex(1, true);

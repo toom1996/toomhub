@@ -63,7 +63,7 @@
                         data-src="{{ item.video }}" data-poster="{{ item.cover }}" controls="{{ false }}"
                         loop="{{ true }}" id="videoContainer{{dataIndex}}" class="video" src="{{ item.video }}"
                         poster="{{ item.cover }}" object-fit="contain" bindtimeupdate="videoTimeUpdateHandle"
-                        catchtap="videoContainerClickHandle"></video>
+                        catchtap="videoContainerClickHandle" style="height:{{ (item.width > screenHeight / 2) ? (screenHeight / 2) : 225 }}px;width:{{ item.width > screenWidth ? screenWidth : item.width }}"></video>
                     </view>
                   </block>
                   <block wx:else>

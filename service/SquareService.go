@@ -79,6 +79,8 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 		} else {
 			mapString["video"] = result["video"]
 			mapString["cover"] = result["cover"]
+			mapString["height"] = util.ToInt(result["height"])
+			mapString["width"] = util.ToInt(result["width"])
 			mapString["type"] = 1
 		}
 
@@ -116,6 +118,9 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 		list = append(list, mapString)
 	}
 	return list, nil
+}
+
+func calculateVideoSize(width int32, height int32, screenWidth int32, screenHeight int32) {
 }
 
 // @title	创建广场信息
@@ -257,6 +262,8 @@ func SquareVideoCreate(v *validatorRules.SquareVideoCreate) (bool, error) {
 		"content":        v.Content,
 		"video":          v.Host + v.Name,
 		"cover":          v.Cover,
+		"height":         v.Height,
+		"width":          v.Width,
 	}).Result()
 
 	transaction.Commit()
