@@ -12,8 +12,8 @@
 <canvas style="width: 500px;height: 400px;background:white;position: fixed;z-index: 999999;top:-9999px"
   canvas-id="shareCanvas"></canvas>
 <!-- <block wx:if="{{ showPubButton === true }}"> -->
-  <van-button color="#28a745" icon="edit" round class="add" custom-style="color:#ffffff;font-weight: bold;"
-    bindtap="addHandle">发布</van-button>
+<van-button color="#28a745" icon="edit" round class="add" custom-style="color:#ffffff;font-weight: bold;"
+  bindtap="addHandle">发布</van-button>
 <!-- </block> -->
 <view wx:for="{{10}}" wx:key="skeletonIndex">
   <van-skeleton title avatar row="3" loading="{{ skeletonShow }}" />
@@ -55,15 +55,16 @@
             <!-- 附件 图片 视频 -->
             <van-row>
               <van-col span="24" gutter="20">
-                <view class="__content" style="text-align:center;">
+                <view class="__content">
                   <!-- video -->
                   <block wx:if="{{ item.type == 1 }}">
                     <view>
                       <video show-mute-btn="{{ true }}" muted="{{ true }}" show-center-play-btn="{{ true }}"
                         data-src="{{ item.video }}" data-poster="{{ item.cover }}" controls="{{ false }}"
                         loop="{{ true }}" id="videoContainer{{dataIndex}}" class="video" src="{{ item.video }}"
-                        poster="{{ item.cover }}" object-fit="contain" bindtimeupdate="videoTimeUpdateHandle"
-                        catchtap="videoContainerClickHandle" style="height:{{ (item.width > screenHeight / 2) ? (screenHeight / 2) : 225 }}px;width:{{ item.width > screenWidth ? screenWidth : item.width }}"></video>
+                        poster="{{ item.cover }}" object-fit="cover" bindtimeupdate="videoTimeUpdateHandle"
+                        catchtap="videoContainerClickHandle"
+                        style="height:{{ item.height }}px;min-height:{{ 200 }}px;min-width:{{ (screenWidth - 32) * 0.6 }}px;width:{{ item.width }}px"></video>
                     </view>
                   </block>
                   <block wx:else>

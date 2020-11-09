@@ -1,6 +1,6 @@
 //index.js
 //获取应用实例
-import { getThumbnail } from '../../api/func'
+import { getThumbnail, calculateVideoSize } from '../../api/func'
 const app = getApp()
 import Toast from '../../miniprogram_npm/@vant/weapp/toast/toast';
 let myStyle = `
@@ -114,19 +114,6 @@ Page({
     this.setData({ 'viewData.style': myStyle + '40px;' })
     this.refreshIndex(1, true);
   },
-  switchTab: function (e) {
-    console.log('switch',e.detail.current)
-    this.setData({ currentTab: e.detail.current });
-    this.setLeft();
-  },
-  swichNav: function (e) {
-    var current = e.target.dataset.current;
-    console.log('current',current)
-    if (this.data.currentTab != current) {
-      this.setData({ currentTab: current });
-    }
-    this.setLeft();
-  },
   getUserInfo: function (e) {
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
@@ -210,6 +197,12 @@ Page({
 
           if (responseData.list.length > 0) {
             responseData.list.forEach(item => {
+              //视频文件控制大小
+              if (item.type == 1) {
+                let size = calculateVideoSize(item.width, item.height );
+                item.width = size.width;
+                item.height = size.height;
+              }
               d.push(item);
             })
           }
@@ -224,6 +217,17 @@ Page({
       }
     })
   },
+
+  //计算视频宽高
+  calculateVideoSize(width, height) {
+    console.log('宽',width)
+    console.log('高',height)
+    return {
+      width: width,
+      height:height
+    }
+  },
+
   //下拉刷新接口
   onPullDownRefresh: function () {
     this.refreshIndex(1, true);

@@ -138,3 +138,48 @@ export const strlen = (str) => {
   return len;
 }
 
+export const calculateVideoSize = (width, height) => {
+  let screenWidth = app.globalData.windowWidth;
+  let screenHeight = app.globalData.windowHeight;
+  let paddingPx = 32; //左右边距
+  let calculateWidth = 0;
+  let calculateHeight = 0;
+  app.globalData.windowHeight
+  console.log(screenWidth)
+  console.log(screenHeight)
+  //宽大于屏幕宽度, 高大于最大高度/2, 则压缩高度 和宽度
+  if (width >= (screenWidth - paddingPx) && height >= screenHeight / 2) {
+    let p = height / (screenHeight / 2)
+    calculateHeight = height / p
+    calculateWidth = width / p
+  }
+
+  //宽大于屏幕宽度, 高大于最大高度/2, 则压缩高度 和宽度
+  if (width >= (screenWidth - paddingPx) && height <= screenHeight / 2) {
+    let p = width / (screenWidth - 32)
+    calculateHeight = height / p
+    calculateWidth = width / p
+  }
+
+  //宽大于屏幕宽度, 高大于最大高度/2, 则压缩高度 和宽度
+  if (width <= (screenWidth - paddingPx) && height >= screenHeight / 2) {
+    let p = height / (screenHeight / 2)
+    calculateHeight = height / p
+    calculateWidth = width / p
+  }
+
+  //宽大于屏幕宽度, 高大于最大高度/2, 则压缩高度 和宽度
+  if (width <= (screenWidth - paddingPx) && height <= screenHeight / 2) {
+    let p = width / (screenWidth - 32)
+    calculateHeight = height / p
+    calculateWidth = width / p
+  }
+
+
+
+  return {
+    width: calculateWidth,
+    height:calculateHeight
+  }
+}
+

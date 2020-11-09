@@ -37,7 +37,7 @@ Page({
       loaded.push({});
     }
     //修改当前索引及上下一个图片
-    image[swiperIndex] = this.data.imageList[swiperIndex] + '?imageMogr2/auto-orient/format/webp';
+    image[swiperIndex] = this.data.imageList[swiperIndex];
     loaded[swiperIndex] =  {
       is_load: 1
     };
