@@ -7,18 +7,18 @@
       <van-tab title="视频截图">
         <view class="uploadWrap" scroll-x="true">
           <van-row>
-            <block wx:for="{{ duration }}" wx:item="{{ item }}">
+            <block wx:for="{{ coverTotalFrame }}" wx:item="{{ item }}">
               <van-col span="6">
                 <view class="upload_Item" data-index="{{ item }}" bindtap="selectCoverHandle">
                   <block wx:if="{{ checkedCover == item }}">
                     <image class="upload_Item_img checked" mode="aspectFill" style="height:{{coverHeight}}px"
-                      src="{{ videoUrl + '?vframe/jpg/offset/' + item}}">
+                      src="{{ videoUrl + '?vframe/jpg/offset/' + item * coverInterval}}">
                       <!-- <van-icon name="success" size="3rem" class="checkedIcon" color="#07c160" /> -->
                     </image>
                   </block>
                   <block wx:else>
                     <image class="upload_Item_img" mode="aspectFill" style="height:{{coverHeight}}px"
-                      src="{{ videoUrl + '?vframe/jpg/offset/' + item}}">
+                      src="{{ videoUrl + '?vframe/jpg/offset/' + item * coverInterval}}">
                     </image>
                   </block>
                 </view>

@@ -14,7 +14,8 @@ Page({
     imageList: [],
     image: [],
     tmpImage: [],
-    loadedImageList: []
+    loadedImageList: [],
+    param: ''
   },
 
   onLoad(options) {
@@ -23,7 +24,8 @@ Page({
     let swiperIndexNext = this.getNextIndex(swiperIndex);
 
     this.setData({
-      index: options.index
+      index: options.index,
+      param: options.param
     })
 
     //插入空数组

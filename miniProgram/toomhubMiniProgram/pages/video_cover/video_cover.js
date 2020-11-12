@@ -8,6 +8,8 @@ Page({
     host: '',
     videoUrl: '',
     duration: 0,
+    coverTotalFrame: 40, //封面总帧数
+    coverInterval: 1, //封面间隔
     currentCover: '', //当前选择的封面
     checkedCover: 0, //默认选择第0帧
     coverHeight: ( app.globalData.windowWidth - 40 ) / 4 
@@ -21,8 +23,12 @@ Page({
     this.setData({
       videoUrl: options.host + options.name,
       duration: parseInt(options.duration),
-      defaultCover: options.host + options.name + '?vframe/jpg/offset/' + this.data.checkedCover
+      defaultCover: options.host + options.name + '?vframe/jpg/offset/' + this.data.checkedCover,
     })
+    this.setData({
+      coverInterval: this.data.duration / 40
+    })
+    console.log(this.data.coverInterval)
     console.log(this.data.duration)
   },
 
@@ -81,13 +87,13 @@ Page({
       checkedCover: index,
     })
     this.setData({
-      defaultCover: this.data.videoUrl + '?vframe/jpg/offset/' + this.data.checkedCover
+      defaultCover: this.data.videoUrl + '?vframe/jpg/offset/' + this.data.checkedCover * this.data.coverInterval
     })
   },
   
   //选择封面处理事件
   checkedCoverHandel() {
-    app.globalData.videoCover = this.data.videoUrl + '?vframe/jpg/offset/' + this.data.checkedCover;
+    app.globalData.videoCover = this.data.videoUrl + '?vframe/jpg/offset/' + this.data.checkedCover * this.data.coverInterval;
     wx.navigateBack({
       delta: -1
     })

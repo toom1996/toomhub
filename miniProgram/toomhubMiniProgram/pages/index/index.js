@@ -155,8 +155,10 @@ Page({
 
   // 图片点击事件
   previewImage: function (event) {
+    let data = event.currentTarget.dataset;
+
     wx.navigateTo({
-      url: '/pages/image_preview/image_preview?list=' + event.currentTarget.dataset.list + '&index=' + event.currentTarget.dataset.index
+      url: '/pages/image_preview/image_preview?list=' + data.list + '&index=' + data.index + '&param=' + data.param
     })
   },
 

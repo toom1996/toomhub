@@ -72,8 +72,8 @@
                       wx:for-index="itemImageIndex">
                       <van-col span="8">
                         <van-image image-class="content-image" fit="cover" lazy-load catchtap="previewImage"
-                          error="加载失败" src="{{ imageItem.host + imageItem.name + imageItem.param }}"
-                          data-list="{{ item.list }}" data-index="{{ itemImageIndex }}" />
+                          error="加载失败" src="{{ imageItem.host + imageItem.name + '?' + item.param }}"
+                          data-list="{{ item.list }}" data-index="{{ itemImageIndex }}" data-param="{{ item.param }}" />
                       </van-col>
                     </view>
                   </block>

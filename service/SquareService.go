@@ -23,11 +23,10 @@ const SquareLikeKey = "square:like:"
 // @title
 func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]interface{}, error) {
 	type imageModel struct {
-		Ext   string `json:"ext"`
-		Name  string `json:"name"`
-		Param string `json:"param"`
-		Size  int64  `json:"size"`
-		Host  string `json:"host"`
+		Ext  string `json:"ext"`
+		Name string `json:"name"`
+		Size int64  `json:"size"`
+		Host string `json:"host"`
 	}
 
 	db := util.DB
@@ -114,7 +113,7 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 		mapString["tag"] = result["tag"]
 		mapString["id"] = util.ToInt(result["id"])
 		mapString["is_like"] = isLike
-
+		mapString["param"] = "imageMogr2/auto-orient/format/webp"
 		list = append(list, mapString)
 	}
 	return list, nil

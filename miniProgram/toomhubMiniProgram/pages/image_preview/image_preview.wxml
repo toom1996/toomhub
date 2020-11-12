@@ -4,7 +4,7 @@
     <swiper-item>
       <view class="swiper-item">
         <block wx:if="{{ loadedImageList[imageIndex].is_load == 1 }}">
-            <image bindtap="imageClickHandle" data-index="{{ imageIndex }}" src="{{item}}" bindlongtap="imageLongTapHandle" show-menu-by-longpress mode="widthFix" bindload="imageLoadedHandle">
+            <image bindtap="imageClickHandle" data-index="{{ imageIndex }}" src="{{item + '?' + param}}" bindlongtap="imageLongTapHandle" show-menu-by-longpress mode="widthFix" bindload="imageLoadedHandle">
           </image>
         </block >
         <block wx:else>

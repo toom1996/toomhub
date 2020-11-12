@@ -145,20 +145,25 @@ export const calculateVideoSize = (width, height) => {
   let calculateWidth = 0;
   let calculateHeight = 0;
   app.globalData.windowHeight
-  console.log(screenWidth)
-  console.log(screenHeight)
+
   //宽大于屏幕宽度, 高大于最大高度/2, 则压缩高度 和宽度
   if (width >= (screenWidth - paddingPx) && height >= screenHeight / 2) {
-    let p = height / (screenHeight / 2)
-    calculateHeight = height / p
-    calculateWidth = width / p
+    if (width < height) {
+      let p = height / (screenHeight / 2)
+      calculateHeight = height / p
+      calculateWidth = width / p
+    } else {
+      let p = width / (screenWidth - paddingPx)
+      calculateHeight = height / p
+      calculateWidth = width / p
+    } 
   }
 
   //宽大于屏幕宽度, 高大于最大高度/2, 则压缩高度 和宽度
   if (width >= (screenWidth - paddingPx) && height <= screenHeight / 2) {
     let p = width / (screenWidth - 32)
     calculateHeight = height / p
-    calculateWidth = width / p
+    calculateWidth = width / p  
   }
 
   //宽大于屏幕宽度, 高大于最大高度/2, 则压缩高度 和宽度
