@@ -27,6 +27,11 @@
           </van-row>
         </view>
       </van-tab>
-      <van-tab title="本地上传">内容 2</van-tab>
+      <van-tab title="本地上传">
+        <view style="width: 88px;margin: 0 auto;margin-top: 30%;">
+          <van-uploader accept="image" compressed="{{ false }}" max-count="1" bind:after-read="afterRead"
+            bind:delete="imageDelete" upload-icon="add-o" />
+        </view>
+      </van-tab>
     </van-tabs>
 </view>

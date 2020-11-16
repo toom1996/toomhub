@@ -97,5 +97,13 @@ Page({
     wx.navigateBack({
       delta: -1
     })
+  },
+
+
+  afterRead(event){
+    let file = event.detail.file.path;
+    this.setData({
+      defaultCover: file
+    })
   }
 })

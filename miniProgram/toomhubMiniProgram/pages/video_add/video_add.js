@@ -34,6 +34,7 @@ Page({
     size: 0,
     videoHeight: 0,
     videoWidth: 0,
+    videoContainerHidden: false
   },
 
 
@@ -46,7 +47,7 @@ Page({
   //显示添加标签的dialog
   onTagAddDialogShow() {
     this.setData({
-      // content_show: true,
+      videoContainerHidden: true,
       tagShow: true,
     });
     this.search(this.data.tag);
@@ -64,10 +65,11 @@ Page({
     });
     this.search(e.detail);
   },
+  
   //显示添加标签的dialog
   onTagAddDialogClose() {
     this.setData({
-      // content_show: false,
+      videoContainerHidden: false,
       tagShow: false,
     });
   },
