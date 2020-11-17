@@ -25,11 +25,11 @@
     </van-cell-group>
   </view>
   <van-row>
-    <view style="margin: 10px" hidden="{{ videoContainerHidden }}">
-      <view class='video_container' style='width:100%;height:{{device_height}}px;'
+    <view style="margin: 0 auto;width:{{ videoContainerWidth }}px;height:{{ videoContainerHeight }}" hidden="{{ videoContainerHidden }}">
+      <view class='video_container' style='width:100%;height:{{ videoContainerHeight }}px;'
         hidden="{{ isHiddenvideoContainer }}">
-        <video id="myVideo" class='video_play' src="{{ videoSrc }}" poster="" controls="{{false}}"
-          initial-time="{{ videoProcessTime }}" show-center-play-btn="{{true}}"></video>
+        <video id="myVideo" class='video_play' poster="{{ videoPoster }}" src="{{ videoSrc }}" controls="{{false}}" bindtap="test"
+           show-center-play-btn="{{true}}"></video>
         <cover-image class='mask_img' style="right:0;top:0" catchtouchend="maskTouchendCallback"
           src='../../static/icon/ban.png'>
         </cover-image>

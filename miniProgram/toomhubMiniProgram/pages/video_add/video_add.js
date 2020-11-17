@@ -2,6 +2,7 @@ const app = getApp()
 const device = wx.getSystemInfoSync();
 const device_width = device.windowWidth;
 const device_height = device_width / 2;
+import { calculateVideoSize } from '../../api/func'
 import Toast from '../../miniprogram_npm/@vant/weapp/toast/toast';
 Page({
 
@@ -28,13 +29,14 @@ Page({
     isHiddenUploader: false, //是否显示上传组件
     duration: 0, //视频时长
     videoCdnSrc: '', //视频cdn链接
-    videoProcessTime: 0,//视频初始播放进度
-    videoCover: '', //视频封面截图,
     host: '',
     size: 0,
     videoHeight: 0,
     videoWidth: 0,
-    videoContainerHidden: false
+    videoContainerHidden: false,
+    videoPoster: '', //视频封面
+    videoContainerWidth: 0,
+    videoContainerHeight: 0
   },
 
 
@@ -79,23 +81,27 @@ Page({
       tag: event.currentTarget.dataset.value
     });
     this.setData({
-      tagShow: false
+      tagShow: false,
+      videoContainerHidden: false
     });
   },
 
 
   //上传视频触发事件
   afterRead(event) {
+    console.log('event', event)
     let file = event.detail.file;
     console.log(file)
+    let size = calculateVideoSize(file.width, file.height, 40)
+    this.setData({
+      videoContainerHeight: size.height,
+      videoContainerWidth: size.width,
+    })
     if (file.size > 1024 * 1024 * 50) {
       Toast('文件太大啦~~~');
     }
 
-    this.setData({
-      videoHeight: file.height,
-      videoWidth: file.width,
-    })
+    
     // wx.openVideoEditor({
     //   filePath: file.tempFilePath,
     //   complete: res => {
@@ -198,6 +204,7 @@ Page({
    */
   onShow: function() {
     app.isLogin()
+    console.log(app.globalData.videoCover)
     wx.getStorage({
       key: 'userInfo',
       success (res) {
@@ -265,5 +272,8 @@ Page({
     wx.navigateTo({
       url: '../video_cover/video_cover?duration=' + this.data.duration + '&name=' + this.data.videoCdnSrc +'&host=' + this.data.host
     })
+  },
+  test: function() {
+    console.log('test')
   }
 })

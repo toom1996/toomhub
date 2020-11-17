@@ -119,8 +119,8 @@ image {
 
 .cover-view{
   text-align: center;
-  bottom:10rpx;
-  left:10rpx;
+  bottom:5rpx;
+  left:5rpx;
   width:150rpx;
   height:70rpx;
   line-height: 65rpx;

@@ -138,10 +138,10 @@ export const strlen = (str) => {
   return len;
 }
 
-export const calculateVideoSize = (width, height) => {
+export const calculateVideoSize = (width, height, paddingPx = 32) => {
   let screenWidth = app.globalData.windowWidth;
   let screenHeight = app.globalData.windowHeight;
-  let paddingPx = 32; //左右边距
+  // let paddingPx = 32; //左右边距
   let calculateWidth = 0;
   let calculateHeight = 0;
   app.globalData.windowHeight
@@ -149,10 +149,13 @@ export const calculateVideoSize = (width, height) => {
   //宽大于屏幕宽度, 高大于最大高度/2, 则压缩高度 和宽度
   if (width >= (screenWidth - paddingPx) && height >= screenHeight / 2) {
     if (width < height) {
+      console.log('mode 1 - 1')
       let p = height / (screenHeight / 2)
+      console.log(p)
       calculateHeight = height / p
       calculateWidth = width / p
     } else {
+      console.log('mode 1 - 2')
       let p = width / (screenWidth - paddingPx)
       calculateHeight = height / p
       calculateWidth = width / p
@@ -161,13 +164,15 @@ export const calculateVideoSize = (width, height) => {
 
   //宽大于屏幕宽度, 高大于最大高度/2, 则压缩高度 和宽度
   if (width >= (screenWidth - paddingPx) && height <= screenHeight / 2) {
-    let p = width / (screenWidth - 32)
+    console.log('mode 2')
+    let p = width / (screenWidth - paddingPx)
     calculateHeight = height / p
     calculateWidth = width / p  
   }
 
   //宽大于屏幕宽度, 高大于最大高度/2, 则压缩高度 和宽度
   if (width <= (screenWidth - paddingPx) && height >= screenHeight / 2) {
+    console.log('mode 3')
     let p = height / (screenHeight / 2)
     calculateHeight = height / p
     calculateWidth = width / p
@@ -175,7 +180,8 @@ export const calculateVideoSize = (width, height) => {
 
   //宽大于屏幕宽度, 高大于最大高度/2, 则压缩高度 和宽度
   if (width <= (screenWidth - paddingPx) && height <= screenHeight / 2) {
-    let p = width / (screenWidth - 32)
+    console.log('mode4')
+    let p = width / (screenWidth - paddingPx)
     calculateHeight = height / p
     calculateWidth = width / p
   }

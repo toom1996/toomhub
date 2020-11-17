@@ -12,7 +12,8 @@ Page({
     coverInterval: 1, //封面间隔
     currentCover: '', //当前选择的封面
     checkedCover: 0, //默认选择第0帧
-    coverHeight: ( app.globalData.windowWidth - 40 ) / 4 
+    coverHeight: ( app.globalData.windowWidth - 40 ) / 4 ,
+    coverType: 0 //选择封面的类型
   },
 
   /**
@@ -93,17 +94,40 @@ Page({
   
   //选择封面处理事件
   checkedCoverHandel() {
-    app.globalData.videoCover = this.data.videoUrl + '?vframe/jpg/offset/' + this.data.checkedCover * this.data.coverInterval;
-    wx.navigateBack({
-      delta: -1
-    })
+    console.log(this.data.coverType)
+    if (this.data.coverType == 1) {
+      console.log(app.getApi('requestHost') + '/c/image/upload')
+      wx.uploadFile({
+        url: app.getApi('requestHost') + '/c/image/upload', //仅为示例，非真实的接口地址
+        filePath: this.data.defaultCover,
+        name: 'file',
+        success (res){
+          console.log(res)
+          let resData = JSON.parse(res.data);
+          app.globalData.videoCover = resData.data.request_host + resData.data.name;
+          console.log('videoCover', app.globalData.videoCover)
+          wx.navigateBack({
+            delta: -1
+          })
+          //do something
+        }
+      })
+      
+    } else {
+      app.globalData.videoCover = this.data.videoUrl + '?vframe/jpg/offset/' + this.data.checkedCover * this.data.coverInterval;
+      wx.navigateBack({
+        delta: -1
+      })
+    }
   },
 
 
   afterRead(event){
+    console.log('afterRead')
     let file = event.detail.file.path;
     this.setData({
-      defaultCover: file
+      defaultCover: file,
+      coverType:1
     })
   }
 })
