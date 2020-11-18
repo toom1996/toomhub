@@ -187,6 +187,7 @@ func GetUserInfoByRedis(userId int64) (interface{}, error) {
 		"fans_count",
 		"likes_count",
 		"follow_count",
+		"exp",
 	}...)
 	if query.Err() != nil {
 		fmt.Println(query.Err())
@@ -198,23 +199,17 @@ func GetUserInfoByRedis(userId int64) (interface{}, error) {
 		return "", query.Err()
 	}
 
-	fmt.Println("009999999")
-	fmt.Println(res)
-
-	if res[11] == nil {
-		res[11] = 0
-	}
-
-	if res[12] == nil {
-		res[12] = 0
-	}
-
-	if res[13] == nil {
-		res[13] = 0
-	}
-
-	//如果有缓存
 	if res[0] != nil {
+		for index, _ := range res {
+			if res[index] != nil {
+				p, err := strconv.Atoi(res[index].(string))
+				if err == nil {
+					res[index] = p
+				}
+			} else {
+				res[index] = 0
+			}
+		}
 		m := map[string]interface{}{
 			"MiniId":        res[0],
 			"OpenId":        res[1],
@@ -230,10 +225,9 @@ func GetUserInfoByRedis(userId int64) (interface{}, error) {
 			"fans_count":    res[11],
 			"likes_count":   res[12],
 			"follow_count":  res[13],
+			"exp":           res[14],
 		}
 
-		fmt.Println("GetUserInfoByRedis")
-		fmt.Println(m)
 		return m, nil
 	}
 

@@ -9,6 +9,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/medivhzhan/weapp/v2"
 	"net/http"
+	"strconv"
 	"time"
 	LogicMiniV1 "toomhub/logic/mini/v1"
 	"toomhub/middware"
@@ -155,14 +156,32 @@ func (u *UserController) tokenChecker(Context *gin.Context) {
 
 // @title 取用户最新的信息
 func (u *UserController) refreshInfo(Context *gin.Context) {
-	r, _ := util.Rdb.HMGet(util.Ctx, util.UserCacheKey+fmt.Sprintf("%d", util.GetIdentity().MiniId), []string{"likes_count", "fans_count", "follow_count"}...).Result()
+
+	r, _ := util.Rdb.HMGet(util.Ctx, util.UserCacheKey+strconv.FormatInt(util.GetIdentity().MiniId, 10), []string{"likes_count", "fans_count", "follow_count", "exp"}...).Result()
+
+	for index, _ := range r {
+		fmt.Println(r[index])
+		if r[index] != nil {
+			r[index], _ = strconv.Atoi(r[index].(string))
+		} else {
+			r[index] = 0
+		}
+	}
+
+	tagInfo := util.GetLevelTag(r[3].(int))
 	Context.JSON(200, gin.H{
 		"code":    200,
 		"message": "OK",
 		"data": map[string]interface{}{
 			"likes_count":  r[0],
 			"fans_count":   r[1],
-			"follow_count": r[1],
+			"follow_count": r[2],
+			"exp":          r[3],
+			"tag": map[string]interface{}{
+				"text":             tagInfo[0],
+				"background_color": tagInfo[1],
+				"text-color":       tagInfo[2],
+			},
 		},
 	})
 }

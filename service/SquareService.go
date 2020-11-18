@@ -85,7 +85,7 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 
 		intCreatedAt, _ := strconv.ParseInt(result["created_at"], 10, 64)
 		createdAt := util.StrTime(intCreatedAt)
-		createdBy, _ := rdb.HMGet(util.Ctx, util.UserCacheKey+result["created_by"], []string{"nick_name", "avatar_url"}...).Result()
+		createdBy, _ := rdb.HMGet(util.Ctx, util.UserCacheKey+result["created_by"], []string{"nick_name", "avatar_url", "exp"}...).Result()
 
 		uid := 0
 		//判断浏览首页的用户是否登录
@@ -114,6 +114,12 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 		mapString["id"] = util.ToInt(result["id"])
 		mapString["is_like"] = isLike
 		mapString["param"] = "imageMogr2/auto-orient/format/webp"
+		if createdBy[2] == nil {
+			createdBy[2] = 0
+		} else {
+			createdBy[2], _ = strconv.Atoi(createdBy[2].(string))
+		}
+		mapString["tag"] = util.GetLevelTag(createdBy[2].(int))
 		list = append(list, mapString)
 	}
 	return list, nil

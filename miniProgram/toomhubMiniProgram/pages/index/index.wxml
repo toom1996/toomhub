@@ -1,13 +1,3 @@
-<!-- 自定义顶部导航 S -->
-<!-- <view class="navbar custom-class" style='height:{{navHeight + 40}}px;'>
-  <view class="navbar-action-wrap navbar-action-group row item-center" style='top:{{navTop}}px;'>
-  </view>
-  <van-tabs active="{{ active }}" bind:change="onChange" style='--toomhub__tabs-top:{{navTop + 30}}px;'
-    border="{{ false }}" color="#fad55a" custom-class="toom__tag" active="finder">
-    <van-tab title="发现" name="finder"></van-tab>
-    <van-tab title="关注"></van-tab>
-  </van-tabs>
-</view> -->
 <!-- 自定义顶部导航 E -->
 <canvas style="width: 500px;height: 400px;background:white;position: fixed;z-index: 999999;top:-9999px"
   canvas-id="shareCanvas"></canvas>
@@ -39,6 +29,9 @@
                   <text class="font__username">{{item.created_by}}</text>
                 </view>
                 <text style="display:block;" class="font__time">{{item.created_at}}</text>
+              </van-col>
+              <van-col span="4">
+                <van-tag type="primary">标签</van-tag>
               </van-col>
               <!-- <van-col span="4" offset="5">
                     <van-button color="#f5d56f" custom-style="color:#000000;" icon="plus" size="mini" round>关注</van-button>

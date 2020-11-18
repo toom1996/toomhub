@@ -4,7 +4,8 @@ const app = getApp()
 
 Page({
   data: {
-    userInfo: app.globalData.userInfo
+    userInfo: app.globalData.userInfo,
+    tag: {}
   },
   onReady() {
     //是否登陆
@@ -23,14 +24,12 @@ Page({
     if (app.globalData.userInfo != null) {
       app.httpClient.get(app.getApi('getUserInfo')).then(res=> {
         app.globalData.userInfo.likes_count = res.data.data.likes_count
-
+        
         this.setData({
-          userInfo: app.globalData.userInfo
+          userInfo: app.globalData.userInfo,
+          tag: res.data.data.tag
         })
       })
     }
-    this.setData({
-      userInfo: app.globalData.userInfo
-    })
   }
 })
