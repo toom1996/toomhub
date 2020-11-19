@@ -3,7 +3,6 @@
 package util
 
 import (
-	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -35,7 +34,6 @@ func GenerateToken(id int64) (string, error) {
 
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	token, err := tokenClaims.SignedString([]byte(GetConfig().Jwt.Secret))
-	fmt.Println(err)
 	return token, err
 }
 
@@ -44,7 +42,6 @@ func ParseToken(token string, c *gin.Context) (*Claims, error) {
 		return []byte(GetConfig().Jwt.Secret), nil
 	})
 
-	fmt.Println(tokenClaims)
 	if tokenClaims != nil {
 		if tokenClaims.Valid {
 			if claims, ok := tokenClaims.Claims.(*Claims); ok {

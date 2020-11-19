@@ -4,6 +4,7 @@ package util
 
 import (
 	"context"
+	"errors"
 	"github.com/go-redis/redis/v8"
 )
 
@@ -21,4 +22,24 @@ func RedisInit() {
 		DB:       0,                                           // 选择的redis库
 		PoolSize: 20,                                          // 设置连接数,默认是10个连接
 	})
+}
+
+func RedisMulti(column []string, keys ...interface{}) ([]interface{}, error) {
+
+	pipe := Rdb.Pipeline()
+	var commands []*redis.SliceCmd
+	var array []interface{}
+	for _, item := range keys {
+		commands = append(commands, pipe.HMGet(Ctx, item.(string), column...))
+	}
+	_, err = pipe.Exec(Ctx)
+	if err != nil {
+		return []interface{}{}, errors.New(err.Error())
+	}
+	for _, cmd := range commands {
+		result, _ := cmd.Result()
+		array = append(array, result)
+	}
+
+	return array, nil
 }

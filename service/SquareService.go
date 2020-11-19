@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/go-redis/redis/v8"
 	"github.com/goinggo/mapstructure"
 	"github.com/jinzhu/gorm"
 	"strconv"
@@ -28,39 +27,45 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 		Size int64  `json:"size"`
 		Host string `json:"host"`
 	}
-
 	db := util.DB
-	rdb := util.Rdb
-
-	pipe := rdb.Pipeline()
 
 	var list []interface{}
 	var model []ModelMiniV1.ToomhubSquare
-	db.Select("id").Limit(10).Offset(10 * (validator.Page - 1)).Order("created_at desc").Find(&model)
-
-	var commands []*redis.StringStringMapCmd
-
+	db.Select("id").Limit(20).Offset(10 * (validator.Page - 1)).Order("created_at desc").Find(&model)
+	var squareIds []interface{}
 	for _, v := range model {
-		commands = append(commands, pipe.HGetAll(util.Ctx, util.SquareCacheKey+fmt.Sprintf("%d", v.Id)))
+		squareIds = append(squareIds, util.SquareCacheKey+strconv.Itoa(int(v.Id)))
+	}
+	squareInfo, _ := util.RedisMulti([]string{"id", "type", "created_by", "created_at", "likes_count", "tag", "content", "image", "video", "cover", "width", "height"}, squareIds...)
+
+	var creatorIds []interface{}
+	for _, item := range squareInfo {
+		fmt.Println(item.([]interface{})[2].(string))
+		creatorIds = append(creatorIds, util.UserCacheKey+item.([]interface{})[2].(string))
 	}
 
-	_, _ = pipe.Exec(util.Ctx)
+	_, _ = util.RedisMulti([]string{"nick_name", "avatar_url", "mini_id"}, creatorIds...)
 
-	for _, cmd := range commands {
-		result, _ := cmd.Result()
-		//没结果跳过
-		if len(result) == 0 {
-			continue
+	response := map[string]interface{}{}
+	for index, _ := range squareInfo {
+		//square 类型
+		squareType := squareInfo[1]
+
+		if squareType == nil {
+			//video
+			if squareInfo[8] != nil {
+				squareType = util.SquareTypeVideo
+			} else {
+				squareType = util.SquareTypeImage
+			}
 		}
 
-		mapString := map[string]interface{}{}
-
-		if _, ok := result["image"]; ok {
+		if squareType == 0 {
 			var i map[string]interface{}
 			var tempI []interface{}
 			var tempL []interface{}
 			//json 解析成数组
-			err := json.Unmarshal([]byte(result["image"]), &i)
+			err := json.Unmarshal([]byte(squareInfo[7].(string)), &i)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -71,57 +76,77 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 				_ = mapstructure.Decode(i[fmt.Sprintf("%d", t)], &iModel)
 				tempL = append(tempL, iModel.Host+iModel.Name)
 				tempI = append(tempI, iModel)
-				mapString["image"] = tempI
-				mapString["list"] = tempL
-				mapString["type"] = 0
+				response["image"] = tempI
+				response["list"] = tempL
+				response["type"] = 0
 			}
 		} else {
-			mapString["video"] = result["video"]
-			mapString["cover"] = result["cover"]
-			mapString["height"] = util.ToInt(result["height"])
-			mapString["width"] = util.ToInt(result["width"])
-			mapString["type"] = 1
+			fmt.Println(squareInfo)
+			response["video"] = squareInfo[index].([]interface{})[8]
+			response["cover"] = squareInfo[9]
+			response["height"] = squareInfo[11]
+			response["width"] = squareInfo[10]
+			response["type"] = 1
 		}
-
-		intCreatedAt, _ := strconv.ParseInt(result["created_at"], 10, 64)
-		createdAt := util.StrTime(intCreatedAt)
-		createdBy, _ := rdb.HMGet(util.Ctx, util.UserCacheKey+result["created_by"], []string{"nick_name", "avatar_url", "exp"}...).Result()
-
-		uid := 0
-		//判断浏览首页的用户是否登录
-		token := c.GetHeader("Toomhub-Token")
-		if token != "" {
-			r, _ := util.ParseToken(c.GetHeader("Toomhub-Token"), c)
-			uid = int(r.MiniId)
-		}
-
-		isLikeRes, err := util.Rdb.HMGet(util.Ctx, SquareLikeKey+result["id"], fmt.Sprintf("%d", uid)).Result()
-		if err != nil {
-			fmt.Println(err)
-		}
-		isLike := 0
-		if len(isLikeRes) == 1 && isLikeRes[0] == "1" {
-			isLike = 1
-		}
-		mapString["content"] = result["content"]
-		mapString["avatar_url"] = createdBy[1]
-		mapString["created_at"] = createdAt
-		mapString["created_by"] = createdBy[0]
-		mapString["like_count"] = util.ToInt(result["likes_count"])
-		mapString["argument_count"] = util.ToInt(result["argument_count"])
-		mapString["collect_count"] = util.ToInt(result["collect_count"])
-		mapString["tag"] = result["tag"]
-		mapString["id"] = util.ToInt(result["id"])
-		mapString["is_like"] = isLike
-		mapString["param"] = "imageMogr2/auto-orient/format/webp"
-		if createdBy[2] == nil {
-			createdBy[2] = 0
-		} else {
-			createdBy[2], _ = strconv.Atoi(createdBy[2].(string))
-		}
-		mapString["tag"] = util.GetLevelTag(createdBy[2].(int))
-		list = append(list, mapString)
+		list = append(list, response)
 	}
+
+	//var commands []*redis.StringStringMapCmd
+	//
+	//for _, v := range model {
+	//	commands = append(commands, pipe.HGetAll(util.Ctx, util.SquareCacheKey+fmt.Sprintf("%d", v.Id)))
+	//}
+	//
+	//_, _ = pipe.Exec(util.Ctx)
+	//
+	//for _, cmd := range commands {
+	//	result, _ := cmd.Result()
+	//	//没结果跳过
+	//	if len(result) == 0 {
+	//		continue
+	//	}
+	//
+	//	mapString := map[string]interface{}{}
+	//
+	//	intCreatedAt, _ := strconv.ParseInt(result["created_at"], 10, 64)
+	//	createdAt := util.StrTime(intCreatedAt)
+	//	createdBy, _ := rdb.HMGet(util.Ctx, util.UserCacheKey+result["created_by"], []string{"nick_name", "avatar_url", "exp"}...).Result()
+	//
+	//	uid := 0
+	//	//判断浏览首页的用户是否登录
+	//	token := c.GetHeader("Toomhub-Token")
+	//	if token != "" {
+	//		r, _ := util.ParseToken(c.GetHeader("Toomhub-Token"), c)
+	//		uid = int(r.MiniId)
+	//	}
+	//
+	//	isLikeRes, err := util.Rdb.HMGet(util.Ctx, SquareLikeKey+result["id"], fmt.Sprintf("%d", uid)).Result()
+	//	if err != nil {
+	//		fmt.Println(err)
+	//	}
+	//	isLike := 0
+	//	if len(isLikeRes) == 1 && isLikeRes[0] == "1" {
+	//		isLike = 1
+	//	}
+	//	mapString["content"] = result["content"]
+	//	mapString["avatar_url"] = createdBy[1]
+	//	mapString["created_at"] = createdAt
+	//	mapString["created_by"] = createdBy[0]
+	//	mapString["like_count"] = util.ToInt(result["likes_count"])
+	//	mapString["argument_count"] = util.ToInt(result["argument_count"])
+	//	mapString["collect_count"] = util.ToInt(result["collect_count"])
+	//	mapString["tag"] = result["tag"]
+	//	mapString["id"] = util.ToInt(result["id"])
+	//	mapString["is_like"] = isLike
+	//	mapString["param"] = "imageMogr2/auto-orient/format/webp"
+	//	if createdBy[2] == nil {
+	//		createdBy[2] = 0
+	//	} else {
+	//		createdBy[2], _ = strconv.Atoi(createdBy[2].(string))
+	//	}
+	//	mapString["level_tag"] = util.GetLevelTag(createdBy[2].(int))
+	//	list = append(list, mapString)
+	//}
 	return list, nil
 }
 

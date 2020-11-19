@@ -1,10 +1,10 @@
 <!-- 自定义顶部导航 E -->
 <canvas style="width: 500px;height: 400px;background:white;position: fixed;z-index: 999999;top:-9999px"
   canvas-id="shareCanvas"></canvas>
-<!-- <block wx:if="{{ showPubButton === true }}"> -->
-<van-button color="#28a745" icon="edit" round class="add" custom-style="color:#ffffff;font-weight: bold;"
-  bindtap="addHandle">发布</van-button>
-<!-- </block> -->
+<block wx:if="{{ userInfo.exp > 50 }}">
+  <van-button color="#28a745" icon="edit" round class="add" custom-style="color:#ffffff;font-weight: bold;"
+    bindtap="addHandle">发布</van-button>
+</block>
 <view wx:for="{{10}}" wx:key="skeletonIndex">
   <van-skeleton title avatar row="3" loading="{{ skeletonShow }}" />
 </view>
@@ -31,7 +31,7 @@
                 <text style="display:block;" class="font__time">{{item.created_at}}</text>
               </van-col>
               <van-col span="4">
-                <van-tag type="primary">标签</van-tag>
+                <van-tag type="primary" color="{{ item.level_tag[1] }}" text-color="{{ item.level_tag[2] }}">{{ item.level_tag[0] }}</van-tag>
               </van-col>
               <!-- <van-col span="4" offset="5">
                     <van-button color="#f5d56f" custom-style="color:#000000;" icon="plus" size="mini" round>关注</van-button>

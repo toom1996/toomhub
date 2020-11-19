@@ -1,7 +1,7 @@
 package util
 
 //广场消息image类型
-const SquareTypeImage = "image"
+const SquareTypeImage = 0
 
 //广场消息video类型
 const SquareTypeVideo = 1

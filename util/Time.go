@@ -2,7 +2,6 @@ package util
 
 import (
 	"bytes"
-	"fmt"
 	"math"
 	"strconv"
 	"time"
@@ -14,7 +13,6 @@ import (
 * @return string
  */
 func StrTime(atime int64) string {
-	fmt.Println("atime->", atime)
 	var byTime = []int64{365 * 24 * 60 * 60, 24 * 60 * 60, 60 * 60, 60, 1}
 	var unit = []string{"年前", "天前", "小时前", "分钟前", "秒钟前"}
 	now := time.Now().Unix()
