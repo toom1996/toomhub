@@ -139,6 +139,8 @@ export const strlen = (str) => {
 }
 
 export const calculateVideoSize = (width, height, paddingPx = 32) => {
+  width = parseInt(width)
+  height = parseInt(height)
   let screenWidth = app.globalData.windowWidth;
   let screenHeight = app.globalData.windowHeight;
   // let paddingPx = 32; //左右边距
@@ -155,7 +157,6 @@ export const calculateVideoSize = (width, height, paddingPx = 32) => {
       calculateHeight = height / p
       calculateWidth = width / p
     } else {
-      console.log('mode 1 - 2')
       let p = width / (screenWidth - paddingPx)
       calculateHeight = height / p
       calculateWidth = width / p

@@ -32,6 +32,7 @@ App({
         this.globalData.windowHeight = res.windowHeight;
         this.globalData.windowWidth = res.windowWidth;
         console.log('屏幕宽', this.globalData.windowWidth)
+        console.log('屏幕高', this.globalData.windowHeight)
         this.globalData.tabbar = res.screenHeight - res.windowHeight;
       },
       fail(err) {

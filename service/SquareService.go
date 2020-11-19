@@ -31,13 +31,13 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 
 	var list []interface{}
 	var model []ModelMiniV1.ToomhubSquare
-	db.Select("id").Limit(20).Offset(10 * (validator.Page - 1)).Order("created_at desc").Find(&model)
+	db.Select("id").Limit(20).Offset(20 * (validator.Page - 1)).Order("created_at desc").Find(&model)
 	var squareIds []interface{}
 	for _, v := range model {
 		squareIds = append(squareIds, util.SquareCacheKey+strconv.Itoa(int(v.Id)))
 	}
 	squareInfo, _ := util.RedisMulti([]string{"id", "type", "created_by", "created_at", "likes_count", "tag", "content", "image", "video", "cover", "width", "height"}, squareIds...)
-
+	fmt.Println(squareInfo)
 	var creatorIds []interface{}
 	for _, item := range squareInfo {
 		fmt.Println(item.([]interface{})[2].(string))
@@ -46,14 +46,13 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 
 	_, _ = util.RedisMulti([]string{"nick_name", "avatar_url", "mini_id"}, creatorIds...)
 
-	response := map[string]interface{}{}
-	for index, _ := range squareInfo {
+	for _, item := range squareInfo {
+		response := map[string]interface{}{}
 		//square 类型
-		squareType := squareInfo[1]
-
+		squareType := item.([]interface{})[1]
 		if squareType == nil {
 			//video
-			if squareInfo[8] != nil {
+			if item.([]interface{})[8] != nil {
 				squareType = util.SquareTypeVideo
 			} else {
 				squareType = util.SquareTypeImage
@@ -65,29 +64,30 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 			var tempI []interface{}
 			var tempL []interface{}
 			//json 解析成数组
-			err := json.Unmarshal([]byte(squareInfo[7].(string)), &i)
+			err := json.Unmarshal([]byte(item.([]interface{})[7].(string)), &i)
 			if err != nil {
 				fmt.Println(err)
 			}
 
 			var iModel imageModel
-
+			fmt.Println("squareType---->", squareType)
 			for t := 0; t < len(i); t++ {
 				_ = mapstructure.Decode(i[fmt.Sprintf("%d", t)], &iModel)
 				tempL = append(tempL, iModel.Host+iModel.Name)
 				tempI = append(tempI, iModel)
 				response["image"] = tempI
 				response["list"] = tempL
-				response["type"] = 0
+				response["type"] = squareType
 			}
 		} else {
-			fmt.Println(squareInfo)
-			response["video"] = squareInfo[index].([]interface{})[8]
-			response["cover"] = squareInfo[9]
-			response["height"] = squareInfo[11]
-			response["width"] = squareInfo[10]
-			response["type"] = 1
+			fmt.Println("squareType---->", squareType)
+			response["video"] = item.([]interface{})[8]
+			response["cover"] = item.([]interface{})[9]
+			response["height"] = item.([]interface{})[11]
+			response["width"] = item.([]interface{})[10]
+			response["type"] = squareType
 		}
+		response["param"] = "imageMogr2/auto-orient/format/webp"
 		list = append(list, response)
 	}
 
