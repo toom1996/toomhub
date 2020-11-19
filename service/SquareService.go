@@ -37,16 +37,16 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 		squareIds = append(squareIds, util.SquareCacheKey+strconv.Itoa(int(v.Id)))
 	}
 	squareInfo, _ := util.RedisMulti([]string{"id", "type", "created_by", "created_at", "likes_count", "tag", "content", "image", "video", "cover", "width", "height"}, squareIds...)
-	fmt.Println(squareInfo)
+
 	var creatorIds []interface{}
 	for _, item := range squareInfo {
 		fmt.Println(item.([]interface{})[2].(string))
 		creatorIds = append(creatorIds, util.UserCacheKey+item.([]interface{})[2].(string))
 	}
 
-	_, _ = util.RedisMulti([]string{"nick_name", "avatar_url", "mini_id"}, creatorIds...)
+	userInfo, _ := util.RedisMulti([]string{"nick_name", "avatar_url", "mini_id"}, creatorIds...)
 
-	for _, item := range squareInfo {
+	for index, item := range squareInfo {
 		response := map[string]interface{}{}
 		//square 类型
 		squareType := item.([]interface{})[1]
@@ -88,6 +88,10 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 			response["type"] = squareType
 		}
 		response["param"] = "imageMogr2/auto-orient/format/webp"
+		response["content"] = item.([]interface{})[6]
+		response["tag"] = item.([]interface{})[5]
+		response["avatar_url"] = userInfo[index].([]interface{})[1]
+		response["created_by"] = userInfo[index].([]interface{})[0]
 		list = append(list, response)
 	}
 
