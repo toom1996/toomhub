@@ -3,6 +3,7 @@
 package util
 
 import (
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -75,4 +76,15 @@ func ParseToken(token string, c *gin.Context) (*Claims, error) {
 // @title 获取用户信息
 func GetIdentity() *Claims {
 	return identity
+}
+
+// @title 获取用户信息
+func GetIdentity1(ctx *gin.Context) {
+	token := ctx.GetHeader("Toomhub-Token")
+
+	if token != "" {
+		r, _ := ParseToken(token, ctx)
+		fmt.Println(r)
+	}
+	//return identity
 }

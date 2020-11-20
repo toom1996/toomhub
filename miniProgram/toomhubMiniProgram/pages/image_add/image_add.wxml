@@ -1,5 +1,5 @@
 
-<block wx:if="{{ userInfo.MiniId ==  123162}}">
+<block wx:if="{{ userInfo.exp >  50}}">
   <view class="box">
   <view class="head-read">
   <view class="flex">

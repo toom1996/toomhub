@@ -44,7 +44,7 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 		creatorIds = append(creatorIds, util.UserCacheKey+item.([]interface{})[2].(string))
 	}
 
-	userInfo, _ := util.RedisMulti([]string{"nick_name", "avatar_url", "mini_id"}, creatorIds...)
+	userInfo, _ := util.RedisMulti([]string{"nick_name", "avatar_url", "mini_id", "exp"}, creatorIds...)
 
 	for index, item := range squareInfo {
 		response := map[string]interface{}{}
@@ -70,7 +70,6 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 			}
 
 			var iModel imageModel
-			fmt.Println("squareType---->", squareType)
 			for t := 0; t < len(i); t++ {
 				_ = mapstructure.Decode(i[fmt.Sprintf("%d", t)], &iModel)
 				tempL = append(tempL, iModel.Host+iModel.Name)
@@ -80,7 +79,6 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 				response["type"] = squareType
 			}
 		} else {
-			fmt.Println("squareType---->", squareType)
 			response["video"] = item.([]interface{})[8]
 			response["cover"] = item.([]interface{})[9]
 			response["height"] = item.([]interface{})[11]
@@ -90,11 +88,17 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 		response["param"] = "imageMogr2/auto-orient/format/webp"
 		response["content"] = item.([]interface{})[6]
 		response["tag"] = item.([]interface{})[5]
+		timeStamp, _ := strconv.Atoi(item.([]interface{})[3].(string))
+		response["created_at"] = util.StrTime(int64(timeStamp))
 		response["avatar_url"] = userInfo[index].([]interface{})[1]
 		response["created_by"] = userInfo[index].([]interface{})[0]
+		exp, _ := strconv.Atoi(item.([]interface{})[3].(string))
+		response["level_tag"] = util.GetLevelTag(exp)
+		response["id"] = item.([]interface{})[0].(string)
+		//	mapString["is_like"] = isLike
 		list = append(list, response)
 	}
-
+	util.GetIdentity1(c)
 	//var commands []*redis.StringStringMapCmd
 	//
 	//for _, v := range model {

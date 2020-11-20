@@ -237,17 +237,16 @@ Page({
   },
 
   onShow: function () {
+    
     if (app.globalData.forceRefresh == true) {
       app.globalData.forceRefresh = false;
       this.refreshIndex(1, true);
     }
 
     if (app.globalData.userInfo !== null) {
-      if (app.globalData.userInfo.MiniId == 123162) {
-        this.setData({
-          showPubButton: true
-        })
-      }
+      this.setData({
+        userInfo: app.globalData.userInfo
+      })
     }
   },
   /**

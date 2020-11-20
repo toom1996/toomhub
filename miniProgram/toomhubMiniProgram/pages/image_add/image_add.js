@@ -245,6 +245,8 @@ Page({
         userInfo: null,
       })
     }
+
+    console.log(this.data.userInfo)
   },
 
   onClose: function () {

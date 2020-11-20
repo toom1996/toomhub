@@ -11,7 +11,6 @@ func main() {
 	cfg, err := util.Init("./config/app.json")
 
 	if err != nil {
-		fmt.Println("000000000")
 		panic(err.Error())
 	}
 
