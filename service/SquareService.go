@@ -81,24 +81,44 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 		} else {
 			response["video"] = item.([]interface{})[8]
 			response["cover"] = item.([]interface{})[9]
-			response["height"] = item.([]interface{})[11]
-			response["width"] = item.([]interface{})[10]
+			if item.([]interface{})[11] != nil {
+				response["height"], _ = strconv.Atoi(item.([]interface{})[11].(string))
+			} else {
+				response["height"] = 0
+			}
+			if item.([]interface{})[10] != nil {
+				response["width"], _ = strconv.Atoi(item.([]interface{})[10].(string))
+			} else {
+				response["width"] = 0
+			}
 			response["type"] = squareType
 		}
 		response["param"] = "imageMogr2/auto-orient/format/webp"
 		response["content"] = item.([]interface{})[6]
 		response["tag"] = item.([]interface{})[5]
+		response["like_count"], _ = strconv.Atoi(item.([]interface{})[4].(string))
 		timeStamp, _ := strconv.Atoi(item.([]interface{})[3].(string))
 		response["created_at"] = util.StrTime(int64(timeStamp))
 		response["avatar_url"] = userInfo[index].([]interface{})[1]
 		response["created_by"] = userInfo[index].([]interface{})[0]
-		exp, _ := strconv.Atoi(item.([]interface{})[3].(string))
+		exp := 0
+		if userInfo[index].([]interface{})[3] != nil {
+			exp, _ = strconv.Atoi(userInfo[index].([]interface{})[3].(string))
+		}
 		response["level_tag"] = util.GetLevelTag(exp)
 		response["id"] = item.([]interface{})[0].(string)
-		//	mapString["is_like"] = isLike
+		identity := util.Identity(c)
+		isLike := 0
+		_, err := util.Rdb.ZRank(util.Ctx, util.SquareLikeKey+fmt.Sprintf("%d", identity.MiniId), item.([]interface{})[0].(string)).Result()
+
+		if err == nil {
+			isLike = 1
+		}
+
+		response["is_like"] = isLike
 		list = append(list, response)
 	}
-	util.GetIdentity1(c)
+
 	//var commands []*redis.StringStringMapCmd
 	//
 	//for _, v := range model {

@@ -13,4 +13,4 @@ const UserCacheKey = "mini:user:"
 const SquareCacheKey = "square:id:"
 
 //
-const SquareLikeKey = "square:like:"
+const SquareLikeKey = "mini:user:liked:"

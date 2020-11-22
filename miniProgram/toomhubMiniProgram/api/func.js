@@ -44,7 +44,8 @@ export const getThumbnail = (options, callback) => {
 
 
 function createPhoto(data, imgData, callback) {
-  let cavansId = 'shareCanvas';
+  try{
+    let cavansId = 'shareCanvas';
   let createdBy = '匿名用户';
   //视频分享
 
@@ -118,8 +119,15 @@ function createPhoto(data, imgData, callback) {
       }
     }, this);
   })
-
-
+  }catch(e){
+    wx.hideLoading({
+      success: (res) => {
+        wx.showToast({
+          title: '图像生成错误',
+        })
+      },
+    })
+  }
 }
 
 

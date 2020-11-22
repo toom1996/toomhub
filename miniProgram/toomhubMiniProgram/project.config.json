@@ -37,7 +37,6 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.13.2",
-  "appid": "wxcdc6c2edd30c27ff",
   "projectname": "toomhub",
   "debugOptions": {
     "hidedInDevtools": []
