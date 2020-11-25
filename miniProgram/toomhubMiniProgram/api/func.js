@@ -7,6 +7,7 @@ export const getThumbnail = (options, callback) => {
   let imgData = [];
   console.log('line 8 ---->', JSON.parse(JSON.stringify(imgData)))
   let dataset = options.target.dataset;
+  console.log('dataset -->', dataset)
   let shareData = {
     title: dataset.title, //分享内容
     id: dataset.id, //分享的id
@@ -14,20 +15,26 @@ export const getThumbnail = (options, callback) => {
     createdBy: dataset.createdby, //创建人
     avatar: dataset.avatar
   }
+
+  //video
   if (dataset.type == 1) {
     var internetImgData = [dataset.cover, dataset.avatar]
   }
 
+  //image 
   if (dataset.type == 0) {
-    var internetImgData = [dataset.list[0] + '?imageMogr2/auto-orient/format/webp', dataset.avatar]
-    console.log(internetImgData)
+    var internetImgData = [dataset.list[0], dataset.avatar]
+    console.log('image internetImgData -> ',internetImgData)
   }
 
   console.log('line 26 ---->', JSON.parse(JSON.stringify(imgData)))
   for (let i = 0; i < internetImgData.length; i++) {
+    //getImageInfo 不支持webp格式文件
     wx.getImageInfo({
       src: internetImgData[i],
       complete: (res) => {
+        console.log('res ->', res)
+        console.log(internetImgData[i])
         imgData[i] = {
           path: res.path,
           width: res.width,

@@ -96,22 +96,24 @@ Page({
     this.setData({
       videoContainerHeight: size.height,
       videoContainerWidth: size.width,
+      videoHeight: file.height,
+      videoWidth:file.width
     })
     if (file.size > 1024 * 1024 * 50) {
       Toast('文件太大啦~~~');
     }
 
     
-    // wx.openVideoEditor({
-    //   filePath: file.tempFilePath,
-    //   complete: res => {
+    wx.openVideoEditor({
+      filePath: file.tempFilePath,
+      complete: res => {
         let uploadTask = wx.uploadFile({
           url: app.getApi('requestHost') + app.getApi('videoUpload'),
           filePath: file.tempFilePath,
           name: 'file',
           success: (res) => {
             let data = JSON.parse(res.data)
-            console.log(data)
+            console.log('data->', data)
               if (res.statusCode == 200 && data.code == 200) {
                 this.setData({
                   videoSrc: file.tempFilePath,
@@ -122,19 +124,20 @@ Page({
                   host: data.data.request_host,
                   size: data.data.size,
                 })
+                console.log('this.data ->',this.data)
               }
           },
           fail: (res) => {
             console.log(res)
           }
         });
-      //   this.setData({
-      //     videoSrc: file.tempFilePath,
-      //     isHiddenvideoContainer: false,
-      //     isHiddenUploader: true
-      //   })
-      // }
-    // })
+        this.setData({
+          videoSrc: file.tempFilePath,
+          isHiddenvideoContainer: false,
+          isHiddenUploader: true
+        })
+      }
+    })
   },
   send() {
     
