@@ -114,7 +114,7 @@ Page({
       })
       
     } else {
-      app.globalData.videoCover = this.data.videoUrl + '?vframe/jpg/offset/' + this.data.checkedCover * this.data.coverInterval;
+      app.globalData.videoCover = '?vframe/jpg/offset/' + this.data.checkedCover * this.data.coverInterval;
       wx.navigateBack({
         delta: -1
       })

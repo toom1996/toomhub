@@ -131,11 +131,6 @@ Page({
             console.log(res)
           }
         });
-        this.setData({
-          videoSrc: file.tempFilePath,
-          isHiddenvideoContainer: false,
-          isHiddenUploader: true
-        })
       }
     })
   },

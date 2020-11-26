@@ -106,6 +106,7 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 			exp, _ = strconv.Atoi(userInfo[index].([]interface{})[3].(string))
 		}
 		response["level_tag"] = util.GetLevelTag(exp)
+		response["host"] = "http://toomhub.image.23cm.cn/"
 		response["id"] = item.([]interface{})[0].(string)
 		identity := util.Identity(c)
 		isLike := 0
@@ -318,10 +319,11 @@ func SquareVideoCreate(v *validatorRules.SquareVideoCreate) (bool, error) {
 		"share_count":    squareModel.ShareCount,
 		"tag":            squareModel.Tag,
 		"content":        v.Content,
-		"video":          v.Host + v.Name,
+		"video":          v.Name,
 		"cover":          v.Cover,
 		"height":         v.Height,
 		"width":          v.Width,
+		"host":           v.Host,
 	}).Result()
 
 	transaction.Commit()

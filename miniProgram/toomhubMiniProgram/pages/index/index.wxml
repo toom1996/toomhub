@@ -53,8 +53,8 @@
                   <block wx:if="{{ item.type == 1 }}">
                     <view>
                       <video show-mute-btn="{{ true }}" muted="{{ true }}" show-center-play-btn="{{ true }}"
-                        data-src="{{ item.video }}" data-poster="{{ item.cover }}" controls="{{ false }}"
-                        loop="{{ true }}" id="videoContainer{{dataIndex}}" class="video" src="{{ item.video }}"
+                        data-src="{{ item.video }}" data-poster="{{ item.host + item.cover }}" controls="{{ false }}"
+                        loop="{{ true }}" id="videoContainer{{dataIndex}}" class="video" src="{{ item.host + item.video }}"
                         poster="{{ item.cover }}" object-fit="cover" bindtimeupdate="videoTimeUpdateHandle"
                         catchtap="videoContainerClickHandle"
                         style="height:{{ item.height }}px;min-height:{{ 200 }}px;min-width:{{ (screenWidth - 32) * 0.6 }}px;width:{{ item.width }}px"></video>
