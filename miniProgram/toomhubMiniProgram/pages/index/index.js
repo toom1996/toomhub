@@ -243,11 +243,9 @@ Page({
       this.refreshIndex(1, true);
     }
 
-    if (app.globalData.userInfo !== null) {
-      this.setData({
-        userInfo: app.globalData.userInfo
-      })
-    }
+    this.setData({
+      userInfo: app.globalData.userInfo
+    })
   },
   /**
    * 获取顶部固定高度

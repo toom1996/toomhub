@@ -1,4 +1,5 @@
 const app = getApp()
+
 // 生成缩略图
 export const getThumbnail = (options, callback) => {
   wx.showLoading({
@@ -8,22 +9,23 @@ export const getThumbnail = (options, callback) => {
   console.log('line 8 ---->', JSON.parse(JSON.stringify(imgData)))
   let dataset = options.target.dataset;
   console.log('dataset -->', dataset)
+  let host = 'https://toomhub.23cm.cn/image/';
   let shareData = {
     title: dataset.title, //分享内容
     id: dataset.id, //分享的id
     type: dataset.type, //分享类型
     createdBy: dataset.createdby, //创建人
-    avatar: dataset.avatar
+    avatar: dataset.avatar,
   }
 
   //video
   if (dataset.type == 1) {
-    var internetImgData = [dataset.cover, dataset.avatar]
+    var internetImgData = [ host + dataset.video + dataset.cover, dataset.avatar]
   }
 
   //image 
   if (dataset.type == 0) {
-    var internetImgData = [dataset.list[0], dataset.avatar]
+    var internetImgData = [host + dataset.cover + '?imageView2/1/q/75/format/jpg', dataset.avatar]
     console.log('image internetImgData -> ',internetImgData)
   }
 
@@ -43,6 +45,13 @@ export const getThumbnail = (options, callback) => {
         if (imgData.hasOwnProperty(0) === true && imgData.hasOwnProperty(1) == true) {
           createPhoto(shareData, imgData, callback)
         }
+      },fail: (e) => {
+        wx.hideLoading({
+          success: (res) => {},
+        })
+        wx.showToast({
+          title: '图片分享失败啦~~',
+        })
       }
     })
   }

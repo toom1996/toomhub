@@ -21,7 +21,7 @@ Page({
     this.setData({
       videoSrc: options.src,
       videoInitTime: options.time,
-      videoPoster: options.poster.replace("*", "?")
+      videoPoster:options.src + options.poster.replace("*", "?")
     });
     videoContext.seek(options.time);
     console.log(this.data.videoInitTime)

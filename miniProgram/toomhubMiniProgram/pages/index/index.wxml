@@ -53,9 +53,9 @@
                   <block wx:if="{{ item.type == 1 }}">
                     <view>
                       <video show-mute-btn="{{ true }}" muted="{{ true }}" show-center-play-btn="{{ true }}"
-                        data-src="{{ item.video }}" data-poster="{{ item.host + item.cover }}" controls="{{ false }}"
+                        data-src="{{ item.host + item.video }}" data-poster="{{ item.cover }}" controls="{{ false }}"
                         loop="{{ true }}" id="videoContainer{{dataIndex}}" class="video" src="{{ item.host + item.video }}"
-                        poster="{{ item.cover }}" object-fit="cover" bindtimeupdate="videoTimeUpdateHandle"
+                        poster="{{ item.host + item.video + item.cover }}" object-fit="cover" bindtimeupdate="videoTimeUpdateHandle"
                         catchtap="videoContainerClickHandle"
                         style="height:{{ item.height }}px;min-height:{{ 200 }}px;min-width:{{ (screenWidth - 32) * 0.6 }}px;width:{{ item.width }}px"></video>
                     </view>
@@ -97,8 +97,8 @@
                     <van-col span="4" offset="10" style="height: 30px;line-height: 30px;" catchtap="emptyHandle">
                       <button open-type="share" class="share-button" data-title="{{ item.content }}"
                         data-list="{{ item.list }}" data-id="{{ item.id }}" data-type="{{ item.type }}"
-                        data-cover="{{ item.cover }}" data-createdBy="{{ item.created_by }}"
-                        data-avatar="{{ item.avatar_url }}">
+                        data-cover="{{ item.type == 0 ? item.image[0].name :item.cover }}" data-createdBy="{{ item.created_by }}"
+                        data-avatar="{{ item.avatar_url }}" data-host="{{ item.host }}" data-video="{{ item.video }}">
                         <iconfont style="float:left;" name="toomhub-share"></iconfont>
                         <text>分享</text>
                       </button>
