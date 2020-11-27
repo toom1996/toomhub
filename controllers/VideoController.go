@@ -103,7 +103,7 @@ func (*VideoController) Upload1(context *gin.Context) {
 
 	cfg := storage.Config{}
 	// 空间对应的机房
-	cfg.Zone = &storage.ZoneHuadong
+	cfg.Zone = &storage.ZoneHuabei
 	// 是否使用https域名
 	cfg.UseHTTPS = false
 	// 上传是否使用CDN上传加速
