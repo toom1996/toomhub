@@ -117,6 +117,6 @@ func (*VideoController) Upload1(context *gin.Context) {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(ret.Key, ret.Hash)
+	fmt.Println(ret)
 
 }
