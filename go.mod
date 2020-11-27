@@ -17,4 +17,5 @@ require (
 	github.com/qiniu/api.v7/v7 v7.5.0
 	github.com/streadway/amqp v1.0.0 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.0.0-beta.1
+	golang.org/x/exp v0.0.0-20200513190911-00229845015e
 )

@@ -3,7 +3,7 @@ const device = wx.getSystemInfoSync();
 const device_width = device.windowWidth;
 const device_height = device_width / 2;
 import { calculateVideoSize } from '../../api/func'
-import Toast from '../../miniprogram_npm/@vant/weapp/toast/toast';
+const  Uploader  = require('../../miniprogram_npm/miniprogram-file-uploader/index.js');
 Page({
 
   /**
@@ -89,7 +89,8 @@ Page({
 
   //上传视频触发事件
   afterRead(event) {
-    console.log('event', event)
+
+      console.log('event', event)
     let file = event.detail.file;
     console.log(file)
     let size = calculateVideoSize(file.width, file.height, 40)
@@ -104,35 +105,91 @@ Page({
     }
 
     
-    wx.openVideoEditor({
-      filePath: file.tempFilePath,
-      complete: res => {
-        let uploadTask = wx.uploadFile({
-          url: app.getApi('requestHost') + app.getApi('videoUpload'),
-          filePath: file.tempFilePath,
-          name: 'file',
-          success: (res) => {
-            let data = JSON.parse(res.data)
-            console.log('data->', data)
-              if (res.statusCode == 200 && data.code == 200) {
+    // wx.openVideoEditor({
+    //   filePath: file.url,
+    //   complete: editorRes => {
+        console.log('Uploader', Uploader)
+
+        
+        // let uploadTask = wx.uploadFile({
+        //   url: app.getApi('requestHost') + app.getApi('videoUpload'),
+        //   filePath: file.url,
+        //   name: 'file',
+        //   success: (res) => {
+        //       console.log('path->',file.tempFilePath);
+            if (Uploader.default.isSupport()) {
+              const uploader = new Uploader.default({
+                tempFilePath: file.url,
+                totalSize: file.size,
+                uploadUrl: 'http://192.168.10.113:8080/video/upload1/',
+                mergeUrl: 'http://www.google.com/',
+                maxConcurrency: 2, // 并发上传数，默认 5，最大不超过 10
+                maxChunkRetries: 1, // 请求失败时最大重试次数，默认为 0
+                verbose: true, // 是否输出开始日志，默认 false
+                fileName: '11111',
+              })
+              console.log('uploader', uploader)
+              uploader.upload()
+
+              uploader.on('complete', (res) => {
+                console.log('upload complete', res)
+              })
+              
+              // 文件上传成功
+              uploader.on('success', (res) => {
+                console.log('upload success', res)
+              })
+              
+              // 文件上传失败
+              uploader.on('fail', (res) => {
+                console.log('fail', res)
+              })
+              
+              // 文件进度变化
+              uploader.on('progress', (res) => {
                 this.setData({
-                  videoSrc: file.tempFilePath,
-                  isHiddenvideoContainer: false,
-                  isHiddenUploader: true,
-                  videoCdnSrc: data.data.name,
-                  duration: file.duration,
-                  host: data.data.request_host,
-                  size: data.data.size,
+                  progress: res.progress,
+                  uploadedSize: parseInt(res.uploadedSize / 1024),
+                  averageSpeed: parseInt(res.averageSpeed / 1000),
+                  timeRemaining: res.timeRemaining
                 })
-                console.log('this.data ->',this.data)
-              }
-          },
-          fail: (res) => {
-            console.log(res)
-          }
-        });
-      }
-    })
+              })
+            }
+            // try {
+            //   let data = JSON.parse(res.data)
+            // console.log('data->', data)
+            //   if (res.statusCode == 200 && data.code == 200) {
+            //     this.setData({
+            //       videoSrc: file.tempFilePath,
+            //       isHiddenvideoContainer: false,
+            //       isHiddenUploader: true,
+            //       videoCdnSrc: data.data.name,
+            //       duration: file.duration,
+            //       host: data.data.request_host,
+            //       size: data.data.size,
+            //     })
+            //     console.log('this.data ->',this.data)
+            //   }
+            // }catch(e) {
+            //   wx.showToast({
+            //     title: '上传文件发生错误..',
+            //     icon: 'fail'
+            //   })
+            // }
+        //   },
+        //   fail: (res) => {
+        //     console.log(res)
+        //   }
+        // });
+
+        // uploadTask.onProgressUpdate((res) => {
+        //   console.log('上传进度', res.progress + " " + new Date())
+        //   console.log('已经上传的数据长度', res.totalBytesSent)
+        //   console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
+
+        // })
+    //   }
+    // })
   },
   send() {
     

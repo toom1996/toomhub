@@ -1,11 +1,12 @@
 {
   "name": "toomhubminiprogram",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "dependencies": {
-    "@vant/weapp": "^1.4.2",
-    "express": "^4.17.1"
+    "@vant/weapp": "^1.6.1",
+    "express": "^4.17.1",
+    "miniprogram-file-uploader": "^1.0.0",
+    "weui-miniprogram": "^1.0.6"
   },
   "devDependencies": {
     "mini-program-iconfont-cli": "^0.6.0"
@@ -14,5 +15,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "description": ""
 }

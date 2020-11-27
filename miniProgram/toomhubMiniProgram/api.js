@@ -1,5 +1,5 @@
 var api = {
-  requestHost: 'http://192.168.31.88:8080', //hhttps://ost https://toomhub.23cm.cn
+  requestHost: 'https://toomhub.23cm.cn', //hhttps://ost https://toomhub.23cm.cn
   tokenCheck: '/v1/mini/user/token-checker', //token过期验证
   squareIndex: '/v1/mini/sq/index', //说说首页
   squareCreate: '/v1/mini/sq/create', //发布一条说说
