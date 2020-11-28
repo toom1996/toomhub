@@ -113,7 +113,7 @@ func (*VideoController) Upload1(context *gin.Context) {
 	//ret := storage.PutRet{}
 	ret1 := storage.BlkputRet{}
 	//putExtra := storage.RputExtra{}
-	mkblr := resumeUploader.Mkblk(util.Ctx, upToken, "up-z1.qiniup.com", &ret1, chunkSize, context.Request.Body, totalSize)
+	mkblr := resumeUploader.Mkblk(util.Ctx, upToken, "http://up-z1.qiniup.com", &ret1, chunkSize, context.Request.Body, totalSize)
 	//err := resumeUploader.PutFile(util.Ctx, &ret, upToken, "test", fileName, &putExtra)
 	//if err != nil {
 	//	fmt.Println(err)
