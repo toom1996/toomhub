@@ -3,16 +3,11 @@
 package controllers
 
 import (
-	"bytes"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/qiniu/api.v7/v7/auth/qbox"
 	"github.com/qiniu/api.v7/v7/storage"
-	"io"
-	"math/rand"
-	"os"
 	"strconv"
-	"time"
 	"toomhub/middware"
 	"toomhub/service"
 	"toomhub/util"
@@ -75,20 +70,25 @@ func (*VideoController) Upload(context *gin.Context) {
 	})
 }
 func (*VideoController) Upload1(context *gin.Context) {
-	rand.Seed(int64(uint64(time.Now().UnixNano())))
-	buf := new(bytes.Buffer)
-	_, _ = buf.ReadFrom(context.Request.Body)
+	chunkSizeQuery := context.Query("chunkSize")
+	totalSizeQuery := context.Query("chunkSize")
+	chunkSize, _ := strconv.Atoi(chunkSizeQuery)
+	totalSize, _ := strconv.Atoi(totalSizeQuery)
+	//rand.Seed(int64(uint64(time.Now().UnixNano())))
+	//buf := new(bytes.Buffer)
+	//_, _ = buf.ReadFrom(context.Request.Body)
 	//fmt.Println(buf.String())
-
-	randNum := strconv.Itoa(rand.Intn(1000))
-	fileName := "test" + randNum
-	fmt.Println(fileName)
-	f, err1 := os.Create(fileName) //创建文件
-	fmt.Println(err1)
-
-	n, err1 := io.WriteString(f, buf.String()) //写入文件(字符串)
-	fmt.Println(err1)
-	fmt.Printf("写入 %d 个字节n", n)
+	//
+	//fmt.Println()
+	//randNum := strconv.Itoa(rand.Intn(1000))
+	//fileName := "test" + randNum
+	//fmt.Println(fileName)
+	//f, err1 := os.Create(fileName) //创建文件
+	//fmt.Println(err1)
+	//
+	//n, err1 := io.WriteString(f, buf.String()) //写入文件(字符串)
+	//fmt.Println(err1)
+	//fmt.Printf("写入 %d 个字节n", n)
 
 	context.JSON(200, gin.H{
 		"code":    200,
@@ -110,13 +110,16 @@ func (*VideoController) Upload1(context *gin.Context) {
 	cfg.UseCdnDomains = false
 
 	resumeUploader := storage.NewResumeUploader(&cfg)
-	ret := storage.PutRet{}
-	putExtra := storage.RputExtra{}
-	err := resumeUploader.PutFile(util.Ctx, &ret, upToken, "test", fileName, &putExtra)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Println(ret)
+	//ret := storage.PutRet{}
+	ret1 := storage.BlkputRet{}
+	//putExtra := storage.RputExtra{}
+	mkblr := resumeUploader.Mkblk(util.Ctx, upToken, "up-z1.qiniup.com", &ret1, chunkSize, context.Request.Body, totalSize)
+	//err := resumeUploader.PutFile(util.Ctx, &ret, upToken, "test", fileName, &putExtra)
+	//if err != nil {
+	//	fmt.Println(err)
+	//	return
+	//}
+	fmt.Println(mkblr)
+	fmt.Println(ret1)
 
 }
