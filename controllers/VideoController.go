@@ -114,7 +114,8 @@ func (*VideoController) Upload1(context *gin.Context) {
 	//ret := storage.PutRet{}
 	ret1 := storage.BlkputRet{}
 	//putExtra := storage.RputExtra{}
-	_ = fmt.Sprintf("time start %d \n", time.Now().Unix())
+	fmt.Println(time.Now().Unix())
+	fmt.Println("\n")
 	mkblr := resumeUploader.Mkblk(util.Ctx, upToken, "http://up-z1.qiniup.com", &ret1, chunkSize, context.Request.Body, totalSize)
 	//err := resumeUploader.PutFile(util.Ctx, &ret, upToken, "test", fileName, &putExtra)
 	//if err != nil {
@@ -123,5 +124,5 @@ func (*VideoController) Upload1(context *gin.Context) {
 	//}
 	fmt.Println(mkblr)
 	fmt.Println(ret1)
-	_ = fmt.Sprintf("time end %d \n", time.Now().Unix())
+	fmt.Println(time.Now().Unix())
 }
