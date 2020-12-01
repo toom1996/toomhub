@@ -100,3 +100,8 @@ button::after{
 .operatingBar text {
   font-size: x-small
 }
+
+.toomhub__square-tag {
+  margin-top: 10rpx;
+  padding: 5px 10px 5px 10px !important;
+}

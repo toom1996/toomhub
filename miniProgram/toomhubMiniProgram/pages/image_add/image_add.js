@@ -74,7 +74,7 @@ Page({
 
   //上传图片触发事件
   afterRead(event) {
-    
+    console.log('event')
     console.log(event)
     let list = event.detail.file;
     for (let i = 0; i < list.length; i++) {
@@ -84,7 +84,6 @@ Page({
       }
     }
     let _this = this;
-
     var promise = Promise.all(list.map((item, index) => {
       return new Promise(function(resolve, reject) {
         //先插入一个空图片
@@ -98,7 +97,7 @@ Page({
         _this.setData({
           imageList: tmp
         });
-
+        console.log('3333333333333333')
         // // 转成base64, 这里本来想做base64展示, 省点cdn流量, 但是组件好像不支持:-(
         // wx.get.readFile({FileSystemManager()
         //   filePath: item.path, //选择图片返回的相对路径
@@ -112,18 +111,19 @@ Page({
         //     }) 
         //   }
         // })
-
+        console.log('item',item)
         let uploadTask = wx.uploadFile({
           url: app.getApi('requestHost') + '/c/image/upload',
-          filePath: item.path,
+          filePath: item.url,
           name: 'file',
           success: (res) => {
+            console.log(1111111111)
             try{
               let data = JSON.parse(res.data)
               if (res.statusCode == 200 && data.code == 200) {
                 //上传成功后更换空图的内容
                 let tmp = _this.data.imageList
-                tmp[index - 1].url = item.path//data.data.url;
+                tmp[index - 1].url = item.url//data.data.url;
                 tmp[index - 1].deletable = true;
                 tmp[index - 1].status = 'done'
                 tmp[index - 1].message = '0%'
@@ -140,19 +140,17 @@ Page({
                 Toast.fail(data.message);
               }
             }catch(e){
+              console.log('aaaaaaaaaaa')
               _this.removeImage(index - 1)
               Toast.fail('上传失败');
             }
           },
           fail: (res) => {
+            console.log(res)
             _this.removeImage(index - 1)
             Toast.fail(res);
           }
         });
-
-        uploadTask.onProgressUpdate((res) => {
-          tmp[index - 1].message = res.progress + '%'
-        })
       })
     }))
   },

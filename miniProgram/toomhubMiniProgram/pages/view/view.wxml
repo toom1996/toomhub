@@ -51,7 +51,7 @@
         <!-- 标签 -->
         <view>
           <view wx:if="{{ tag != '' }}">
-            <van-tag round color="#fef5d8" text-color="#ce9d35" size="mini" custom-class="toomhub__square-tag">
+            <van-tag color="#eaf5ff" text-color="#0366d6" size="mini" custom-class="toomhub__square-tag">
               {{ tag }}
             </van-tag>
           </view>
