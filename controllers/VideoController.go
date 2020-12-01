@@ -3,7 +3,12 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/qiniu/api.v7/v7/auth/qbox"
+	"github.com/qiniu/api.v7/v7/storage"
+	"strconv"
+	"time"
 	"toomhub/middware"
 	"toomhub/service"
 	"toomhub/util"
@@ -66,11 +71,16 @@ func (*VideoController) Upload(context *gin.Context) {
 	})
 }
 func (*VideoController) Upload1(context *gin.Context) {
-	//rand.Seed(uint64(time.Now().UnixNano()))
+	chunkSizeQuery := context.Query("chunkSize")
+	totalSizeQuery := context.Query("chunkSize")
+	chunkSize, _ := strconv.Atoi(chunkSizeQuery)
+	totalSize, _ := strconv.Atoi(totalSizeQuery)
+	//rand.Seed(int64(uint64(time.Now().UnixNano())))
 	//buf := new(bytes.Buffer)
 	//_, _ = buf.ReadFrom(context.Request.Body)
-	////fmt.Println(buf.String())
+	//fmt.Println(buf.String())
 	//
+	//fmt.Println()
 	//randNum := strconv.Itoa(rand.Intn(1000))
 	//fileName := "test" + randNum
 	//fmt.Println(fileName)
@@ -85,29 +95,36 @@ func (*VideoController) Upload1(context *gin.Context) {
 		"code":    200,
 		"message": "上传成功",
 	})
-	//config := util.GetConfig()
-	//putPolicy := storage.PutPolicy{
-	//	Scope: "toomhub",
-	//}
-	//mac := qbox.NewMac(config.Qiniu.AccessKey, config.Qiniu.SecretKey)
-	//upToken := putPolicy.UploadToken(mac)
-	//
-	//cfg := storage.Config{}
-	//// 空间对应的机房
-	//cfg.Zone = &storage.ZoneHuadong
-	//// 是否使用https域名
-	//cfg.UseHTTPS = false
-	//// 上传是否使用CDN上传加速
-	//cfg.UseCdnDomains = false
-	//
-	//resumeUploader := storage.NewResumeUploader(&cfg)
+	config := util.GetConfig()
+	putPolicy := storage.PutPolicy{
+		Scope: "toomhub",
+	}
+	mac := qbox.NewMac(config.Qiniu.AccessKey, config.Qiniu.SecretKey)
+	upToken := putPolicy.UploadToken(mac)
+
+	cfg := storage.Config{}
+	// 空间对应的机房
+	cfg.Zone = &storage.ZoneHuabei
+	// 是否使用https域名
+	cfg.UseHTTPS = false
+	// 上传是否使用CDN上传加速
+	cfg.UseCdnDomains = false
+
+	resumeUploader := storage.NewResumeUploader(&cfg)
 	//ret := storage.PutRet{}
+	ret1 := storage.BlkputRet{}
 	//putExtra := storage.RputExtra{}
-	//err := resumeUploader.PutFile(util.Ctx, &ret, upToken, key, localFile, &putExtra)
+
+	fmt.Println("start")
+	fmt.Println(time.Now().Unix())
+	fmt.Println("\n")
+	mkblr := resumeUploader.Mkblk(util.Ctx, upToken, "http://up-z1.qiniup.com", &ret1, chunkSize, context.Request.Body, totalSize)
+	//err := resumeUploader.PutFile(util.Ctx, &ret, upToken, "test", fileName, &putExtra)
 	//if err != nil {
 	//	fmt.Println(err)
 	//	return
 	//}
-	//fmt.Println(ret.Key, ret.Hash)
-
+	fmt.Println(mkblr)
+	fmt.Println(ret1)
+	fmt.Println(time.Now().Unix())
 }
