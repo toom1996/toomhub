@@ -56,10 +56,11 @@ func (logic *SquareLogic) SquareLike(validator *validatorRules.LikeValidator) (b
 		Score:  float64(time.Now().Unix()),
 	}
 
-	has, err := util.Rdb.ZRank(ctx, likeKey, fmt.Sprintf("%d", validator.Id)).Result()
+	_, err := util.Rdb.ZRank(ctx, likeKey, fmt.Sprintf("%d", validator.Id)).Result()
 
-	fmt.Println("has -> ", has)
-	fmt.Println("err -> ", err)
+	if err == nil {
+		return false, nil
+	}
 
 	createdBy, _ := util.Rdb.HMGet(ctx, SquareKey, "created_by").Result()
 	if validator.O == 1 {
