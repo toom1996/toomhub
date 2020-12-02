@@ -5,7 +5,8 @@ const app = getApp()
 Page({
   data: {
     userInfo: app.globalData.userInfo,
-    tag: {}
+    tag: {},
+    screenWidth: app.globalData.windowWidth,
   },
   onReady() {
     //是否登陆
@@ -20,6 +21,9 @@ Page({
     })
   },
 
+  onLoad() {
+    
+  },
   onShow: function () {
     if (app.globalData.userInfo != null) {
       app.httpClient.get(app.getApi('getUserInfo')).then(res=> {

@@ -24,8 +24,8 @@
                   <image src='{{ item.avatar_url }}'></image>
                 </view>
               </van-col>
-              <van-col span="12">
-                <view style="overflow:hidden;width: 100%;overflow: hidden;text-overflow: ellipsis;">
+              <van-col>
+                <view style="max-width:{{screenWidth / 3}}px;overflow:hidden;width: 100%;overflow: hidden;text-overflow: ellipsis;">
                   <text class="font__username">{{item.created_by}}</text>
                 </view>
                 <text style="display:block;" class="font__time">{{item.created_at}}</text>

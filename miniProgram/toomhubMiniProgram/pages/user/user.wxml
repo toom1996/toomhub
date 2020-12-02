@@ -7,9 +7,9 @@
     </view>
     <view class="flex-box">
       <van-row>
-        <van-col span="12">
+        <van-col>
           <block wx:if="{{userInfo}}">
-            <view>
+            <view style="max-width:{{screenWidth / 3 }}px">
               <text class="h2">{{ userInfo.nick_name }}</text>
             </view>
           </block>
@@ -17,7 +17,7 @@
             <van-button round type="default" bindtap="userLogin" size="small">立即登陆</van-button>
           </block>
         </van-col>
-        <van-col span="6"><van-tag color="{{ tag.background_color }}" text-color="{{ tag.text-color }}" type="primary">{{ tag.text }}</van-tag></van-col>
+        <van-tag color="{{ tag.background_color }}" text-color="{{ tag.text-color }}" type="primary">{{ tag.text }}</van-tag>
       </van-row>
     </view>
     <view class="arrow arrow-one">

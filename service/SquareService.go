@@ -32,13 +32,13 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 	var list []interface{}
 	var model []ModelMiniV1.ToomhubSquare
 	db.Select("id").Limit(20).Offset(20 * (validator.Page - 1)).Order("created_at desc").Find(&model)
-	var squareIds []interface{}
+	var squareIds []string
 	for _, v := range model {
 		squareIds = append(squareIds, util.SquareCacheKey+strconv.Itoa(int(v.Id)))
 	}
 	squareInfo, _ := util.RedisMulti([]string{"id", "type", "created_by", "created_at", "likes_count", "tag", "content", "image", "video", "cover", "width", "height"}, squareIds...)
 
-	var creatorIds []interface{}
+	var creatorIds []string
 	for _, item := range squareInfo {
 		fmt.Println(item.([]interface{})[2].(string))
 		creatorIds = append(creatorIds, util.UserCacheKey+item.([]interface{})[2].(string))
@@ -366,6 +366,7 @@ func SquareVideoCreate(v *validatorRules.SquareVideoCreate) (bool, error) {
 
 // @title 获取信息详情信息及热门评论
 func GetSquareView(id int64, c *gin.Context) (interface{}, error) {
+
 	type imageModel struct {
 		Ext   string `json:"ext"`
 		Name  string `json:"name"`
@@ -377,27 +378,21 @@ func GetSquareView(id int64, c *gin.Context) (interface{}, error) {
 	rdb := util.Rdb
 	res, _ := rdb.HMGet(util.Ctx, util.SquareCacheKey+fmt.Sprintf("%d", id), []string{"content", "created_by", "created_at", "collect_count", "likes_count", "argument_count", "created_at", "image", "tag", "id", "video", "cover"}...).Result()
 	response := map[string]interface{}{}
-	createdBy, _ := rdb.HMGet(util.Ctx, util.UserCacheKey+res[1].(string), []string{"nick_name", "avatar_url"}...).Result()
-	fmt.Println(createdBy[0])
-	response["created_by"] = createdBy[0]
-	response["avatar_url"] = createdBy[1]
+	creatorInfo, _ := util.RedisGetUserInfo(res[1].(string), []string{"nick_name", "avatar_url"}...)
+	response["created_by"] = creatorInfo[0]
+	response["avatar_url"] = creatorInfo[1]
 	intCreatedAt, _ := strconv.ParseInt(res[2].(string), 10, 64)
 	createdAt := util.StrTime(intCreatedAt)
 	response["created_at"] = createdAt
-	uid := 0
-	//判断浏览首页的用户是否登录
-	token := c.GetHeader("Toomhub-Token")
-	if token != "" {
-		r, _ := util.ParseToken(c.GetHeader("Toomhub-Token"), c)
-		uid = int(r.MiniId)
-	}
-	isLikeRes, err := rdb.HMGet(util.Ctx, util.SquareLikeKey+res[9].(string), fmt.Sprintf("%d", uid)).Result()
 
-	if err != nil {
-		fmt.Println(err)
-	}
+	identity := util.Identity(c)
+
 	isLike := 0
-	if len(isLikeRes) == 1 && isLikeRes[0] == "1" {
+	_, err := rdb.ZRank(util.Ctx, util.SquareLikeKey+fmt.Sprintf("%d", identity.MiniId), fmt.Sprintf("%d", id)).Result()
+
+	fmt.Println("view Err", err)
+	fmt.Println("view key", util.SquareLikeKey+res[9].(string))
+	if err == nil {
 		isLike = 1
 	}
 	response["is_like"] = isLike
@@ -423,16 +418,10 @@ func GetSquareView(id int64, c *gin.Context) (interface{}, error) {
 		response["type"] = 0
 	} else {
 		response["video"] = res[10]
-		response["cover+-/"] = res[11]
+		response["cover"] = res[11]
 		response["type"] = 1
 	}
 
 	return response, nil
 
-	return gin.H{
-
-		"like_count":     util.ToInt(res[4].(string)),
-		"argument_count": util.ToInt(res[5].(string)),
-		"collect_count":  util.ToInt(res[3].(string)),
-	}, nil
 }

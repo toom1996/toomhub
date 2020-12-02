@@ -276,7 +276,6 @@ func (square *SquareController) Like(Context *gin.Context) {
 
 //详情
 func (square *SquareController) view(Context *gin.Context) {
-
 	formValidator := validatorRules.View{}
 	err := Context.BindQuery(&formValidator)
 
