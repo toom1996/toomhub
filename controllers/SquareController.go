@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 	LogicMiniV1 "toomhub/logic/mini/v1"
-	"toomhub/middware"
+	"toomhub/middleware"
 	"toomhub/util"
 	"toomhub/validatorRules"
 )
@@ -31,13 +31,16 @@ func (square *SquareController) Register(engine *gin.Engine) {
 	}
 
 	user := engine.Group("/v1/mini/sq")
-	// 广场首页接口
-	user.GET("/index", square.index)
+	user.Use(middleware.Cors())
+	{
+		// 广场首页接口
+		user.GET("/index", square.index)
+	}
 	//详情页面接口
 	user.GET("/view", square.view)
 
 	//中间件
-	user.Use(middware.CheckIdentity())
+	user.Use(middleware.CheckIdentity())
 	{
 		// 发布一条广场信息
 		user.POST("/create", square.create)

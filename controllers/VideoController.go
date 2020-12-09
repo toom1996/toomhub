@@ -9,7 +9,7 @@ import (
 	"github.com/qiniu/api.v7/v7/storage"
 	"strconv"
 	"time"
-	"toomhub/middware"
+	"toomhub/middleware"
 	"toomhub/service"
 	"toomhub/util"
 )
@@ -26,7 +26,7 @@ func (image *VideoController) Register(engine *gin.Engine) {
 		controller.POST("/upload1", image.Upload1)
 	}
 
-	controller.Use(middware.CheckIdentity())
+	controller.Use(middleware.CheckIdentity())
 	{
 		//controller.POST("/upload", image.Upload)
 	}
