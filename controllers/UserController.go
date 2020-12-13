@@ -30,6 +30,12 @@ func (u *UserController) Register(engine *gin.Engine) {
 		user.POST("/login", u.Login)
 		user.POST("/token-checker", u.tokenChecker)
 		user.GET("/get-session", u.GetSessionKey)
+		user.GET("/register", u.actionRegister)
+	}
+
+	group := engine.Group("/api/v1/user")
+	{
+		group.POST("/register", u.actionRegister)
 	}
 	user.Use(middleware.CheckIdentity())
 	{
@@ -183,5 +189,12 @@ func (u *UserController) refreshInfo(Context *gin.Context) {
 				"text-color":       tagInfo[2],
 			},
 		},
+	})
+}
+
+func (u *UserController) actionRegister(context *gin.Context) {
+	context.JSON(200, gin.H{
+		"code":    200,
+		"message": "OK",
 	})
 }
