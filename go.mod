@@ -3,7 +3,7 @@ module toomhub
 go 1.14
 
 require (
-	github.com/aliyun/alibaba-cloud-sdk-go v1.61.754
+	github.com/aliyun/alibaba-cloud-sdk-go v1.61.756
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/elastic/go-elasticsearch/v7 v7.9.0
 	github.com/gin-gonic/gin v1.6.3
@@ -20,6 +20,8 @@ require (
 	github.com/qiniu/api.v7/v7 v7.5.0
 	github.com/streadway/amqp v1.0.0 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.0.0-beta.1
+	go.uber.org/multierr v1.6.0 // indirect
+	go.uber.org/zap v1.16.0
 	golang.org/x/exp v0.0.0-20200513190911-00229845015e
 	gopkg.in/ini.v1 v1.62.0 // indirect
 )

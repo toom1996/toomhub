@@ -1,4 +1,7 @@
 {
+  "logger": {
+
+  },
   "app_name": "toomhub",
   "app_mode": "debug",
   "app_host": "192.168.10.113",
@@ -38,5 +41,9 @@
   },
   "es": {
     "host": "http://127.0.0.1:9200"
+  },
+  "aliSms": {
+    "accessKeyId": "LTAI4G8mq8Pp5eQPYaFxaxo8",
+    "accessKeySecret": "mT6mrZCJEe5x5cM0xq3jGV5Jdd03pR"
   }
 }

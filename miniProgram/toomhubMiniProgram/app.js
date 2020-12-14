@@ -122,6 +122,9 @@ App({
 
   //验证token接口
   tokenRefresh: function () {
+    wx.showLoading({
+      title: '数据加载中...',
+    })
     let p = this.globalData.userInfo;
     this.httpClient.post(toomhubApi.tokenCheck, {
       token: p.token,
@@ -130,6 +133,9 @@ App({
       if (res.data.code != 200) {
         this.redirectToLogin();
       }
+    })
+    wx.hideLoading({
+      success: (res) => {},
     })
   },
 

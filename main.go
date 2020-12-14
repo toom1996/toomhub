@@ -22,11 +22,16 @@ func main() {
 	//初始化mysql
 	util.MysqlInit()
 
+	//初始化zaplog
+	util.ZapLogInit()
+
 	fmt.Println(cfg.AppPort)
 	app := gin.Default()
 	registerRouter(app)
-	_ = app.Run(cfg.AppHost + ":" + cfg.AppPort)
 
+	a := []string{"test", "hello", "world"}
+	util.Debug("output", a)
+	_ = app.Run(cfg.AppHost + ":" + cfg.AppPort)
 }
 
 //路由设置

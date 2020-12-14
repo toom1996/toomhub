@@ -17,6 +17,7 @@ type Config struct {
 	Database Database `json:"database"`
 	Qiniu    Qiniu    `json:"qiniu"`
 	Es       Es       `json:"es"`
+	AliSms   AliSms
 }
 
 type Es struct {
@@ -55,6 +56,11 @@ type Database struct {
 	Password string `json:"password"`
 	Dbname   string `json:"dbname"`
 	Charset  string `json:"charset"`
+}
+
+type AliSms struct {
+	AccessKeyId     string `json:"accessKeyId"`
+	AccessKeySecret string `json:"accessKeySecret"`
 }
 
 var _cfg *Config = nil

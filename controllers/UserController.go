@@ -14,7 +14,7 @@ import (
 	LogicMiniV1 "toomhub/logic/mini/v1"
 	"toomhub/middleware"
 	"toomhub/util"
-	validator2 "toomhub/validatorRules"
+	"toomhub/validatorRules"
 )
 
 type UserController struct {
@@ -105,7 +105,7 @@ func (u *UserController) GetSessionKey(Context *gin.Context) {
 // @return
 func (u *UserController) Login(Context *gin.Context) {
 	//validator验证
-	formValidator := validator2.Login{}
+	formValidator := validatorRules.Login{}
 	err := Context.ShouldBind(&formValidator)
 	if err != nil {
 		Context.String(http.StatusOK, "参数错误:%s", err.Error())
@@ -133,9 +133,9 @@ func (u *UserController) Login(Context *gin.Context) {
 
 // @title	检查token接口
 func (u *UserController) tokenChecker(Context *gin.Context) {
-	var commonValidator validator2.CommonValidator
+	var commonValidator validatorRules.CommonValidator
 
-	formValidator := validator2.Refresh{}
+	formValidator := validatorRules.Refresh{}
 	err := Context.ShouldBind(&formValidator)
 	if err != nil {
 		Context.JSON(http.StatusOK, gin.H{
@@ -192,9 +192,26 @@ func (u *UserController) refreshInfo(Context *gin.Context) {
 	})
 }
 
+// @description: 用户注册接口
+// @url: /api/v1/user/register
+// @method: POST
+// @param	string	mobile 用户手机号码
+// @param	string	code 验证码
 func (u *UserController) actionRegister(context *gin.Context) {
-	context.JSON(200, gin.H{
-		"code":    200,
-		"message": "OK",
-	})
+	var formValidator validatorRules.V1UserRegister
+	err := context.ShouldBind(&formValidator)
+	if err != nil {
+		context.JSON(200, gin.H{
+			"code":    400,
+			"message": err.Error(),
+		})
+	}
+
+	//_, err = util.SendRegisterSms("13502127317", 123456)
+	//
+	//fmt.Println(err)
+	//context.JSON(200, gin.H{
+	//	"code":    200,
+	//	"message": "OK",
+	//})
 }

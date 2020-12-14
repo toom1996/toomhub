@@ -16,3 +16,9 @@ type Refresh struct {
 	Token        string `form:"token" binding:"required"`
 	RefreshToken string `form:"refresh_token"`
 }
+
+//用户注册验证规则
+type V1UserRegister struct {
+	Mobile string `form:"mobile" binding:"required"`
+	Code   string `form:"code" binding:"required"`
+}
