@@ -40,8 +40,11 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 
 	var creatorIds []string
 	for _, item := range squareInfo {
-		fmt.Println(item.([]interface{})[2].(string))
-		creatorIds = append(creatorIds, util.UserCacheKey+item.([]interface{})[2].(string))
+
+		if item.([]interface{})[2] != nil {
+			fmt.Println(item.([]interface{})[2].(string))
+			creatorIds = append(creatorIds, util.UserCacheKey+item.([]interface{})[2].(string))
+		}
 	}
 
 	userInfo, _ := util.RedisMulti([]string{"nick_name", "avatar_url", "mini_id", "exp"}, creatorIds...)

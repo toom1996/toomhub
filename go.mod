@@ -17,21 +17,28 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/goinggo/mapstructure v0.0.0-20140717182941-194205d9b4a9
 	github.com/golang/protobuf v1.4.3 // indirect
+	github.com/gookit/color v1.3.5 // indirect
 	github.com/jinzhu/gorm v1.9.16
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
+	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
 	github.com/medivhzhan/weapp/v2 v2.2.2
 	github.com/modern-go/reflect2 v1.0.1 // indirect
+	github.com/nicksnyder/go-i18n/v2 v2.1.1 // indirect
+	github.com/nsf/termbox-go v0.0.0-20201124104050-ed494de23a00 // indirect
 	github.com/olivere/elastic/v7 v7.0.20
 	github.com/qiniu/api.v7/v7 v7.5.0
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
+	github.com/spf13/cobra v1.1.1 // indirect
 	github.com/streadway/amqp v1.0.0 // indirect
 	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14
 	github.com/swaggo/gin-swagger v1.3.0
 	github.com/swaggo/swag v1.7.0
 	github.com/ugorji/go v1.2.1 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.0.0-beta.1
+	github.com/xxjwxc/gormt v0.0.0-20201030104547-9a6d72b83141 // indirect
+	github.com/xxjwxc/public v0.0.0-20201210062237-4f3a9eede2d2 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.16.0
 	golang.org/x/crypto v0.0.0-20201208171446-5f87f3452ae9 // indirect
@@ -40,5 +47,9 @@ require (
 	golang.org/x/sys v0.0.0-20201214210602-f9fddec55a1e // indirect
 	golang.org/x/tools v0.0.0-20201211185031-d93e913c1a58 // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
+	gopkg.in/go-playground/validator.v9 v9.31.0 // indirect
 	gopkg.in/ini.v1 v1.62.0 // indirect
+	gorm.io/driver/mysql v1.0.3 // indirect
+	gorm.io/driver/sqlite v1.1.4 // indirect
+	gorm.io/gorm v1.20.8 // indirect
 )

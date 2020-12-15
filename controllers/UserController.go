@@ -4,7 +4,7 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"toomhub/model"
+	"toomhub/service/user/v1"
 	"toomhub/util"
 	"toomhub/validatorRules"
 )
@@ -213,7 +213,7 @@ func (u *UserController) actionRegister(context *gin.Context) {
 		return
 	}
 
-	model.PcRegisterUser()
+	_, _ = service.V1PcRegisterUser()
 
 	util.ResponseOk(context, "test", "test")
 	//_, err = util.SendRegisterSms("13502127317", 123456)
