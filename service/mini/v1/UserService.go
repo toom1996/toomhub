@@ -5,6 +5,7 @@ package ServiceMiniV1
 import (
 	"errors"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"strconv"
 	"time"
@@ -17,51 +18,52 @@ import (
 // @description
 // @auth	toom <1023150697@qq.com>
 func GetUser(openid string, validator *validatorRules.Login) (interface{}, error) {
-	db := util.DB
-	user, err := HasUser(openid)
-
-	if err != nil {
-		//如果是没有这个用户
-		if gorm.IsRecordNotFoundError(err) {
-			res, err := UserCreate(openid, db, validator)
-			return res, err
-		}
-
-		// 查询失败
-		return "", err
-	}
-
-	//重新登陆就会刷新token 和 refreshToken
-	_, _ = UpdateUserInfoToRedis(user.MiniId)
-
-	info, err := GetUserInfoByRedis(user.MiniId)
-
-	if err != nil {
-		userModel := ModelMiniV1.ToomhubUserMini{}
-		query := db.Where("mini_id = ?", user.MiniId).Find(&userModel)
-		if query.Error != nil {
-			fmt.Println(query.Error)
-		}
-
-		profileModel := ModelMiniV1.ToomhubUserMiniProfile{
-			MiniId:    userModel.MiniId,
-			NickName:  validator.RawData.NickName,
-			Gender:    validator.RawData.Gender,
-			City:      validator.RawData.City,
-			Province:  validator.RawData.Province,
-			Country:   validator.RawData.Country,
-			AvatarUrl: validator.RawData.AvatarUrl,
-		}
-
-		miniTokenModel := ModelMiniV1.ToomhubUserMiniToken{}
-		query = db.Where("mini_id = ?", user.MiniId).Find(&miniTokenModel)
-		if query.Error != nil {
-			fmt.Println(query.Error)
-		}
-		_, _ = SetUserInfoToRedis(userModel, profileModel, miniTokenModel)
-	}
-	info, err = GetUserInfoByRedis(user.MiniId)
-	return info, nil
+	//db := util.DB
+	//user, err := HasUser(openid)
+	//
+	//if err != nil {
+	//	//如果是没有这个用户
+	//	if gorm.IsRecordNotFoundError(err) {
+	//		res, err := UserCreate(openid, db, validator)
+	//		return res, err
+	//	}
+	//
+	//	// 查询失败
+	//	return "", err
+	//}
+	//
+	////重新登陆就会刷新token 和 refreshToken
+	//_, _ = UpdateUserInfoToRedis(user.MiniId)
+	//
+	//info, err := GetUserInfoByRedis(user.MiniId)
+	//
+	//if err != nil {
+	//	userModel := ModelMiniV1.ToomhubUserMini{}
+	//	query := db.Where("mini_id = ?", user.MiniId).Find(&userModel)
+	//	if query.Error != nil {
+	//		fmt.Println(query.Error)
+	//	}
+	//
+	//	profileModel := ModelMiniV1.ToomhubUserMiniProfile{
+	//		MiniId:    userModel.MiniId,
+	//		NickName:  validator.RawData.NickName,
+	//		Gender:    validator.RawData.Gender,
+	//		City:      validator.RawData.City,
+	//		Province:  validator.RawData.Province,
+	//		Country:   validator.RawData.Country,
+	//		AvatarUrl: validator.RawData.AvatarUrl,
+	//	}
+	//
+	//	miniTokenModel := ModelMiniV1.ToomhubUserMiniToken{}
+	//	query = db.Where("mini_id = ?", user.MiniId).Find(&miniTokenModel)
+	//	if query.Error != nil {
+	//		fmt.Println(query.Error)
+	//	}
+	//	_, _ = SetUserInfoToRedis(userModel, profileModel, miniTokenModel)
+	//}
+	//info, err = GetUserInfoByRedis(user.MiniId)
+	//return info, nil
+	return gin.H{}, nil
 }
 
 // @title	判断是否为新用户
@@ -267,43 +269,47 @@ func SetUserInfoToRedis(userModel ModelMiniV1.ToomhubUserMini, profileModel Mode
 
 // @title	刷新用户的token 和 refreshToken
 func UpdateUserInfoToRedis(miniId int64) (interface{}, error) {
-	db := util.DB
-
-	profileModel := ModelMiniV1.ToomhubUserMiniProfile{}
-
-	_ = db.Where("mini_id = ?", miniId).Take(&profileModel)
-	key := util.UserCacheKey + strconv.Itoa(int(miniId))
-	//塞入redis
-	token, _ := util.GenerateToken(miniId)
-	fmt.Println("token -> ", token)
-	refreshToken := util.GetRandomString(64)
-	fmt.Println(refreshToken)
-	err := util.Rdb.HMSet(util.Ctx, key, map[string]interface{}{
-		"nick_name":     profileModel.NickName,
-		"gender":        profileModel.Gender,
-		"city":          profileModel.City,
-		"province":      profileModel.Province,
-		"country":       profileModel.Country,
-		"avatar_url":    profileModel.AvatarUrl,
-		"token":         token,
-		"refresh_token": refreshToken,
-	}).Err()
-
-	// 更新数据库 (感觉没啥必要, 因为数据都是从redis取的, 并且redis的数据都已经更新了)
-	updateTime := time.Now().Unix()
-	tokenModel := ModelMiniV1.ToomhubUserMiniToken{
-		UpdatedAt:    updateTime,
-		AccessToken:  token,
-		RefreshToken: refreshToken,
-	}
-	_ = db.Table("toomhub_user_mini_token").Update(&tokenModel).Where("mini_id = ?", miniId)
-
-	if err != nil {
-		fmt.Println(err)
-	}
+	//db := util.DB
+	//
+	//profileModel := ModelMiniV1.ToomhubUserMiniProfile{}
+	//
+	//_ = db.Where("mini_id = ?", miniId).Take(&profileModel)
+	//key := util.UserCacheKey + strconv.Itoa(int(miniId))
+	////塞入redis
+	//token, _ := util.GenerateToken(miniId)
+	//fmt.Println("token -> ", token)
+	//refreshToken := util.GetRandomString(64)
+	//fmt.Println(refreshToken)
+	//err := util.Rdb.HMSet(util.Ctx, key, map[string]interface{}{
+	//	"nick_name":     profileModel.NickName,
+	//	"gender":        profileModel.Gender,
+	//	"city":          profileModel.City,
+	//	"province":      profileModel.Province,
+	//	"country":       profileModel.Country,
+	//	"avatar_url":    profileModel.AvatarUrl,
+	//	"token":         token,
+	//	"refresh_token": refreshToken,
+	//}).Err()
+	//
+	//// 更新数据库 (感觉没啥必要, 因为数据都是从redis取的, 并且redis的数据都已经更新了)
+	//updateTime := time.Now().Unix()
+	//tokenModel := ModelMiniV1.ToomhubUserMiniToken{
+	//	UpdatedAt:    updateTime,
+	//	AccessToken:  token,
+	//	RefreshToken: refreshToken,
+	//}
+	//_ = db.Table("toomhub_user_mini_token").Update(&tokenModel).Where("mini_id = ?", miniId)
+	//
+	//if err != nil {
+	//	fmt.Println(err)
+	//}
+	//return map[string]string{
+	//	"token":         token,
+	//	"refresh_token": refreshToken,
+	//}, nil
 	return map[string]string{
-		"token":         token,
-		"refresh_token": refreshToken,
+		"token":         "",
+		"refresh_token": "",
 	}, nil
 }
 

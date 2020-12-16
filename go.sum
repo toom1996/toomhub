@@ -445,6 +445,8 @@ github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q
 github.com/xordataexchange/crypt v0.0.3-0.20170626215501-b2862e3d0a77/go.mod h1:aYKd//L2LvnjZzWKhF00oedf4jCCReLcmhLdhm1A27Q=
 github.com/xxjwxc/gormt v0.0.0-20201030104547-9a6d72b83141 h1:ZaTEcY5emNAwF1LqEAbDVjyXUEl6gE6H0rzzjoczaDo=
 github.com/xxjwxc/gormt v0.0.0-20201030104547-9a6d72b83141/go.mod h1:PS4UE1d4dh4ZA22KV+NhvQPJ9epUqdS89xy2g/X9/5w=
+github.com/xxjwxc/gormt v0.0.0-20201215060855-17dab2b01c1d h1:tBWRQlYqO7zP7pO3KgJspSvNkkgNxz4BL/+mFuPOkVE=
+github.com/xxjwxc/gormt v0.0.0-20201215060855-17dab2b01c1d/go.mod h1:Ol6yb4xliSVjKUoLdKbh0NYElRgZ5kfpAoZ1AfTWBNg=
 github.com/xxjwxc/gowp v0.0.0-20200603130651-4d7368b0e285/go.mod h1:yJ/fY5BorWARfDDsxBU/MyQTHc5MVyNcqBQQYD6MN0k=
 github.com/xxjwxc/public v0.0.0-20200603115833-341beff27850/go.mod h1:fp3M+FEQrCgWD1fZ/PLwZkCTglf086OEhC9LcydAUnc=
 github.com/xxjwxc/public v0.0.0-20200928160257-3db1045537d1 h1:dwdQOwu3wGgoXso9XaHuIkZDvoSiyJl89FUYFfVmPi0=

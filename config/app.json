@@ -21,7 +21,7 @@
     "port": "3306",
     "username": "root",
     "password": "root",
-    "dbname": "toomhub",
+    "dbname": "zawazawa",
     "charset": "utf8mb4"
   },
   "redis": {

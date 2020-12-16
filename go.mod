@@ -37,7 +37,7 @@ require (
 	github.com/swaggo/swag v1.7.0
 	github.com/ugorji/go v1.2.1 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.0.0-beta.1
-	github.com/xxjwxc/gormt v0.0.0-20201030104547-9a6d72b83141 // indirect
+	github.com/xxjwxc/gormt v0.0.0-20201215060855-17dab2b01c1d // indirect
 	github.com/xxjwxc/public v0.0.0-20201210062237-4f3a9eede2d2 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.16.0
@@ -49,7 +49,7 @@ require (
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/go-playground/validator.v9 v9.31.0 // indirect
 	gopkg.in/ini.v1 v1.62.0 // indirect
-	gorm.io/driver/mysql v1.0.3 // indirect
+	gorm.io/driver/mysql v1.0.3
 	gorm.io/driver/sqlite v1.1.4 // indirect
-	gorm.io/gorm v1.20.8 // indirect
+	gorm.io/gorm v1.20.8
 )
