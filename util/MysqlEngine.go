@@ -10,13 +10,13 @@ import (
 	"log"
 	"os"
 	"time"
+	"toomhub/setting"
 )
 
 var DB *gorm.DB
 var err error
 
 func MysqlInit() {
-	config := GetConfig()
 	newLogger := gormLogger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		gormLogger.Config{
@@ -24,7 +24,7 @@ func MysqlInit() {
 			LogLevel:      gormLogger.Silent, // Log level
 			Colorful:      false,             // 禁用彩色打印
 		})
-	dsn := config.Database.Username + ":" + config.Database.Password + "@tcp(" + config.Database.Host + ":" + config.Database.Port + ")/" + config.Database.Dbname + "?charset=" + config.Database.Charset + "&parseTime=True&loc=Local"
+	dsn := setting.ZConfig.Database.User + ":" + setting.ZConfig.Database.Password + "@tcp(" + setting.ZConfig.Database.Host + ")/" + setting.ZConfig.Database.Name + "?charset=" + setting.ZConfig.Database.Charset + "&parseTime=True&loc=Local"
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true, // 使用单数表名，启用该选项，此时，`User` 的表名应该是 `t_user`

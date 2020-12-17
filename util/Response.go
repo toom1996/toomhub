@@ -7,7 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"net/http"
-	"toomhub/validatorRules"
+	"toomhub/pkg"
+	"toomhub/rules"
 )
 
 type Response struct {
@@ -26,12 +27,14 @@ func ResponseError(context *gin.Context, err interface{}) {
 	var errStr string
 	switch err.(type) {
 	case validator.ValidationErrors:
-		errStr = validatorRules.Translate(err.(validator.ValidationErrors))
+		errStr = rules.Translate(err.(validator.ValidationErrors))
+	case error:
+		errStr = err.(error).Error()
 	default:
 		errStr = err.(string)
 
 	}
-	BaseResponse(context, http.StatusOK, 400, errStr, "")
+	BaseResponse(context, http.StatusOK, pkg.Z_BAD_REQUEST, errStr, "")
 }
 
 // base response

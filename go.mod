@@ -29,6 +29,7 @@ require (
 	github.com/nicksnyder/go-i18n/v2 v2.1.1 // indirect
 	github.com/nsf/termbox-go v0.0.0-20201124104050-ed494de23a00 // indirect
 	github.com/olivere/elastic/v7 v7.0.20
+	github.com/pkg/errors v0.9.1
 	github.com/qiniu/api.v7/v7 v7.5.0
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/spf13/cobra v1.1.1 // indirect

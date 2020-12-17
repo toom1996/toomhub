@@ -4,39 +4,53 @@
 package setting
 
 import (
-	"fmt"
 	"github.com/go-ini/ini"
+	"log"
 	"time"
 )
 
-var ZConfig *ZawazawaConfig
+var ZConfig ZawazawaConfig
 
-type server struct {
-	HttpHost string `ini:"HTTP_HOST"`
-	HttpPort string `ini:"HTTP_PORT"`
-}
 type Note struct {
 	Content string
 	Cities  []string
 }
 
 type ZawazawaConfig struct {
-	Server server
-	Age    int `ini:"age"`
-	Male   bool
-	Born   time.Time
+	App      app
+	Server   server
+	Database database
+	Male     bool
+	Born     time.Time
 	Note
 	Created time.Time `ini:"-"`
+}
+
+type app struct {
+	RunMode string `ini:"RUN_MODE"`
+}
+
+type server struct {
+	HttpHost string `ini:"HTTP_HOST"`
+	HttpPort string `ini:"HTTP_PORT"`
+}
+
+type database struct {
+	User     string `ini:"USER"`
+	Password string `ini:"PASSWORD"`
+	Host     string `ini:"HOST"`
+	Name     string `ini:"NAME"`
+	Charset  string `ini:"CHARSET"`
 }
 
 func init() {
 	cfg, err := ini.Load("./config/config.ini")
 	if err != nil {
-		fmt.Println(err)
+		log.Fatalf("Fail to parse 'config': %v", err)
 	}
-	// ...
-	p := new(ZawazawaConfig)
-	err = cfg.MapTo(p)
-	ZConfig = p
-	fmt.Println(ZConfig.Age)
+
+	err = cfg.MapTo(&ZConfig)
+	if err != nil {
+		log.Fatalf("map config error: %v", err)
+	}
 }

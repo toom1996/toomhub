@@ -123,3 +123,10 @@ func (obj *_ZawazawaUserMgr) FetchIndexByMobile(mobile string) (results []*Zawaz
 
 	return
 }
+
+////GetUser	获取用户信息
+//func (obj *_ZawazawaUserMgr) GetUser() {
+//	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("mobile = ?", mobile).Find(&results).Error
+//
+//	return
+//}

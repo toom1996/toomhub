@@ -4,7 +4,7 @@
   },
   "app_name": "toomhub",
   "app_mode": "debug",
-  "app_host": "192.168.10.113",
+  "app_host": "192.168.31.88",
   "app_port": "8080",
   "jwt": {
     "secret": "toomhub"
@@ -20,7 +20,7 @@
     "host": "127.0.0.1",
     "port": "3306",
     "username": "root",
-    "password": "root",
+    "password": "123456",
     "dbname": "zawazawa",
     "charset": "utf8mb4"
   },
