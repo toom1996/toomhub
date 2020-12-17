@@ -5,11 +5,26 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"time"
 	"toomhub/controllers"
 	_ "toomhub/docs"
 	"toomhub/util"
 	"toomhub/validatorRules"
 )
+
+type Note struct {
+	Content string
+	Cities  []string
+}
+
+type Person struct {
+	Name string
+	Age  int `ini:"age"`
+	Male bool
+	Born time.Time
+	Note
+	Created time.Time `ini:"-"`
+}
 
 func main() {
 	cfg, err := util.Init("./config/app.json")
