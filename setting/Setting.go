@@ -6,7 +6,6 @@ package setting
 import (
 	"github.com/go-ini/ini"
 	"log"
-	"time"
 )
 
 var ZConfig ZawazawaConfig
@@ -20,14 +19,12 @@ type ZawazawaConfig struct {
 	App      app
 	Server   server
 	Database database
-	Male     bool
-	Born     time.Time
-	Note
-	Created time.Time `ini:"-"`
+	AliSms   aliSms
 }
 
 type app struct {
-	RunMode string `ini:"RUN_MODE"`
+	RunMode   string `ini:"RUN_MODE"`
+	JwtSecret string `ini:"JWT_SECRET"`
 }
 
 type server struct {
@@ -41,6 +38,11 @@ type database struct {
 	Host     string `ini:"HOST"`
 	Name     string `ini:"NAME"`
 	Charset  string `ini:"CHARSET"`
+}
+
+type aliSms struct {
+	AccessKeyId     string `ini:"ACCESS_KEY_ID"`
+	AccessKeySecret string `ini:"ACCESS_KEY_SECRET"`
 }
 
 func init() {

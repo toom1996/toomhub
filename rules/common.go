@@ -25,6 +25,8 @@ func InitVali() {
 	if ok {
 		// 自定义验证方法
 		_ = v.RegisterValidation("mobileValidator", mobileValidator)
+
+		_ = v.RegisterValidation("checkMobileForV1UserRegister", checkMobileForV1UserRegister)
 		// 验证器注册翻译器
 		_ = zh_translations.RegisterDefaultTranslations(v, trans)
 
@@ -36,6 +38,7 @@ func InitVali() {
 
 		// 添加额外翻译
 		_ = v.RegisterTranslation("mobileValidator", trans, func(ut ut.Translator) error {
+			_ = ut.Add("checkMobileForV1UserRegister", "{0}手机号已被注册", true)
 			return ut.Add("mobileValidator", "{0}格式错误", true)
 		}, func(ut ut.Translator, fe validator.FieldError) string {
 			t, _ := ut.T("mobileValidator", fe.Field())
@@ -62,4 +65,9 @@ func mobileValidator(fl validator.FieldLevel) bool {
 
 	reg := regexp.MustCompile(regular)
 	return reg.MatchString(mobile)
+}
+
+//验证手机号码是否被注册过
+func checkMobileForV1UserRegister(fl validator.FieldLevel) bool {
+	return true
 }

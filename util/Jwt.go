@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
+	"toomhub/setting"
 )
 
 //var jwtSecret = []byte("toomhub")
@@ -33,7 +34,7 @@ func GenerateToken(id int64) (string, error) {
 	}
 
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token, err := tokenClaims.SignedString([]byte(GetConfig().Jwt.Secret))
+	token, err := tokenClaims.SignedString([]byte(setting.ZConfig.App.JwtSecret))
 	return token, err
 }
 

@@ -195,15 +195,15 @@ type ReleaseTemplateAdd struct {
 	GitlabID           uint32 `json:"gitlab_id"`
 }
 
-// @Summary 用户注册接口
+// @summary 用户注册接口
 // @title Swagger Example API
-// @Tags  用户类接口
+// @tags  用户类接口
 // @description  用户注册接口
-// @Produce  json
-// @Param mobile body string true "13502127317"
-// @Param code body	ReleaseTemplateAdd true "JSON数据"
-// @Success 200 {string} json "{"code":200,"data":"name","msg":"ok"}"
-// @Router /api/v1/user/register [post]
+// @produce  json
+// @param mobile body string true "13502127317"
+// @param code body	ReleaseTemplateAdd true "JSON数据"
+// @success 200 {string} json "{"code":200,"data":"name","msg":"ok"}"
+// @router /api/v1/user/register [post]
 func (u *UserController) actionRegister(context *gin.Context) {
 	var formValidator validatorRules.V1UserRegister
 	err := context.ShouldBind(&formValidator)

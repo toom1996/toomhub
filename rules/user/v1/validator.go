@@ -5,3 +5,7 @@ type V1UserRegister struct {
 	Mobile string `form:"mobile" binding:"required,mobileValidator" label:"手机号码"`
 	Code   string `form:"code" binding:"required" label:"验证码"`
 }
+
+type V1UserSmsSend struct {
+	Mobile string `form:"mobile" binding:"required,mobileValidator,checkMobileForV1UserRegister" label:"手机号码"`
+}

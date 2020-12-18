@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/dysmsapi"
 	"strconv"
+	"toomhub/setting"
 )
 
 type Sms struct {
@@ -33,8 +34,7 @@ func SendRegisterSms(PhoneNumbers string, TemplateParam int) (bool, error) {
 
 //send aliSms
 func send(param Sms) (bool, error) {
-	config := GetConfig()
-	client, err := dysmsapi.NewClientWithAccessKey("cn-hangzhou", config.AliSms.AccessKeyId, config.AliSms.AccessKeySecret)
+	client, err := dysmsapi.NewClientWithAccessKey("cn-hangzhou", setting.ZConfig.AliSms.AccessKeyId, setting.ZConfig.AliSms.AccessKeySecret)
 
 	if err != nil {
 		Debug(fmt.Sprintf("%s", err))
