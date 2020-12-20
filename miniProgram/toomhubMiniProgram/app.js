@@ -5,6 +5,8 @@ var toomhubApi = require("./api.js");
 var _this = this;
 App({
   onLaunch: function () {
+
+    
     toomhubApi = toomhubApi.api;
 
     //初始化用户信息

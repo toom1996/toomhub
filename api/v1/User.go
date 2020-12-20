@@ -7,6 +7,11 @@ import (
 	rules "toomhub/rules/user/v1"
 	service "toomhub/service/user/v1"
 	"toomhub/util"
+	//"math/rand"
+	//"time"
+	//rules "toomhub/rules/user/v1"
+	//service "toomhub/service/user/v1"
+	//"toomhub/util"
 )
 
 // @summary 用户注册接口
@@ -50,4 +55,7 @@ func SmsSend(context *gin.Context) {
 		util.ResponseError(context, "验证码发送失败")
 		return
 	}
+
+	util.ResponseOk(context, "验证码发送成功", "")
+
 }

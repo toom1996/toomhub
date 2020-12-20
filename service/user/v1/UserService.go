@@ -4,10 +4,9 @@
 package service
 
 import (
-	"errors"
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"time"
 	"toomhub/model"
 	rules "toomhub/rules/user/v1"
@@ -20,22 +19,8 @@ func V1UserSmsSend() {
 }
 
 func V1UserRegister(validator *rules.V1UserRegister) (map[string]interface{}, error) {
-	m1 := model.ZawazawaUser{}
-	DB := util.DB
-	//查询号码状态
-	query := model.ZawazawaUserMgr(DB).Select([]string{"id", "mobile"}).Where(&model.ZawazawaUser{
-		Mobile: validator.Mobile,
-	}).Take(&m1)
 
-	if query.Error != nil {
-		if errors.Is(query.Error, gorm.ErrRecordNotFound) == false {
-			//mysql异常
-			return nil, query.Error
-		}
-	}
-	if query.RowsAffected == 1 {
-		return nil, errors.New("当前号码已被注册")
-	}
+	DB := util.DB
 
 	tx := DB.Begin()
 	zUser := model.ZawazawaUser{Mobile: validator.Mobile}
@@ -65,6 +50,7 @@ func V1UserRegister(validator *rules.V1UserRegister) (map[string]interface{}, er
 		"zToken":       zUserToken.Token,
 		"refreshToken": zUserToken.RefreshToken,
 		"avatar":       "http://himg.bdimg.com/sys/portrait/item/2332313032333135303639378a08.jpg", //头像
+		"nickname":     "zawazawa" + fmt.Sprintf("%d", zUser.ID),                                   //头像
 	}, nil
 }
 

@@ -8,7 +8,6 @@ import (
 	"github.com/go-playground/validator/v10"
 	"net/http"
 	"toomhub/pkg"
-	"toomhub/rules"
 )
 
 type Response struct {
@@ -27,7 +26,7 @@ func ResponseError(context *gin.Context, err interface{}) {
 	var errStr string
 	switch err.(type) {
 	case validator.ValidationErrors:
-		errStr = rules.Translate(err.(validator.ValidationErrors))
+		errStr = Translate(err.(validator.ValidationErrors))
 	case error:
 		errStr = err.(error).Error()
 	default:

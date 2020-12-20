@@ -6,6 +6,7 @@
     "@vant/weapp": "^1.6.1",
     "express": "^4.17.1",
     "miniprogram-file-uploader": "^1.0.0",
+    "vue": "^3.0.4",
     "weui-miniprogram": "^1.0.6"
   },
   "devDependencies": {
