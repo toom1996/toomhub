@@ -19,6 +19,7 @@ func InitRouter() {
 	r.Use(gin.Recovery())
 
 	gin.SetMode(setting.ZConfig.App.RunMode)
+	//registerRouter(r)
 
 	apiV1 := r.Group("/api/v1")
 	{
@@ -27,6 +28,9 @@ func InitRouter() {
 
 		//用户注册短信发送接口
 		apiV1.POST("/user/sms-send", v1.SmsSend)
+
+		//上传图片
+		apiV1.GET("/upload/image", v1.GetImageUploadToken)
 	}
 
 	//swagger文档生成接口
@@ -38,8 +42,8 @@ func InitRouter() {
 
 //路由设置
 func registerRouter(router *gin.Engine) {
-	new(controllers.UserController).Register(router)
-	new(controllers.SquareController).Register(router)
+	//new(controllers.UserController).Register(router)
+	//new(controllers.SquareController).Register(router)
 	new(controllers.ImageController).Register(router)
-	new(controllers.VideoController).Register(router)
+	//new(controllers.VideoController).Register(router)
 }

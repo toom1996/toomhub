@@ -20,6 +20,7 @@ type ZawazawaConfig struct {
 	Server   server
 	Database database
 	AliSms   aliSms
+	Qiniu    qiniu
 }
 
 type app struct {
@@ -43,6 +44,11 @@ type database struct {
 type aliSms struct {
 	AccessKeyId     string `ini:"ACCESS_KEY_ID"`
 	AccessKeySecret string `ini:"ACCESS_KEY_SECRET"`
+}
+
+type qiniu struct {
+	AccessKey string `ini:"ACCESS_KEY"`
+	SecretKey string `ini:"SECRET_KEY"`
 }
 
 func init() {
