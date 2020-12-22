@@ -11,7 +11,7 @@ import (
 	"toomhub/util"
 )
 
-func GetImageUploadToken(context *gin.Context) {
+func GetQiniuAccessToken(context *gin.Context) {
 	bucket := "zawazawa"
 	putPolicy := storage.PutPolicy{
 		Scope: bucket,

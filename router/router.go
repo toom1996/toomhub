@@ -5,7 +5,6 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	v1 "toomhub/api/v1"
-	"toomhub/controllers"
 	"toomhub/setting"
 )
 
@@ -30,7 +29,10 @@ func InitRouter() {
 		apiV1.POST("/user/sms-send", v1.SmsSend)
 
 		//上传图片
-		apiV1.GET("/upload/image", v1.GetImageUploadToken)
+		apiV1.GET("/upload/get-qiniu-access-token", v1.GetQiniuAccessToken)
+
+		//发布主题
+		apiV1.POST("/post/publish-post", v1.PublishPost)
 	}
 
 	//swagger文档生成接口
@@ -44,6 +46,6 @@ func InitRouter() {
 func registerRouter(router *gin.Engine) {
 	//new(controllers.UserController).Register(router)
 	//new(controllers.SquareController).Register(router)
-	new(controllers.ImageController).Register(router)
+	//new(controllers.ImageController).Register(router)
 	//new(controllers.VideoController).Register(router)
 }

@@ -9,3 +9,9 @@ type V1UserRegister struct {
 type V1UserSmsSend struct {
 	Mobile string `form:"mobile" binding:"required,mobileValidator,checkMobileForV1UserRegister" label:"手机号码"`
 }
+
+//发布规则验证
+type V1PostPublishPost struct {
+	Content string   `form:"content" binding:"required" label:"zawa内容"`
+	Image   []string `form:"image" binding:"" label:"图片数量"`
+}
