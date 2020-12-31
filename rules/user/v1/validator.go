@@ -12,6 +12,6 @@ type V1UserSmsSend struct {
 
 //发布规则验证
 type V1PostPublishPost struct {
-	Content string   `form:"content" binding:"required" label:"zawa内容"`
-	Image   []string `form:"image" binding:"" label:"图片数量"`
+	Content string `form:"content" binding:"required" label:"zawa内容"`
+	Image   string `form:"image" binding:"required,checkPublishImage" label:"图片"`
 }

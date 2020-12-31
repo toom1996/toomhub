@@ -4,7 +4,6 @@
 package v1
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	rules "toomhub/rules/user/v1"
 	"toomhub/util"
@@ -13,7 +12,9 @@ import (
 func PublishPost(context *gin.Context) {
 	var formValidator rules.V1PostPublishPost
 	err := context.ShouldBind(&formValidator)
-	fmt.Println(err)
-	fmt.Println(formValidator)
+	if err != nil {
+		util.ResponseError(context, err)
+	}
+
 	util.ResponseOk(context, "发布成功", "")
 }

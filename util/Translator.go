@@ -1,6 +1,7 @@
 package util
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin/binding"
 	zhongwen "github.com/go-playground/locales/zh"
@@ -28,6 +29,8 @@ func InitVali() {
 		_ = v.RegisterValidation("mobileValidator", mobileValidator)
 
 		_ = v.RegisterValidation("checkMobileForV1UserRegister", checkMobileForV1UserRegister)
+
+		_ = v.RegisterValidation("checkPublishImage", checkPublishImage)
 		// 验证器注册翻译器
 		_ = zh_translations.RegisterDefaultTranslations(v, trans)
 
@@ -50,6 +53,14 @@ func InitVali() {
 			return ut.Add("checkMobileForV1UserRegister", "{0}手机号已被注册", true)
 		}, func(ut ut.Translator, fe validator.FieldError) string {
 			t, _ := ut.T("checkMobileForV1UserRegister", fe.Field())
+			return t
+		})
+
+		// 添加额外翻译
+		_ = v.RegisterTranslation("checkPublishImage", trans, func(ut ut.Translator) error {
+			return ut.Add("checkPublishImage", "{0}验证失败", true)
+		}, func(ut ut.Translator, fe validator.FieldError) string {
+			t, _ := ut.T("checkPublishImage", fe.Field())
 			return t
 		})
 	}
@@ -88,4 +99,23 @@ func checkMobileForV1UserRegister(fl validator.FieldLevel) bool {
 		return true
 	}
 	return false
+}
+
+type Image struct {
+	Key string `json:"key"`
+}
+
+//验证上传图片
+func checkPublishImage(fl validator.FieldLevel) bool {
+	formData := fl.Field().String()
+	image := Image{}
+
+	err := json.Unmarshal([]byte(formData), &image)
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
+
+	fmt.Println(image)
+	return true
 }
