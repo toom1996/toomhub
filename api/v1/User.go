@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"math/rand"
 	"time"
+	"toomhub/logic"
 	rules "toomhub/rules/user/v1"
 	service "toomhub/service/user/v1"
 	"toomhub/util"
@@ -58,4 +59,24 @@ func SmsSend(context *gin.Context) {
 
 	util.ResponseOk(context, "验证码发送成功", "")
 
+}
+
+//github OAuth登陆
+func GithubOAuth(context *gin.Context) {
+	var formValidator rules.V1UserGithubOAuth
+	err := context.ShouldBind(&formValidator)
+	if err != nil {
+		util.ResponseError(context, err)
+		return
+	}
+
+	formLogic := logic.UserLogic{}
+
+	info, err := formLogic.GithubOAuthLogic(&formValidator)
+
+	if err != nil {
+		util.ResponseError(context, err)
+		return
+	}
+	util.ResponseOk(context, "OK", info)
 }

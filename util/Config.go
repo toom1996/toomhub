@@ -17,7 +17,7 @@ type Config struct {
 	Database Database `json:"database"`
 	Qiniu    Qiniu    `json:"qiniu"`
 	Es       Es       `json:"es"`
-	AliSms   AliSms
+	AliSms   AliSms   `json:aliSms`
 }
 
 type Es struct {
@@ -61,6 +61,11 @@ type Database struct {
 type AliSms struct {
 	AccessKeyId     string `json:"accessKeyId"`
 	AccessKeySecret string `json:"accessKeySecret"`
+}
+
+type GithubOAuth struct {
+	ClientId     string `json:"clientId"`
+	ClientSecret string `json:"clientSecret"`
 }
 
 var _cfg *Config = nil

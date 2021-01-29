@@ -15,3 +15,8 @@ type V1PostPublishPost struct {
 	Content string `form:"content" binding:"required" label:"zawa内容"`
 	Image   string `form:"image" binding:"required,checkPublishImage" label:"图片"`
 }
+
+//githubOauth 回调
+type V1UserGithubOAuth struct {
+	Code string `form:"code" binding:"required" label:"OAuthCode"`
+}

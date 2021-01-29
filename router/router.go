@@ -33,6 +33,8 @@ func InitRouter() {
 
 		//发布主题
 		apiV1.POST("/post/publish-post", v1.PublishPost)
+
+		apiV1.GET("/user/github-callback", v1.GithubOAuth)
 	}
 
 	//swagger文档生成接口

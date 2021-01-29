@@ -8,19 +8,20 @@ import (
 	"log"
 )
 
-var ZConfig ZawazawaConfig
+var ZConfig zawazawaConfig
 
 type Note struct {
 	Content string
 	Cities  []string
 }
 
-type ZawazawaConfig struct {
-	App      app
-	Server   server
-	Database database
-	AliSms   aliSms
-	Qiniu    qiniu
+type zawazawaConfig struct {
+	App         app
+	Server      server
+	Database    database
+	AliSms      aliSms
+	Qiniu       qiniu
+	GithubOAuth githubOAuth
 }
 
 type app struct {
@@ -49,6 +50,11 @@ type aliSms struct {
 type qiniu struct {
 	AccessKey string `ini:"ACCESS_KEY"`
 	SecretKey string `ini:"SECRET_KEY"`
+}
+
+type githubOAuth struct {
+	ClientId     string `ini:"CLIENT_ID"`
+	ClientSecret string `ini:"CLIENT_SECRET"`
 }
 
 func init() {
