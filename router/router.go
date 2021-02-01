@@ -5,6 +5,7 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	v1 "toomhub/api/v1"
+	"toomhub/middleware"
 	"toomhub/setting"
 )
 
@@ -16,6 +17,8 @@ func InitRouter() {
 	//r.Use(middleware.ErrHandler())
 
 	r.Use(gin.Recovery())
+
+	r.Use(middleware.Cors())
 
 	gin.SetMode(setting.ZConfig.App.RunMode)
 	//registerRouter(r)
@@ -34,7 +37,7 @@ func InitRouter() {
 		//发布主题
 		apiV1.POST("/post/publish-post", v1.PublishPost)
 
-		apiV1.GET("/user/github-callback", v1.GithubOAuth)
+		apiV1.POST("/user/auth/github", v1.GithubOAuth)
 	}
 
 	//swagger文档生成接口

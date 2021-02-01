@@ -10,7 +10,6 @@ import (
 	zh_translations "github.com/go-playground/validator/v10/translations/zh"
 	"reflect"
 	"regexp"
-	"toomhub/model"
 )
 
 //var v *validator.Validate
@@ -89,15 +88,15 @@ func mobileValidator(fl validator.FieldLevel) bool {
 
 //验证手机号码是否被注册过
 func checkMobileForV1UserRegister(fl validator.FieldLevel) bool {
-	mobile := fl.Field().String()
-	s := model.ZawazawaUser{}
-	query := model.ZawazawaUserMgr(DB).Select([]string{"mobile"}).Where(&model.ZawazawaUser{
-		Mobile: mobile,
-	}).Take(&s)
-	fmt.Println("checkMobileForV1UserRegister")
-	if query.Error != nil {
-		return true
-	}
+	//mobile := fl.Field().String()
+	//s := model.ZawazawaUser{}
+	//query := model.ZawazawaUserMgr(DB).Select([]string{"mobile"}).Where(&model.ZawazawaUser{
+	//	Mobile: mobile,
+	//}).Take(&s)
+	//fmt.Println("checkMobileForV1UserRegister")
+	//if query.Error != nil {
+	//	return true
+	//}
 	return false
 }
 

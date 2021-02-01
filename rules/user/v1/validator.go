@@ -18,5 +18,11 @@ type V1PostPublishPost struct {
 
 //githubOauth 回调
 type V1UserGithubOAuth struct {
+	Code  string `form:"code" binding:"required" label:"OAuthCode"`
+	State string `form:"state" binding:"required" label:"State"`
+}
+
+//获取授权用户信息
+type V1UserGetOAuthInfo struct {
 	Code string `form:"code" binding:"required" label:"OAuthCode"`
 }

@@ -4,14 +4,10 @@
 package service
 
 import (
-	"fmt"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
 	"time"
-	"toomhub/model"
 	rules "toomhub/rules/user/v1"
 	"toomhub/setting"
-	"toomhub/util"
 )
 
 func V1UserSmsSend() {
@@ -20,38 +16,39 @@ func V1UserSmsSend() {
 
 func V1UserRegister(validator *rules.V1UserRegister) (map[string]interface{}, error) {
 
-	DB := util.DB
-
-	tx := DB.Begin()
-	zUser := model.ZawazawaUser{Mobile: validator.Mobile}
-	if result := tx.Create(&zUser); result.Error != nil {
-		tx.Rollback()
-		return nil, result.Error
-	}
-	accessToken, err := generateAccessToken(int64(zUser.ID))
-	if err != nil {
-		tx.Rollback()
-		return nil, err
-	}
-	zUserToken := model.ZawazawaUserToken{
-		UId:          zUser.ID,
-		Token:        accessToken,
-		RefreshToken: util.GetRandomString(10),
-		Type:         "PC",
-	}
-	if result := tx.Create(&zUserToken); result.Error != nil {
-		tx.Rollback()
-		return nil, err
-	}
-	tx.Commit()
-
-	return gin.H{
-		"id":           zUser.ID,
-		"zToken":       zUserToken.Token,
-		"refreshToken": zUserToken.RefreshToken,
-		"avatar":       "http://himg.bdimg.com/sys/portrait/item/2332313032333135303639378a08.jpg", //头像
-		"nickname":     "zawazawa" + fmt.Sprintf("%d", zUser.ID),                                   //头像
-	}, nil
+	return nil, nil
+	//DB := util.DB
+	//
+	//tx := DB.Begin()
+	//zUser := model.ZawazawaUser{Mobile: validator.Mobile}
+	//if result := tx.Create(&zUser); result.Error != nil {
+	//	tx.Rollback()
+	//	return nil, result.Error
+	//}
+	//accessToken, err := generateAccessToken(int64(zUser.ID))
+	//if err != nil {
+	//	tx.Rollback()
+	//	return nil, err
+	//}
+	//zUserToken := model.ZawazawaUserToken{
+	//	UId:          zUser.ID,
+	//	Token:        accessToken,
+	//	RefreshToken: util.GetRandomString(10),
+	//	Type:         "PC",
+	//}
+	//if result := tx.Create(&zUserToken); result.Error != nil {
+	//	tx.Rollback()
+	//	return nil, err
+	//}
+	//tx.Commit()
+	//
+	//return gin.H{
+	//	"id":           zUser.ID,
+	//	"zToken":       zUserToken.Token,
+	//	"refreshToken": zUserToken.RefreshToken,
+	//	"avatar":       "http://himg.bdimg.com/sys/portrait/item/2332313032333135303639378a08.jpg", //头像
+	//	"nickname":     "zawazawa" + fmt.Sprintf("%d", zUser.ID),                                   //头像
+	//}, nil
 }
 
 type Claims struct {
