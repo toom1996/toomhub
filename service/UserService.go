@@ -110,7 +110,9 @@ func (service *UserService) GetGithubOAuthInfo(validator *rules.V1UserGithubOAut
 }
 
 //是否为新用户
+//查数据库
 func (service *UserService) IsNewUser() bool {
+
 	return true
 }
 

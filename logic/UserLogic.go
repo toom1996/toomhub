@@ -38,5 +38,6 @@ func (l *UserLogic) GithubOAuthLogic(validator *rules.V1UserGithubOAuth) (interf
 	return map[string]interface{}{
 		"avatar":   "http://47.105.189.195:2000/img/WechatIMG2.1b46015c.jpeg",
 		"username": "toom",
+		"token":    "tokentest1234",
 	}, nil
 }
