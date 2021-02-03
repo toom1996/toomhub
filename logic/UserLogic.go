@@ -27,10 +27,14 @@ func (l *UserLogic) GithubOAuthLogic(validator *rules.V1UserGithubOAuth) (interf
 	}
 
 	//判断是否存在此用户
-	if isNew := ser.IsNewUser(info.GitID); isNew == false {
+	if dbPointer, isNew := ser.IsNewUser(info.Id); isNew == false {
 		//存在,更新
-		_, _ = ser.UpdateGithubOAuthInfo()
-		return nil, nil
+		saveInfo, err = ser.UpdateGithubOAuthInfo(dbPointer, &info)
+		return map[string]interface{}{
+			"avatar":   saveInfo["avatar"],
+			"username": saveInfo["username"],
+			"token":    "tokentest1234",
+		}, err
 	} else {
 		//不存在,新增
 		saveInfo, err = ser.SaveGithubOAuthInfo(&info)

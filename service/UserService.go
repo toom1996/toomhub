@@ -6,6 +6,7 @@ package service
 import (
 	"encoding/json"
 	"fmt"
+	"gorm.io/gorm"
 	"net/http"
 	"toomhub/model"
 	rules "toomhub/rules/user/v1"
@@ -73,18 +74,19 @@ func (service *UserService) GetGithubOAuthInfo(validator *rules.V1UserGithubOAut
 	if err = json.NewDecoder(res.Body).Decode(&userInfo); err != nil {
 		return userInfo, err
 	}
-	fmt.Println(userInfo.GitID)
+	fmt.Println(userInfo.GitOauthId)
 	return userInfo, nil
 }
 
 //是否为新用户
 //查数据库
-func (service *UserService) IsNewUser(gitId uint) bool {
-	result := util.DB.Select("git_id").First(&model.ZawazawaUserProfileGithub{GitID: gitId})
+func (service *UserService) IsNewUser(gitId uint) (*gorm.DB, bool) {
+	fmt.Println("gitid", gitId)
+	result := util.DB.Select("id").Debug().Where(&model.ZawazawaUserProfileGithub{GitOauthId: gitId}).Find(&model.ZawazawaUserProfileGithub{})
 	if result.RowsAffected != 0 {
-		return false
+		return result, false
 	}
-	return true
+	return nil, true
 }
 
 //存储github信息
@@ -93,6 +95,7 @@ func (service *UserService) SaveGithubOAuthInfo(info *model.ZawazawaUserProfileG
 	db := util.DB
 	transaction := util.DB.Begin()
 	//存入数据库
+	fmt.Println(info)
 	err := model.ZawazawaUserProfileGithubMgr(db).Create(&info).Error
 
 	if err != nil {
@@ -103,7 +106,7 @@ func (service *UserService) SaveGithubOAuthInfo(info *model.ZawazawaUserProfileG
 
 	user := model.ZawazawaUser{
 		Nickname:  info.Name,
-		OauthID:   info.ID,
+		OauthID:   info.GitOauthId,
 		OauthType: util.OAuthGithub,
 	}
 	err = model.ZawazawaUserMgr(db).Create(&user).Error
@@ -124,7 +127,13 @@ func (service *UserService) SaveGithubOAuthInfo(info *model.ZawazawaUserProfileG
 }
 
 //更新github信息
-func (service *UserService) UpdateGithubOAuthInfo() (interface{}, error) {
-	fmt.Println("UpdateGithubOAuthInfo")
-	return nil, nil
+func (service *UserService) UpdateGithubOAuthInfo(p *gorm.DB, info *model.ZawazawaUserProfileGithub) (map[string]interface{}, error) {
+	fmt.Println("update")
+	info.Name = "xx"
+	p.Debug().Save(&info)
+	//TODO: 存入redis
+	return map[string]interface{}{
+		"avatar":   info.AvatarURL,
+		"username": "ddddddd",
+	}, nil
 }
