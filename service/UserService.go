@@ -23,39 +23,7 @@ type token struct {
 	State       string `json:"state"`      // 这个字段也没用到
 }
 
-type GithubOAuth struct {
-	AvatarURL         string `json:"avatar_url"`          // 头像地址
-	Bio               string `json:"bio"`                 // 个性签名
-	Blog              string `json:"blog"`                // 博客地址好像是
-	Company           string `json:"company"`             // 公司
-	CreatedAt         string `json:"created_at"`          // 创建日期
-	Email             string `json:"email"`               // 邮箱地址
-	EventsURL         string `json:"events_url"`          // 不知道
-	Followers         uint32 `json:"followers"`           // 粉丝数量
-	FollowersURL      string `json:"followers_url"`       // 粉丝列表地址
-	Following         uint32 `json:"following"`           // 关注用户
-	FollowingURL      string `json:"following_url"`       // 关注用户列表地址
-	GistsURL          string `json:"gists_url"`           // 不知道是什么
-	Hireable          string `json:"hireable"`            // 不知道是什么
-	HTMLURL           string `json:"html_url"`            // 主页地址
-	GitID             uint32 `json:"id"`                  // github用户id
-	Location          string `json:"location"`            // 定位??
-	Login             string `json:"login"`               // git号
-	Name              string `json:"name"`                // git昵称
-	NodeID            string `json:"node_id"`             // 节点id??
-	OrganizationsURL  string `json:"organizations_url"`   // 不知道
-	PublicGists       uint32 `json:"public_gists"`        // 不知道
-	PublicRepos       uint32 `json:"public_repos"`        // 开放的仓库数量
-	ReceivedEventsURL string `json:"received_events_url"` // 不知道
-	ReposURL          string `json:"repos_url"`           // 不知道
-	StarredURL        string `json:"starred_url"`         // 不知道
-	SubscriptionsURL  string `json:"subscriptions_url"`   // 仓库列表
-	TwitterUsername   string `json:"twitter_username"`    // 推特用户名?
-	Type              string `json:"type"`                // 不知道是什么类型
-	URL               string `json:"url"`                 // 个人主页地址
-}
-
-func (service *UserService) GetGithubOAuthInfo(validator *rules.V1UserGithubOAuth) (GithubOAuth, error) {
+func (service *UserService) GetGithubOAuthInfo(validator *rules.V1UserGithubOAuth) (model.ZawazawaUserProfileGithub, error) {
 
 	//编译好链接
 	s := fmt.Sprintf(
@@ -66,7 +34,7 @@ func (service *UserService) GetGithubOAuthInfo(validator *rules.V1UserGithubOAut
 	// 形成请求
 	var req *http.Request
 	if req, err = http.NewRequest(http.MethodGet, s, nil); err != nil {
-		return GithubOAuth{}, err
+		return model.ZawazawaUserProfileGithub{}, err
 	}
 
 	req.Header.Set("accept", "application/json")
@@ -75,17 +43,17 @@ func (service *UserService) GetGithubOAuthInfo(validator *rules.V1UserGithubOAut
 	var httpClient = http.Client{}
 	var res *http.Response
 	if res, err = httpClient.Do(req); err != nil {
-		return GithubOAuth{}, err
+		return model.ZawazawaUserProfileGithub{}, err
 	}
 
 	// 将响应体解析为 token，并返回
 	var token token
 	if err = json.NewDecoder(res.Body).Decode(&token); err != nil {
-		return GithubOAuth{}, err
+		return model.ZawazawaUserProfileGithub{}, err
 	}
 	fmt.Println(&token)
 
-	var userInfo = GithubOAuth{}
+	var userInfo = model.ZawazawaUserProfileGithub{}
 	// 形成请求
 	var userInfoUrl = "https://api.github.com/user" // github用户信息获取接口
 
@@ -111,22 +79,48 @@ func (service *UserService) GetGithubOAuthInfo(validator *rules.V1UserGithubOAut
 
 //是否为新用户
 //查数据库
-func (service *UserService) IsNewUser() bool {
-
+func (service *UserService) IsNewUser(gitId uint) bool {
+	result := util.DB.Select("git_id").First(&model.ZawazawaUserProfileGithub{GitID: gitId})
+	if result.RowsAffected != 0 {
+		return false
+	}
 	return true
 }
 
 //存储github信息
-func (service *UserService) SaveGithubOAuthInfo(info *GithubOAuth) (interface{}, error) {
+func (service *UserService) SaveGithubOAuthInfo(info *model.ZawazawaUserProfileGithub) (map[string]interface{}, error) {
 	fmt.Println("SaveGithubOAuthInfo")
-	//存入redis
+	db := util.DB
+	transaction := util.DB.Begin()
 	//存入数据库
-	err := model.ZawazawaUserMgr(util.DB).Create(&info).Error
+	err := model.ZawazawaUserProfileGithubMgr(db).Create(&info).Error
+
 	if err != nil {
 		fmt.Println(err)
+		transaction.Rollback()
+		return nil, err
 	}
 
-	return info, nil
+	user := model.ZawazawaUser{
+		Nickname:  info.Name,
+		OauthID:   info.ID,
+		OauthType: util.OAuthGithub,
+	}
+	err = model.ZawazawaUserMgr(db).Create(&user).Error
+
+	if err != nil {
+		fmt.Println(err)
+		transaction.Rollback()
+		return nil, err
+
+	}
+
+	transaction.Commit()
+	//TODO: 存入redis
+	return map[string]interface{}{
+		"avatar":   info.AvatarURL,
+		"username": user.Nickname,
+	}, nil
 }
 
 //更新github信息

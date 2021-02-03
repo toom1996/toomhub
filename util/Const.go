@@ -14,3 +14,7 @@ const SquareCacheKey = "square:id:"
 
 //
 const SquareLikeKey = "mini:user:liked:"
+
+//OAuth状态
+
+const OAuthGithub = 0

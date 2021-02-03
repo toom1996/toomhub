@@ -19,6 +19,7 @@ type token struct {
 
 func (l *UserLogic) GithubOAuthLogic(validator *rules.V1UserGithubOAuth) (interface{}, error) {
 	var ser service.UserService
+	var saveInfo map[string]interface{}
 	//获取github信息
 	info, err := ser.GetGithubOAuthInfo(validator)
 	if err != nil {
@@ -26,18 +27,21 @@ func (l *UserLogic) GithubOAuthLogic(validator *rules.V1UserGithubOAuth) (interf
 	}
 
 	//判断是否存在此用户
-	if isNew := ser.IsNewUser(); isNew == false {
+	if isNew := ser.IsNewUser(info.GitID); isNew == false {
 		//存在,更新
 		_, _ = ser.UpdateGithubOAuthInfo()
 		return nil, nil
 	} else {
 		//不存在,新增
-		_, _ = ser.SaveGithubOAuthInfo(&info)
+		saveInfo, err = ser.SaveGithubOAuthInfo(&info)
+		if err != nil {
+			return nil, err
+		}
 
 	}
 	return map[string]interface{}{
-		"avatar":   "http://47.105.189.195:2000/img/WechatIMG2.1b46015c.jpeg",
-		"username": "toom",
+		"avatar":   saveInfo["avatar"],
+		"username": saveInfo["username"],
 		"token":    "tokentest1234",
 	}, nil
 }
