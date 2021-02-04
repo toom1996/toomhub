@@ -74,7 +74,7 @@ func (service *UserService) GetGithubOAuthInfo(validator *rules.V1UserGithubOAut
 	if err = json.NewDecoder(res.Body).Decode(&userInfo); err != nil {
 		return userInfo, err
 	}
-	fmt.Println(userInfo.GitOauthId)
+	fmt.Println(userInfo.GitOauthID)
 	return userInfo, nil
 }
 
@@ -82,7 +82,7 @@ func (service *UserService) GetGithubOAuthInfo(validator *rules.V1UserGithubOAut
 //查数据库
 func (service *UserService) IsNewUser(gitId uint) (*gorm.DB, bool) {
 	fmt.Println("gitid", gitId)
-	result := util.DB.Select("id").Debug().Where(&model.ZawazawaUserProfileGithub{GitOauthId: gitId}).Find(&model.ZawazawaUserProfileGithub{})
+	result := util.DB.Select("id").Debug().Where(&model.ZawazawaUserProfileGithub{GitOauthID: gitId}).Find(&model.ZawazawaUserProfileGithub{})
 	if result.RowsAffected != 0 {
 		return result, false
 	}
@@ -106,7 +106,7 @@ func (service *UserService) SaveGithubOAuthInfo(info *model.ZawazawaUserProfileG
 
 	user := model.ZawazawaUser{
 		Nickname:  info.Name,
-		OauthID:   info.GitOauthId,
+		OauthID:   info.GitOauthID,
 		OauthType: util.OAuthGithub,
 	}
 	err = model.ZawazawaUserMgr(db).Create(&user).Error

@@ -40,9 +40,9 @@ func (obj *_ZawazawaUserProfileGithubMgr) Gets() (results []*ZawazawaUserProfile
 
 //////////////////////////option case ////////////////////////////////////////////
 
-// WithID id获取
-func (obj *_ZawazawaUserProfileGithubMgr) WithID(id uint) Option {
-	return optionFunc(func(o *options) { o.query["id"] = id })
+// WithGitOauthID git_oauth_id获取
+func (obj *_ZawazawaUserProfileGithubMgr) WithGitOauthID(gitOauthID uint) Option {
+	return optionFunc(func(o *options) { o.query["git_oauth_id"] = gitOauthID })
 }
 
 // WithAvatarURL avatar_url获取 头像地址
@@ -115,9 +115,9 @@ func (obj *_ZawazawaUserProfileGithubMgr) WithHTMLURL(htmlURL string) Option {
 	return optionFunc(func(o *options) { o.query["html_url"] = htmlURL })
 }
 
-// WithGitID git_id获取 github用户id
-func (obj *_ZawazawaUserProfileGithubMgr) WithGitID(gitID uint) Option {
-	return optionFunc(func(o *options) { o.query["git_id"] = gitID })
+// WithID id获取 github用户id
+func (obj *_ZawazawaUserProfileGithubMgr) WithID(id uint) Option {
+	return optionFunc(func(o *options) { o.query["id"] = id })
 }
 
 // WithLocation location获取 定位??
@@ -220,16 +220,16 @@ func (obj *_ZawazawaUserProfileGithubMgr) GetByOptions(opts ...Option) (results 
 
 //////////////////////////enume case ////////////////////////////////////////////
 
-// GetFromID 通过id获取内容
-func (obj *_ZawazawaUserProfileGithubMgr) GetFromID(id uint) (result ZawazawaUserProfileGithub, err error) {
-	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("id = ?", id).Find(&result).Error
+// GetFromGitOauthID 通过git_oauth_id获取内容
+func (obj *_ZawazawaUserProfileGithubMgr) GetFromGitOauthID(gitOauthID uint) (result ZawazawaUserProfileGithub, err error) {
+	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("git_oauth_id = ?", gitOauthID).Find(&result).Error
 
 	return
 }
 
-// GetBatchFromID 批量唯一主键查找
-func (obj *_ZawazawaUserProfileGithubMgr) GetBatchFromID(ids []uint) (results []*ZawazawaUserProfileGithub, err error) {
-	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("id IN (?)", ids).Find(&results).Error
+// GetBatchFromGitOauthID 批量唯一主键查找
+func (obj *_ZawazawaUserProfileGithubMgr) GetBatchFromGitOauthID(gitOauthIDs []uint) (results []*ZawazawaUserProfileGithub, err error) {
+	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("git_oauth_id IN (?)", gitOauthIDs).Find(&results).Error
 
 	return
 }
@@ -430,16 +430,16 @@ func (obj *_ZawazawaUserProfileGithubMgr) GetBatchFromHTMLURL(htmlURLs []string)
 	return
 }
 
-// GetFromGitID 通过git_id获取内容 github用户id
-func (obj *_ZawazawaUserProfileGithubMgr) GetFromGitID(gitID uint) (result ZawazawaUserProfileGithub, err error) {
-	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("git_id = ?", gitID).Find(&result).Error
+// GetFromID 通过id获取内容 github用户id
+func (obj *_ZawazawaUserProfileGithubMgr) GetFromID(id uint) (result ZawazawaUserProfileGithub, err error) {
+	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("id = ?", id).Find(&result).Error
 
 	return
 }
 
-// GetBatchFromGitID 批量唯一主键查找 github用户id
-func (obj *_ZawazawaUserProfileGithubMgr) GetBatchFromGitID(gitIDs []uint) (results []*ZawazawaUserProfileGithub, err error) {
-	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("git_id IN (?)", gitIDs).Find(&results).Error
+// GetBatchFromID 批量唯一主键查找 github用户id
+func (obj *_ZawazawaUserProfileGithubMgr) GetBatchFromID(ids []uint) (results []*ZawazawaUserProfileGithub, err error) {
+	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("id IN (?)", ids).Find(&results).Error
 
 	return
 }
@@ -643,22 +643,22 @@ func (obj *_ZawazawaUserProfileGithubMgr) GetBatchFromURL(urls []string) (result
 //////////////////////////primary index case ////////////////////////////////////////////
 
 // FetchByPrimaryKey primay or index 获取唯一内容
-func (obj *_ZawazawaUserProfileGithubMgr) FetchByPrimaryKey(id uint) (result ZawazawaUserProfileGithub, err error) {
-	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("id = ?", id).Find(&result).Error
+func (obj *_ZawazawaUserProfileGithubMgr) FetchByPrimaryKey(gitOauthID uint) (result ZawazawaUserProfileGithub, err error) {
+	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("git_oauth_id = ?", gitOauthID).Find(&result).Error
 
 	return
 }
 
 // FetchUniqueByGitidUnique primay or index 获取唯一内容
-func (obj *_ZawazawaUserProfileGithubMgr) FetchUniqueByGitidUnique(gitID uint) (result ZawazawaUserProfileGithub, err error) {
-	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("git_id = ?", gitID).Find(&result).Error
+func (obj *_ZawazawaUserProfileGithubMgr) FetchUniqueByGitidUnique(id uint) (result ZawazawaUserProfileGithub, err error) {
+	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("id = ?", id).Find(&result).Error
 
 	return
 }
 
 // FetchUniqueByGitID primay or index 获取唯一内容
-func (obj *_ZawazawaUserProfileGithubMgr) FetchUniqueByGitID(gitID uint) (result ZawazawaUserProfileGithub, err error) {
-	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("git_id = ?", gitID).Find(&result).Error
+func (obj *_ZawazawaUserProfileGithubMgr) FetchUniqueByGitID(id uint) (result ZawazawaUserProfileGithub, err error) {
+	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("id = ?", id).Find(&result).Error
 
 	return
 }

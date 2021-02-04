@@ -27,7 +27,7 @@ func (l *UserLogic) GithubOAuthLogic(validator *rules.V1UserGithubOAuth) (interf
 	}
 
 	//判断是否存在此用户
-	if dbPointer, isNew := ser.IsNewUser(info.Id); isNew == false {
+	if dbPointer, isNew := ser.IsNewUser(info.ID); isNew == false {
 		//存在,更新
 		saveInfo, err = ser.UpdateGithubOAuthInfo(dbPointer, &info)
 		return map[string]interface{}{

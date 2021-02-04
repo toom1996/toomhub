@@ -31,7 +31,7 @@ type ZawazawaUser struct {
 
 // ZawazawaUserProfileGithub [...]
 type ZawazawaUserProfileGithub struct {
-	GitOauthId        uint   `gorm:"primary_key;column:id;type:int unsigned;not null" json:"-"`
+	GitOauthID        uint   `gorm:"primary_key;column:git_oauth_id;type:int unsigned;not null" json:"-"`
 	AvatarURL         string `gorm:"column:avatar_url;type:varchar(255);not null" json:"avatar_url"`                   // 头像地址
 	Bio               string `gorm:"column:bio;type:varchar(255);not null" json:"bio"`                                 // 个性签名
 	Blog              string `gorm:"column:blog;type:varchar(255);not null" json:"blog"`                               // 博客地址好像是
@@ -46,7 +46,7 @@ type ZawazawaUserProfileGithub struct {
 	GistsURL          string `gorm:"column:gists_url;type:varchar(255);not null" json:"gists_url"`                     // 不知道是什么
 	Hireable          string `gorm:"column:hireable;type:varchar(255);not null" json:"hireable"`                       // 不知道是什么
 	HTMLURL           string `gorm:"column:html_url;type:varchar(255);not null" json:"html_url"`                       // 主页地址
-	Id                uint   `gorm:"unique;unique;column:id;type:int unsigned;not null" json:"id"`                     // github用户id
+	ID                uint   `gorm:"unique;unique;column:id;type:int unsigned;not null" json:"id"`                     // github用户id
 	Location          string `gorm:"column:location;type:varchar(255);not null" json:"location"`                       // 定位??
 	Login             string `gorm:"column:login;type:varchar(255);not null" json:"login"`                             // git号
 	Name              string `gorm:"column:name;type:varchar(255);not null" json:"name"`                               // git昵称
