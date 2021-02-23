@@ -11,7 +11,7 @@ func main() {
 	//util.EsInit()
 
 	//初始化redis
-	//util.RedisInit()
+	util.RedisInit()
 
 	//初始化mysql
 	util.MysqlInit()

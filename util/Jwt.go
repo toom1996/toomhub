@@ -29,7 +29,7 @@ func GenerateToken(id int64) (string, error) {
 		nowTime.Unix(),
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
-			Issuer:    "toomhub",
+			Issuer:    "zawazawa",
 		},
 	}
 

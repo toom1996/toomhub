@@ -22,6 +22,7 @@ type zawazawaConfig struct {
 	AliSms      aliSms
 	Qiniu       qiniu
 	GithubOAuth githubOAuth
+	Redis       redis
 }
 
 type app struct {
@@ -50,6 +51,11 @@ type aliSms struct {
 type qiniu struct {
 	AccessKey string `ini:"ACCESS_KEY"`
 	SecretKey string `ini:"SECRET_KEY"`
+}
+
+type redis struct {
+	Host string `ini:"HOST"`
+	Port string `ini:"PORT"`
 }
 
 type githubOAuth struct {

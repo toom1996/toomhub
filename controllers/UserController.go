@@ -211,8 +211,7 @@ func (u *UserController) actionRegister(context *gin.Context) {
 		util.ResponseError(context, err)
 		return
 	}
-
-	//_, _ = service.V1PcRegisterUser()
+	//logic.UserLogic.Register(&formValidator)
 
 	util.ResponseOk(context, "test", "test")
 	//_, err = util.SendRegisterSms("13502127317", 123456)

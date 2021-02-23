@@ -2,11 +2,8 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"math/rand"
-	"time"
 	"toomhub/logic"
 	rules "toomhub/rules/user/v1"
-	service "toomhub/service/user/v1"
 	"toomhub/util"
 	//"math/rand"
 	//"time"
@@ -32,15 +29,26 @@ func Register(context *gin.Context) {
 		return
 	}
 
-	info, err := service.V1UserRegister(&formValidator)
+	formLogic := logic.UserLogic{}
+
+	r, err := formLogic.Register(&formValidator)
+
 	if err != nil {
 		util.ResponseError(context, err)
 		return
 	}
 
-	util.ResponseOk(context, "注册成功", info)
+	util.ResponseOk(context, "注册成功", r)
 }
 
+// @summary 发送短信验证码接口
+// @title Swagger Example API
+// @tags  用户类接口
+// @description  发送短信验证码接口
+// @produce  json
+// @param mobile body string true "123456789"
+// @success 200 {string} json "{"code":200,"data":"data","msg":"ok"}"
+// @router /api/v1/user/register [post]
 func SmsSend(context *gin.Context) {
 	var formValidator rules.V1UserSmsSend
 	err := context.ShouldBind(&formValidator)
@@ -49,20 +57,38 @@ func SmsSend(context *gin.Context) {
 		return
 	}
 
-	//存redis
-	rand.Seed(time.Now().UnixNano())
-	_, err = util.SendRegisterSms(formValidator.Mobile, rand.Intn(999999))
+	formLogic := logic.UserLogic{}
+
+	_, err = formLogic.SmsSend(&formValidator)
 	if err != nil {
-		util.ResponseError(context, "验证码发送失败")
+		util.ResponseError(context, err)
 		return
 	}
-
 	util.ResponseOk(context, "验证码发送成功", "")
-
 }
 
 //github OAuth登陆
 func GithubOAuth(context *gin.Context) {
+	var formValidator rules.V1UserGithubOAuth
+	err := context.ShouldBind(&formValidator)
+	if err != nil {
+		util.ResponseError(context, err)
+		return
+	}
+
+	formLogic := logic.UserLogic{}
+
+	info, err := formLogic.GithubOAuthLogic(&formValidator)
+
+	if err != nil {
+		util.ResponseError(context, err)
+		return
+	}
+	util.ResponseOk(context, "OK", info)
+}
+
+//github OAuth登陆
+func Login(context *gin.Context) {
 	var formValidator rules.V1UserGithubOAuth
 	err := context.ShouldBind(&formValidator)
 	if err != nil {

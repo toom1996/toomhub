@@ -137,3 +137,73 @@ func (service *UserService) UpdateGithubOAuthInfo(p *gorm.DB, info *model.Zawaza
 		"username": "ddddddd",
 	}, nil
 }
+
+// 是否已经注册
+func (service *UserService) IsRegister(mobile string) bool {
+
+	// TODO 判断REDIS是否存在
+
+	// TODO 查数据库
+	err := model.ZawazawaUserMgr(util.DB).Select("mobile").Debug().Where(&model.ZawazawaUser{
+		Mobile: mobile,
+	}).Find(&model.ZawazawaUser{})
+	if err.RowsAffected == 0 {
+		return false
+	}
+	return true
+}
+
+// 存储通过手机验证码登陆的新用户
+func (service *UserService) SaveMobileUser(validator *rules.V1UserRegister) (interface{}, error) {
+	t := util.DB.Begin()
+	// 注册用户
+	info := model.ZawazawaUser{
+		Nickname:   "咋哇咋哇用户",
+		Mobile:     validator.Mobile,
+		ZawazawaID: "zawazawa_" + validator.Mobile,
+	}
+	err := util.DB.Create(&info).Error
+	if err != nil {
+		t.Rollback()
+		return false, err
+	}
+
+	// 注册token
+	g, err := util.GenerateToken(int64(info.ID))
+
+	if err != nil {
+		t.Rollback()
+		return false, err
+	}
+
+	token := model.ZawazawaUserToken{
+		UId:          info.ID,
+		Token:        g,
+		RefreshToken: "zawazawa_" + validator.Mobile,
+	}
+
+	err = util.DB.Create(&token).Error
+	if err != nil {
+		t.Rollback()
+		return false, err
+	}
+
+	t.Commit()
+
+	return map[string]interface{}{
+		"username":      "咋哇咋哇用户",
+		"avatar":        "http://v.bootstrapmb.com/2019/6/mmjod5239/img/avatar7-sm.jpg",
+		"token":         token.Token,
+		"refresh_token": token.RefreshToken,
+	}, nil
+}
+
+// 存储通过手机验证码登陆的新用户
+func (service *UserService) GetMobileUser(validator *rules.V1UserRegister) (interface{}, error) {
+	return map[string]interface{}{
+		"username":      "咋哇咋哇用2户",
+		"avatar":        "http://v.bootstrapmb.com/2019/6/mmjod5239/img/avatar7-sm.jpg",
+		"token":         "00000",
+		"refresh_token": "111111",
+	}, nil
+}

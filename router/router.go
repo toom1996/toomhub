@@ -11,6 +11,7 @@ import (
 
 func InitRouter() {
 	r := gin.Default()
+	gin.SetMode(gin.DebugMode)
 
 	r.Use(gin.Logger())
 

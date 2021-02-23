@@ -27,6 +27,7 @@ type ZawazawaUser struct {
 	CollectCount uint   `gorm:"column:collect_count;type:int unsigned;not null" json:"collect_count"` // 收藏数量
 	OauthID      uint   `gorm:"column:oauth_id;type:int unsigned;not null" json:"oauth_id"`           // 授权id
 	OauthType    uint16 `gorm:"column:oauth_type;type:smallint unsigned;not null" json:"oauth_type"`  // 授权登陆类型 0=>未授权 1=> github
+	ZawazawaID   string `gorm:"column:zawazawa_id;type:varchar(32);not null" json:"zawazawa_id"`      // 自定义id
 }
 
 // ZawazawaUserProfileGithub [...]
@@ -65,8 +66,8 @@ type ZawazawaUserProfileGithub struct {
 
 // ZawazawaUserToken [...]
 type ZawazawaUserToken struct {
-	ID           int    `gorm:"primary_key;column:id;type:int;not null" json:"-"`
-	UId          int    `gorm:"column:uid;type:int" json:"uid"`
+	ID           uint   `gorm:"primary_key;column:id;type:int;not null" json:"-"`
+	UId          uint   `gorm:"column:uid;type:int" json:"uid"`
 	Token        string `gorm:"column:token;type:varchar(255)" json:"token"`
 	RefreshToken string `gorm:"column:refresh_token;type:varchar(255)" json:"refresh_token"`
 	Type         string `gorm:"column:type;type:varchar(255)" json:"type"`

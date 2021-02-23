@@ -20,12 +20,13 @@ type Sms struct {
 // @param: PhoneNumbers 电话号码
 // @param: TemplateParam 验证码数值
 func SendRegisterSms(PhoneNumbers string, TemplateParam int) (bool, error) {
-	_, err = send(Sms{
+	_, err := send(Sms{
 		PhoneNumbers:  PhoneNumbers,
 		SignName:      "咋哇咋哇",
 		TemplateCode:  "SMS_206741473",
 		TemplateParam: TemplateParam,
 	})
+
 	if err != nil {
 		return false, err
 	}

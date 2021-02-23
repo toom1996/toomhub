@@ -10,6 +10,7 @@ import (
 	zh_translations "github.com/go-playground/validator/v10/translations/zh"
 	"reflect"
 	"regexp"
+	"toomhub/model"
 )
 
 //var v *validator.Validate
@@ -49,7 +50,7 @@ func InitVali() {
 
 		// 添加额外翻译
 		_ = v.RegisterTranslation("checkMobileForV1UserRegister", trans, func(ut ut.Translator) error {
-			return ut.Add("checkMobileForV1UserRegister", "{0}手机号已被注册", true)
+			return ut.Add("checkMobileForV1UserRegister", "{0}已被注册", true)
 		}, func(ut ut.Translator, fe validator.FieldError) string {
 			t, _ := ut.T("checkMobileForV1UserRegister", fe.Field())
 			return t
@@ -88,15 +89,15 @@ func mobileValidator(fl validator.FieldLevel) bool {
 
 //验证手机号码是否被注册过
 func checkMobileForV1UserRegister(fl validator.FieldLevel) bool {
-	//mobile := fl.Field().String()
-	//s := model.ZawazawaUser{}
-	//query := model.ZawazawaUserMgr(DB).Select([]string{"mobile"}).Where(&model.ZawazawaUser{
-	//	Mobile: mobile,
-	//}).Take(&s)
-	//fmt.Println("checkMobileForV1UserRegister")
-	//if query.Error != nil {
-	//	return true
-	//}
+	mobile := fl.Field().String()
+	s := model.ZawazawaUser{}
+	query := model.ZawazawaUserMgr(DB).Select([]string{"mobile"}).Where(&model.ZawazawaUser{
+		Mobile: mobile,
+	}).Take(&s)
+	fmt.Println(query)
+	if query.Error != nil {
+		return true
+	}
 	return false
 }
 

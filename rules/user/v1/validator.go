@@ -2,12 +2,12 @@ package rules
 
 //用户注册验证规则
 type V1UserRegister struct {
-	Mobile string `form:"mobile" binding:"required,mobileValidator,checkMobileForV1UserRegister" label:"手机号码"`
+	Mobile string `form:"mobile" binding:"required,mobileValidator" label:"手机号码"`
 	Code   string `form:"code" binding:"required" label:"验证码"`
 }
 
 type V1UserSmsSend struct {
-	Mobile string `form:"mobile" binding:"required,mobileValidator,checkMobileForV1UserRegister" label:"手机号码"`
+	Mobile string `form:"mobile" binding:"required,mobileValidator" label:"手机号码"`
 }
 
 //发布规则验证
