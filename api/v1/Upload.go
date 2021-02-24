@@ -16,6 +16,7 @@ func GetQiniuAccessToken(context *gin.Context) {
 	putPolicy := storage.PutPolicy{
 		Scope: bucket,
 	}
+	putPolicy.Expires = 100
 	mac := qbox.NewMac(setting.ZConfig.Qiniu.AccessKey, setting.ZConfig.Qiniu.SecretKey)
 	upToken := putPolicy.UploadToken(mac)
 	util.ResponseOk(context, "OK", upToken)

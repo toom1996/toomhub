@@ -111,9 +111,9 @@ func GetSquareIndex(validator *validatorRules.SquareIndex, c *gin.Context) ([]in
 		response["level_tag"] = util.GetLevelTag(exp)
 		response["host"] = "http://toomhub.image.23cm.cn/"
 		response["id"] = item.([]interface{})[0].(string)
-		identity := util.Identity(c)
+		//identity := util.Identity(c)
 		isLike := 0
-		_, err := util.Rdb.ZRank(util.Ctx, util.SquareLikeKey+fmt.Sprintf("%d", identity.MiniId), item.([]interface{})[0].(string)).Result()
+		_, err := util.Rdb.ZRank(util.Ctx, util.SquareLikeKey+fmt.Sprintf("%d", 10), item.([]interface{})[0].(string)).Result()
 
 		if err == nil {
 			isLike = 1
@@ -187,7 +187,7 @@ func calculateVideoSize(width int32, height int32, screenWidth int32, screenHeig
 
 // @title	创建广场信息
 func SquareCreate(v *validatorRules.SquareCreate, image map[string]interface{}) (bool, error) {
-	identity := util.GetIdentity()
+	////identity := util.GetIdentity()
 
 	createTime := time.Now()
 	db := util.DB
@@ -197,7 +197,7 @@ func SquareCreate(v *validatorRules.SquareCreate, image map[string]interface{}) 
 	//赋值结构体
 	squareModel := ModelMiniV1.ToomhubSquare{
 		Content:       v.Content,
-		CreatedBy:     identity.MiniId,
+		CreatedBy:     10,
 		CreatedAt:     createTime.Unix(),
 		LikesCount:    0,
 		ArgumentCount: 0,
@@ -276,7 +276,7 @@ func SquareCreate(v *validatorRules.SquareCreate, image map[string]interface{}) 
 }
 
 func SquareVideoCreate(v *validatorRules.SquareVideoCreate) (bool, error) {
-	identity := util.GetIdentity()
+	//identity := util.GetIdentity()
 
 	createTime := time.Now()
 	db := util.DB
@@ -286,7 +286,7 @@ func SquareVideoCreate(v *validatorRules.SquareVideoCreate) (bool, error) {
 	//赋值结构体
 	squareModel := ModelMiniV1.ToomhubSquare{
 		Content:       v.Content,
-		CreatedBy:     identity.MiniId,
+		CreatedBy:     int64(10),
 		CreatedAt:     createTime.Unix(),
 		LikesCount:    0,
 		ArgumentCount: 0,
@@ -388,10 +388,10 @@ func GetSquareView(id int64, c *gin.Context) (interface{}, error) {
 	createdAt := util.StrTime(intCreatedAt)
 	response["created_at"] = createdAt
 
-	identity := util.Identity(c)
+	//identity := util.Identity(c)
 
 	isLike := 0
-	_, err := rdb.ZRank(util.Ctx, util.SquareLikeKey+fmt.Sprintf("%d", identity.MiniId), fmt.Sprintf("%d", id)).Result()
+	_, err := rdb.ZRank(util.Ctx, util.SquareLikeKey+fmt.Sprintf("%d", 10), fmt.Sprintf("%d", id)).Result()
 
 	fmt.Println("view Err", err)
 	fmt.Println("view key", util.SquareLikeKey+res[9].(string))

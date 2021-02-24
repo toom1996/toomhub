@@ -12,8 +12,7 @@ import (
 // @title 	验证token
 func CheckIdentity() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
-		token := c.GetHeader("Toomhub-Token")
+		token := c.GetHeader("Authorization")
 
 		r, _ := util.ParseToken(token, c)
 

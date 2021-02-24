@@ -1,5 +1,7 @@
 package util
 
+import "time"
+
 //广场消息image类型
 const SquareTypeImage = 0
 
@@ -14,6 +16,10 @@ const SquareCacheKey = "square:id:"
 
 //
 const SquareLikeKey = "mini:user:liked:"
+
+//-------------------- jwt --------------------
+// jwt 令牌过期时间
+const JwtExpire = 60 * time.Second
 
 //OAuth状态
 

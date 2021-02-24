@@ -26,3 +26,8 @@ type V1UserGithubOAuth struct {
 type V1UserGetOAuthInfo struct {
 	Code string `form:"code" binding:"required" label:"OAuthCode"`
 }
+
+// 刷新token验证规则
+type V1UserRefreshToken struct {
+	RefreshToken string `form:"refresh_token" binding:"required" label:"refreshToken"`
+}

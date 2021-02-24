@@ -6,10 +6,12 @@ package logic
 import (
 	"errors"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"strconv"
 	"time"
 	rules "toomhub/rules/user/v1"
 	"toomhub/service"
+	"toomhub/setting"
 	"toomhub/util"
 )
 
@@ -80,16 +82,9 @@ func (l *UserLogic) Register(validator *rules.V1UserRegister) (interface{}, erro
 	}
 
 	// 不是新用户
-	if isNew == true {
-		r, _ := ser.GetMobileUser(validator)
-		return r, nil
-		fmt.Println("register")
-	}
+	s, _ := ser.GetMobileUser(isNew.(uint))
+	return s, nil
 
-	fmt.Println("success")
-
-	fmt.Println("fail")
-	return true, nil
 }
 
 // 发送短信逻辑层
@@ -116,6 +111,7 @@ func (l *UserLogic) SmsSend(validator *rules.V1UserSmsSend) (bool, error) {
 	if r.Milliseconds() == 0 {
 		// 发送验证码
 		code = strconv.Itoa(util.GenerateRandomInt(100000, 999999))
+		// 验证码存十五分钟
 		_, err = util.Rdb.Set(util.Ctx, mobileKey, code, 890*time.Second).Result()
 		if err != nil {
 			return false, err
@@ -141,4 +137,29 @@ func (l *UserLogic) SmsSend(validator *rules.V1UserSmsSend) (bool, error) {
 	//// 判断是否为新用户
 	//_, _ = ser.IsRegister(validator.Mobile)
 	return true, nil
+}
+
+// 刷新token逻辑层
+func (l *UserLogic) RefreshToken(validator *rules.V1UserRefreshToken, context *gin.Context) (interface{}, error) {
+	expire, _ := strconv.Atoi(setting.ZConfig.Jwt.JwtExpire)
+	_, err := util.ParseToken(validator.RefreshToken, context)
+	if err != nil {
+		return false, err
+	}
+
+	// 判断是否为refresh_token
+	t := util.GetIdentity()
+	id, _ := strconv.Atoi(t.Id)
+
+	if t.Type != "refresh_token" {
+		return false, errors.New("error")
+	}
+	token, _ := util.GenerateToken(uint(id))
+	rt, _ := util.GenerateRefreshToken(uint(id))
+	return map[string]interface{}{
+		"expire":        expire,
+		"issuing_time":  time.Now().Unix(),
+		"token":         token,
+		"refresh_token": rt,
+	}, nil
 }

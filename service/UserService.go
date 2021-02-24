@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"gorm.io/gorm"
 	"net/http"
+	"time"
 	"toomhub/model"
 	rules "toomhub/rules/user/v1"
 	"toomhub/setting"
@@ -139,18 +140,19 @@ func (service *UserService) UpdateGithubOAuthInfo(p *gorm.DB, info *model.Zawaza
 }
 
 // 是否已经注册
-func (service *UserService) IsRegister(mobile string) bool {
+func (service *UserService) IsRegister(mobile string) interface{} {
 
 	// TODO 判断REDIS是否存在
 
 	// TODO 查数据库
-	err := model.ZawazawaUserMgr(util.DB).Select("mobile").Debug().Where(&model.ZawazawaUser{
+	s := &model.ZawazawaUser{}
+	err := model.ZawazawaUserMgr(util.DB).Select("id", "mobile").Debug().Where(&model.ZawazawaUser{
 		Mobile: mobile,
-	}).Find(&model.ZawazawaUser{})
+	}).Find(s)
 	if err.RowsAffected == 0 {
 		return false
 	}
-	return true
+	return s.ID
 }
 
 // 存储通过手机验证码登陆的新用户
@@ -169,7 +171,7 @@ func (service *UserService) SaveMobileUser(validator *rules.V1UserRegister) (int
 	}
 
 	// 注册token
-	g, err := util.GenerateToken(int64(info.ID))
+	g, err := util.GenerateToken(info.ID)
 
 	if err != nil {
 		t.Rollback()
@@ -193,17 +195,46 @@ func (service *UserService) SaveMobileUser(validator *rules.V1UserRegister) (int
 	return map[string]interface{}{
 		"username":      "咋哇咋哇用户",
 		"avatar":        "http://v.bootstrapmb.com/2019/6/mmjod5239/img/avatar7-sm.jpg",
+		"expire":        setting.ZConfig.Jwt.JwtExpire,
+		"issuing_time":  time.Now().Unix(),
 		"token":         token.Token,
 		"refresh_token": token.RefreshToken,
 	}, nil
 }
 
 // 存储通过手机验证码登陆的新用户
-func (service *UserService) GetMobileUser(validator *rules.V1UserRegister) (interface{}, error) {
+func (service *UserService) GetMobileUser(id uint) (interface{}, error) {
+	t := util.DB.Begin()
+
+	// 生成token
+	g, err := util.GenerateToken(id)
+	if err != nil {
+		t.Rollback()
+		return false, err
+	}
+
+	token := model.ZawazawaUserToken{
+		Token: g,
+	}
+	// 生成refresh token
+	refreshToken, _ := util.GenerateRefreshToken(id)
+
+	err = util.DB.Debug().Model(&model.ZawazawaUserToken{}).Where(&model.ZawazawaUserToken{
+		UId: id,
+	}).Updates(&token).Error
+	if err != nil {
+		t.Rollback()
+		return false, err
+	}
+
+	t.Commit()
+
 	return map[string]interface{}{
-		"username":      "咋哇咋哇用2户",
+		"username":      "咋哇咋哇用户",
 		"avatar":        "http://v.bootstrapmb.com/2019/6/mmjod5239/img/avatar7-sm.jpg",
-		"token":         "00000",
-		"refresh_token": "111111",
+		"expire":        setting.ZConfig.Jwt.JwtExpire,
+		"issuing_time":  time.Now().Unix(),
+		"token":         token.Token,
+		"refresh_token": refreshToken,
 	}, nil
 }

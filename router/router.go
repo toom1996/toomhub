@@ -32,13 +32,18 @@ func InitRouter() {
 		//用户注册短信发送接口
 		apiV1.POST("/user/sms-send", v1.SmsSend)
 
-		//上传图片
-		apiV1.GET("/upload/get-qiniu-access-token", v1.GetQiniuAccessToken)
-
 		//发布主题
 		apiV1.POST("/post/publish-post", v1.PublishPost)
 
 		apiV1.POST("/user/auth/github", v1.GithubOAuth)
+	}
+
+	apiV1.Use(middleware.CheckIdentity())
+	{
+		apiV1.GET("/upload/get-qiniu-access-token", v1.GetQiniuAccessToken)
+
+		// 刷新token
+		apiV1.POST("/user/refresh-token", v1.RefreshToken)
 	}
 
 	//swagger文档生成接口

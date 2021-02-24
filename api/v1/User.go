@@ -106,3 +106,18 @@ func Login(context *gin.Context) {
 	}
 	util.ResponseOk(context, "OK", info)
 }
+
+//刷新token
+func RefreshToken(context *gin.Context) {
+	var formValidator rules.V1UserRefreshToken
+	err := context.ShouldBind(&formValidator)
+	if err != nil {
+		util.ResponseError(context, err)
+		return
+	}
+
+	formLogic := logic.UserLogic{}
+	r, err := formLogic.RefreshToken(&formValidator, context)
+
+	util.ResponseOk(context, "OK", r)
+}

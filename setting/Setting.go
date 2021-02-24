@@ -23,11 +23,11 @@ type zawazawaConfig struct {
 	Qiniu       qiniu
 	GithubOAuth githubOAuth
 	Redis       redis
+	Jwt         jwt
 }
 
 type app struct {
-	RunMode   string `ini:"RUN_MODE"`
-	JwtSecret string `ini:"JWT_SECRET"`
+	RunMode string `ini:"RUN_MODE"`
 }
 
 type server struct {
@@ -61,6 +61,11 @@ type redis struct {
 type githubOAuth struct {
 	ClientId     string `ini:"CLIENT_ID"`
 	ClientSecret string `ini:"CLIENT_SECRET"`
+}
+
+type jwt struct {
+	JwtSecret string `ini:"JWT_SECRET"`
+	JwtExpire string `ini:"JWT_EXPIRE"`
 }
 
 func init() {
