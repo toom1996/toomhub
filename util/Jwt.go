@@ -70,6 +70,8 @@ func ParseToken(token string, c *gin.Context) (*Claims, error) {
 	if tokenClaims != nil {
 		if tokenClaims.Valid {
 			if claims, ok := tokenClaims.Claims.(*Claims); ok {
+
+				// 判断token是否为最新
 				identity = &Claims{
 					claims.Type,
 					jwt.StandardClaims{

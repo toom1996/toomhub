@@ -12,9 +12,10 @@ import (
 )
 
 func GetQiniuAccessToken(context *gin.Context) {
-	bucket := "zawazawa"
+	bucket := "toomhub"
 	putPolicy := storage.PutPolicy{
-		Scope: bucket,
+		Scope:      bucket,
+		ReturnBody: `{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)"}`,
 	}
 	putPolicy.Expires = 100
 	mac := qbox.NewMac(setting.ZConfig.Qiniu.AccessKey, setting.ZConfig.Qiniu.SecretKey)

@@ -36,14 +36,14 @@ func InitRouter() {
 		apiV1.POST("/post/publish-post", v1.PublishPost)
 
 		apiV1.POST("/user/auth/github", v1.GithubOAuth)
+		// 刷新token
+		apiV1.POST("/user/refresh-token", v1.RefreshToken)
 	}
 
 	apiV1.Use(middleware.CheckIdentity())
 	{
 		apiV1.GET("/upload/get-qiniu-access-token", v1.GetQiniuAccessToken)
 
-		// 刷新token
-		apiV1.POST("/user/refresh-token", v1.RefreshToken)
 	}
 
 	//swagger文档生成接口
