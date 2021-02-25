@@ -14,8 +14,9 @@ import (
 func GetQiniuAccessToken(context *gin.Context) {
 	bucket := "toomhub"
 	putPolicy := storage.PutPolicy{
-		Scope:      bucket,
-		ReturnBody: `{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)"}`,
+		Scope:         bucket,
+		ReturnBody:    `{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)"}`,
+		PersistentOps: "imageView2/2/w/200/h/200|saveas/dGVzdDExMjEzOnRlc3Q=",
 	}
 	putPolicy.Expires = 100
 	mac := qbox.NewMac(setting.ZConfig.Qiniu.AccessKey, setting.ZConfig.Qiniu.SecretKey)

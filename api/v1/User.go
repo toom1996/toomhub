@@ -38,7 +38,7 @@ func Register(context *gin.Context) {
 		return
 	}
 
-	util.ResponseOk(context, "注册成功", r)
+	util.ResponseOk(context, "登陆成功", r)
 }
 
 // @summary 发送短信验证码接口
