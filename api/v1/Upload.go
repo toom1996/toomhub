@@ -19,7 +19,7 @@ func GetQiniuAccessToken(context *gin.Context) {
 	fmt.Println(n)
 	putPolicy := storage.PutPolicy{
 		Scope:         bucket,
-		ReturnBody:    `{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)"}`,
+		ReturnBody:    `{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"format":"$(imageInfo.format)","height":"$(imageInfo.height)", "width":"$(imageInfo.width)"}`,
 		PersistentOps: "imageView2/2/w/200/h/200|saveas/" + n,
 	}
 	putPolicy.Expires = 100

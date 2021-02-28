@@ -84,14 +84,12 @@ func ParseToken(token string, c *gin.Context) (*Claims, error) {
 				return claims, nil
 			}
 		} else if ve, ok := err.(*jwt.ValidationError); ok {
-			fmt.Println("--------------ve")
-			fmt.Println(ve)
 			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
 			} else if ve.Errors&(jwt.ValidationErrorExpired|jwt.ValidationErrorNotValidYet) != 0 {
 				// token 过期了
 				c.JSON(http.StatusOK, map[string]interface{}{
 					"code": 401,
-					"msg":  "token is expired",
+					"msg":  "登陆超时,请重新登陆",
 				})
 				c.Abort()
 				return nil, nil

@@ -118,6 +118,10 @@ func RefreshToken(context *gin.Context) {
 
 	formLogic := logic.UserLogic{}
 	r, err := formLogic.RefreshToken(&formValidator, context)
+	if err != nil {
+		util.ResponseError(context, err)
+		return
+	}
 
 	util.ResponseOk(context, "OK", r)
 }

@@ -9,6 +9,7 @@ import (
 	"toomhub/util"
 )
 
+// 发布
 func PublishPost(context *gin.Context) {
 	var formValidator rules.V1PostPublishPost
 	err := context.ShouldBind(&formValidator)
