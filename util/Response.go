@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"net/http"
-	"toomhub/pkg"
 )
 
 type Response struct {
@@ -16,9 +15,9 @@ type Response struct {
 	Data interface{} `json:"data"`
 }
 
-// response 200 status code
+// response OK status code
 func ResponseOk(context *gin.Context, message string, data interface{}) {
-	BaseResponse(context, http.StatusOK, 200, message, data)
+	BaseResponse(context, http.StatusOK, HttpCodeSuccess, message, data)
 }
 
 // response 400 status code
@@ -33,7 +32,7 @@ func ResponseError(context *gin.Context, err interface{}) {
 		errStr = err.(string)
 
 	}
-	BaseResponse(context, http.StatusOK, pkg.Z_BAD_REQUEST, errStr, "")
+	BaseResponse(context, http.StatusOK, HttpBadRequest, errStr, "")
 }
 
 // base response
