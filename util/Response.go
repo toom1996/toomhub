@@ -32,7 +32,7 @@ func ResponseError(context *gin.Context, err interface{}) {
 		errStr = err.(string)
 
 	}
-	BaseResponse(context, http.StatusOK, HttpBadRequest, errStr, "")
+	BaseResponse(context, http.StatusOK, ValidatorErrVerifyFailed, errStr, "")
 }
 
 // base response

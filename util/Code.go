@@ -1,15 +1,24 @@
-// @Description
+// @Description https://open.weibo.com/wiki/Error_code 参照微博的错误码
 // @Author: toom1996 <1023150697@qq.com>
 // @dateTime: 2021/3/1 15:25
 package util
 
+// 1 服务错误
+// 2 系统错误
 const (
 
 	// 请求成功
 	HttpCodeSuccess = 0
 
-	// 格式验证错误
-	HttpBadRequest = 400
+	// ---------- 验证器 ----------
+
+	// 验证器错误
+	ValidatorErrVerifyFailed = 11000
+
+	// ---------- 用户 ----------
+
+	// 用户token 过期
+	UserErrTokenExpired = 12000
 
 	Z_ERROR = 500
 
