@@ -13,7 +13,7 @@ type V1UserSmsSend struct {
 //发布规则验证
 type V1PostPublishPost struct {
 	Content string `form:"content" binding:"required" label:"发布内容"`
-	Image   string `form:"image" binding:"required,checkPublishImage" label:"图片"`
+	Attach  string `form:"attach" binding:"required,checkPublishImage" label:"附件"`
 }
 
 //githubOauth 回调

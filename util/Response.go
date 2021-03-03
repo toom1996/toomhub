@@ -35,6 +35,13 @@ func ResponseError(context *gin.Context, err interface{}) {
 	BaseResponse(context, http.StatusOK, ValidatorErrVerifyFailed, errStr, "")
 }
 
+// response 400 status code
+func ResponseValidatorErr(context *gin.Context, err interface{}) {
+	var errStr string
+	errStr = Translate(err.(validator.ValidationErrors))
+	BaseResponse(context, http.StatusOK, ValidatorErrVerifyFailed, errStr, "")
+}
+
 // base response
 func BaseResponse(context *gin.Context, httpCode, errCode int, message string, data interface{}) {
 	context.JSON(httpCode, Response{

@@ -107,15 +107,18 @@ type Image struct {
 
 //验证上传图片
 func checkPublishImage(fl validator.FieldLevel) bool {
-	formData := fl.Field().String()
-	image := Image{}
+	ff := fl.Field().Len()
+	fmt.Println(ff)
 
-	err := json.Unmarshal([]byte(formData), &image)
+	formData := fl.Field().String()
+
+	var image []Image
+	err = json.Unmarshal([]byte(formData), &image)
 	if err != nil {
 		fmt.Println(err)
 		return false
 	}
 
-	fmt.Println(image)
+	fmt.Println("image -> ", image)
 	return true
 }
