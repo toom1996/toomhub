@@ -58,7 +58,7 @@ func InitVali() {
 
 		// 添加额外翻译
 		_ = v.RegisterTranslation("checkPublishImage", trans, func(ut ut.Translator) error {
-			return ut.Add("checkPublishImage", "{0}验证失败", true)
+			return ut.Add("checkPublishImage", "{0}数据不合法", true)
 		}, func(ut ut.Translator, fe validator.FieldError) string {
 			t, _ := ut.T("checkPublishImage", fe.Field())
 			return t
@@ -102,16 +102,16 @@ func checkMobileForV1UserRegister(fl validator.FieldLevel) bool {
 }
 
 type Image struct {
-	Key string `json:"key"`
+	Key    string `json:"key"`
+	Hash   string `json:"hash"`
+	Fsize  uint   `json:"fsize"`
+	Height string `json:"height"`
+	Width  string `json:"width"`
 }
 
 //验证上传图片
 func checkPublishImage(fl validator.FieldLevel) bool {
-	ff := fl.Field().Len()
-	fmt.Println(ff)
-
 	formData := fl.Field().String()
-
 	var image []Image
 	err = json.Unmarshal([]byte(formData), &image)
 	if err != nil {
@@ -119,6 +119,29 @@ func checkPublishImage(fl validator.FieldLevel) bool {
 		return false
 	}
 
+	// 验证图片长度, 最大长度为4张
+	if len(image) > 4 {
+		return false
+	}
+
+	// 验证图片属性
+	for _, item := range image {
+		if item.Key == "" {
+			return false
+		}
+		if item.Hash == "" {
+			return false
+		}
+		if item.Height == "" {
+			return false
+		}
+		if item.Width == "" {
+			return false
+		}
+		if item.Fsize == 0 {
+			return false
+		}
+	}
 	fmt.Println("image -> ", image)
 	return true
 }
