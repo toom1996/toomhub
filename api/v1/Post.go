@@ -14,7 +14,7 @@ func PublishPost(context *gin.Context) {
 	var formValidator rules.V1PostPublishPost
 	err := context.ShouldBind(&formValidator)
 	if err != nil {
-		util.ResponseValidatorErr(context, err)
+		util.ResponseError(context, err)
 		return
 	}
 

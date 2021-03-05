@@ -3,10 +3,8 @@
 package util
 
 import (
-	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"strconv"
 	"time"
 	"toomhub/setting"
@@ -18,8 +16,6 @@ type Claims struct {
 	Type string
 	jwt.StandardClaims
 }
-
-var identity *Claims
 
 func GenerateToken(id uint) (string, error) {
 	nowTime := time.Now()
@@ -62,7 +58,6 @@ func GenerateRefreshToken(id uint) (string, error) {
 }
 
 func ParseToken(token string, c *gin.Context) (*Claims, error) {
-	fmt.Println(token)
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(setting.ZConfig.Jwt.JwtSecret), nil
 	})
@@ -70,51 +65,39 @@ func ParseToken(token string, c *gin.Context) (*Claims, error) {
 	if tokenClaims != nil {
 		if tokenClaims.Valid {
 			if claims, ok := tokenClaims.Claims.(*Claims); ok {
-
 				// 判断token是否为最新
-				identity = &Claims{
-					claims.Type,
-					jwt.StandardClaims{
-						Id:        claims.Id,
-						IssuedAt:  claims.IssuedAt,
-						ExpiresAt: claims.ExpiresAt,
-						Issuer:    claims.Issuer,
-					},
-				}
-				return claims, nil
+
+				c.Set("identity", claims)
+				return nil, nil
+				//identity = &Claims{
+				//	claims.Type,
+				//	jwt.StandardClaims{
+				//		Id:        claims.Id,
+				//		IssuedAt:  claims.IssuedAt,
+				//		ExpiresAt: claims.ExpiresAt,
+				//		Issuer:    claims.Issuer,
+				//	},
+				//}
+				//return claims, nil
 			}
 		} else if ve, ok := err.(*jwt.ValidationError); ok {
 			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
 			} else if ve.Errors&(jwt.ValidationErrorExpired|jwt.ValidationErrorNotValidYet) != 0 {
 				// token 过期了
-				c.JSON(http.StatusOK, map[string]interface{}{
-					"code": 401,
-					"msg":  "登陆超时,请重新登陆",
-				})
-				c.Abort()
-				return nil, nil
+				return nil, &ResponseData{Code: UserErrTokenExpired, Msg: "登陆超时,请重新登陆"}
 			}
 		}
 	}
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"code": 401,
-		"msg":  "bad token",
-	})
-	c.Abort()
-	return nil, nil
+	return nil, &ResponseData{Code: UserErrBadToken, Msg: "非法的令牌"}
 }
 
 // @title 获取用户信息
-func GetIdentity() *Claims {
-	return identity
-}
+func GetIdentity(c *gin.Context) (*Claims, error) {
 
-// @title 获取用户信息
-func Identity(ctx *gin.Context) *Claims {
-	token := ctx.GetHeader("Toomhub-Token")
-	r := &Claims{}
-	if token != "" {
-		r, _ = ParseToken(token, ctx)
+	d, err := c.Get("identity")
+
+	if err == false {
+		return nil, &ResponseData{Code: UserErrGetInfoError, Msg: "获取用户信息失败"}
 	}
-	return r
+	return d.(*Claims), nil
 }

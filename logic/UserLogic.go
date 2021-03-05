@@ -148,7 +148,15 @@ func (l *UserLogic) RefreshToken(validator *rules.V1UserRefreshToken, context *g
 	}
 
 	// 判断是否为refresh_token
-	t := util.GetIdentity()
+	t, err := util.GetIdentity(context)
+	if err != nil {
+		return nil, err
+	}
+
+	fmt.Println(t)
+
+	xxxx, _ := context.Get("xxxx")
+	fmt.Println("xxxx -> ", xxxx)
 	fmt.Println(t)
 	id, err := strconv.Atoi(t.Id)
 
