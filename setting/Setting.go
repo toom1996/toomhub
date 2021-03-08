@@ -10,11 +10,6 @@ import (
 
 var ZConfig zawazawaConfig
 
-type Note struct {
-	Content string
-	Cities  []string
-}
-
 type zawazawaConfig struct {
 	App         app
 	Server      server
