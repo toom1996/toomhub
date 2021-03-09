@@ -14,13 +14,13 @@ func CheckIdentity() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 
-		r, _ := util.ParseToken(token, c)
+		r, err := util.ParseToken(token, c)
 
+		if err != nil {
+			c.JSON(util.Success, err.(*util.ResponseData))
+			c.Abort()
+		}
 		fmt.Println(r)
-		//c.JSON(200, map[string]string{
-		//	"sdf": "000",
-		//})
-		//c.Abort()
 	}
 }
 

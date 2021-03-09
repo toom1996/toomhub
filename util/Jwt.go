@@ -84,11 +84,11 @@ func ParseToken(token string, c *gin.Context) (*Claims, error) {
 			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
 			} else if ve.Errors&(jwt.ValidationErrorExpired|jwt.ValidationErrorNotValidYet) != 0 {
 				// token 过期了
-				return nil, &ResponseData{Code: UserErrTokenExpired, Msg: "登陆超时,请重新登陆"}
+				return nil, &ResponseData{Code: UserErrTokenExpired, Msg: "登陆超时,请重新登陆", Data: ""}
 			}
 		}
 	}
-	return nil, &ResponseData{Code: UserErrBadToken, Msg: "非法的令牌"}
+	return nil, &ResponseData{Code: UserErrBadToken, Msg: "非法的令牌", Data: ""}
 }
 
 // @title 获取用户信息

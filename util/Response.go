@@ -15,7 +15,7 @@ import (
 const (
 
 	// 请求成功
-	HttpCodeSuccess = 0
+	Success = 0
 
 	// ---------- 验证器 ----------
 
@@ -57,7 +57,7 @@ func (r *ResponseData) Error() string {
 
 // response OK status code
 func ResponseOk(context *gin.Context, message string, data interface{}) {
-	BaseResponse(context, http.StatusOK, HttpCodeSuccess, message, data)
+	BaseResponse(context, http.StatusOK, Success, message, data)
 }
 
 // response 400 status code
