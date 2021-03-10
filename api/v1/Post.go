@@ -4,10 +4,15 @@
 package v1
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"toomhub/logic"
 	rules "toomhub/rules/user/v1"
 	"toomhub/util"
 )
+
+type PostLogic struct {
+}
 
 // 发布
 func PublishPost(context *gin.Context) {
@@ -17,6 +22,12 @@ func PublishPost(context *gin.Context) {
 		util.ResponseError(context, err)
 		return
 	}
+	fmt.Println("000000000000000")
+	fmt.Println(context.Get("identity"))
+
+	context.Get("identity")
+	formLogic := logic.PostLogic{}
+	formLogic.PublishPost(&formValidator, context)
 
 	util.ResponseOk(context, "发布成功", "")
 }

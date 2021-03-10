@@ -3,6 +3,7 @@
 package util
 
 import (
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"strconv"
@@ -66,8 +67,9 @@ func ParseToken(token string, c *gin.Context) (*Claims, error) {
 		if tokenClaims.Valid {
 			if claims, ok := tokenClaims.Claims.(*Claims); ok {
 				// 判断token是否为最新
-
-				c.Set("identity", claims)
+				fmt.Println("set identity")
+				fmt.Println(claims)
+				//c.Set("identity", claims)
 				return nil, nil
 				//identity = &Claims{
 				//	claims.Type,
@@ -95,7 +97,7 @@ func ParseToken(token string, c *gin.Context) (*Claims, error) {
 func GetIdentity(c *gin.Context) (*Claims, error) {
 
 	d, err := c.Get("identity")
-
+	fmt.Println(d)
 	if err == false {
 		return nil, &ResponseData{Code: UserErrGetInfoError, Msg: "获取用户信息失败"}
 	}

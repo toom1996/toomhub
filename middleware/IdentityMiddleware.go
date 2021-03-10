@@ -14,13 +14,15 @@ func CheckIdentity() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 
-		r, err := util.ParseToken(token, c)
+		claims, err := util.ParseToken(token, c)
+		c.Set("identity", claims)
+		fmt.Println("18 ------> ideneity")
+		fmt.Println(c.Get("identity"))
 
 		if err != nil {
 			c.JSON(util.Success, err.(*util.ResponseData))
 			c.Abort()
 		}
-		fmt.Println(r)
 	}
 }
 
