@@ -32,17 +32,16 @@ func InitRouter() {
 		//用户注册短信发送接口
 		apiV1.POST("/user/sms-send", v1.SmsSend)
 
-		//发布主题
-		apiV1.POST("/post/publish-post", v1.PublishPost)
-
 		apiV1.POST("/user/auth/github", v1.GithubOAuth)
 		// 刷新token
 		apiV1.POST("/user/refresh-token", v1.RefreshToken)
 	}
 
-	apiV1.Use(middleware.CheckIdentity())
+	apiV1.Use(middleware.JWTAuthMiddleware())
 	{
 		apiV1.GET("/upload/get-qiniu-access-token", v1.GetQiniuAccessToken)
+
+		apiV1.POST("/post/publish-post", v1.PublishPost)
 
 	}
 

@@ -4,17 +4,17 @@
 package logic
 
 import (
-	"fmt"
-	"github.com/gin-gonic/gin"
 	rules "toomhub/rules/user/v1"
-	"toomhub/util"
+	"toomhub/service"
 )
 
 type PostLogic struct {
 }
 
-func (l *PostLogic) PublishPost(v *rules.V1PostPublishPost, c *gin.Context) {
+func (l *PostLogic) PublishPost(v *rules.V1PostPublishPost) {
+	s := service.PostService{}
 	// TODO 判断用户状态
-	fmt.Println(util.GetIdentity(c))
-	fmt.Println(v)
+
+	//TODO 存储发布内容
+	_, _ = s.Create(v)
 }

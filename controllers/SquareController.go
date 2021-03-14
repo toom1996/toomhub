@@ -40,7 +40,7 @@ func (square *SquareController) Register(engine *gin.Engine) {
 	user.GET("/view", square.view)
 
 	//中间件
-	user.Use(middleware.CheckIdentity())
+	user.Use(middleware.JWTAuthMiddleware())
 	{
 		// 发布一条广场信息
 		user.POST("/create", square.create)

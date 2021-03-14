@@ -229,6 +229,11 @@ func (service *UserService) GetMobileUser(id uint) (interface{}, error) {
 
 	t.Commit()
 
+	setUserCache(uint(id), cacheUser{
+		Id:          id,
+		AccessToken: g,
+	})
+
 	return map[string]interface{}{
 		"username":      "咋哇咋哇用户",
 		"avatar":        "http://v.bootstrapmb.com/2019/6/mmjod5239/img/avatar7-sm.jpg",
@@ -237,4 +242,21 @@ func (service *UserService) GetMobileUser(id uint) (interface{}, error) {
 		"token":         token.Token,
 		"refresh_token": refreshToken,
 	}, nil
+}
+
+func (service *UserService) getUsrCache() {
+
+}
+
+type cacheUser struct {
+	Id          uint
+	AccessToken string
+	Mobile      string
+}
+
+func setUserCache(uid uint, data cacheUser) {
+	r, err := util.Rdb.HMSet(util.Ctx, util.CacheUserKey+fmt.Sprintf("%d", uid), data).Result()
+
+	fmt.Println(err)
+	fmt.Println(r)
 }

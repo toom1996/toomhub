@@ -3,7 +3,6 @@
 package util
 
 import (
-	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"strconv"
@@ -58,7 +57,7 @@ func GenerateRefreshToken(id uint) (string, error) {
 	return token, err
 }
 
-func ParseToken(token string, c *gin.Context) (*Claims, error) {
+func ParseToken(token string) (*Claims, error) {
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(setting.ZConfig.Jwt.JwtSecret), nil
 	})
@@ -67,20 +66,8 @@ func ParseToken(token string, c *gin.Context) (*Claims, error) {
 		if tokenClaims.Valid {
 			if claims, ok := tokenClaims.Claims.(*Claims); ok {
 				// 判断token是否为最新
-				fmt.Println("set identity")
-				fmt.Println(claims)
-				//c.Set("identity", claims)
-				return nil, nil
-				//identity = &Claims{
-				//	claims.Type,
-				//	jwt.StandardClaims{
-				//		Id:        claims.Id,
-				//		IssuedAt:  claims.IssuedAt,
-				//		ExpiresAt: claims.ExpiresAt,
-				//		Issuer:    claims.Issuer,
-				//	},
-				//}
-				//return claims, nil
+
+				return claims, nil
 			}
 		} else if ve, ok := err.(*jwt.ValidationError); ok {
 			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
@@ -97,7 +84,6 @@ func ParseToken(token string, c *gin.Context) (*Claims, error) {
 func GetIdentity(c *gin.Context) (*Claims, error) {
 
 	d, err := c.Get("identity")
-	fmt.Println(d)
 	if err == false {
 		return nil, &ResponseData{Code: UserErrGetInfoError, Msg: "获取用户信息失败"}
 	}

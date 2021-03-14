@@ -142,7 +142,7 @@ func (l *UserLogic) SmsSend(validator *rules.V1UserSmsSend) (bool, error) {
 // 刷新token逻辑层
 func (l *UserLogic) RefreshToken(validator *rules.V1UserRefreshToken, context *gin.Context) (interface{}, error) {
 	expire, _ := strconv.Atoi(setting.ZConfig.Jwt.JwtExpire)
-	_, err := util.ParseToken(validator.RefreshToken, context)
+	_, err := util.ParseToken(validator.RefreshToken)
 	if err != nil {
 		return false, err
 	}

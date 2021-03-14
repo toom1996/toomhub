@@ -22,12 +22,11 @@ func PublishPost(context *gin.Context) {
 		util.ResponseError(context, err)
 		return
 	}
-	fmt.Println("000000000000000")
-	fmt.Println(context.Get("identity"))
 
-	context.Get("identity")
+	fmt.Println(context.MustGet("identity").(*util.Claims).Id)
+
 	formLogic := logic.PostLogic{}
-	formLogic.PublishPost(&formValidator, context)
+	formLogic.PublishPost(&formValidator)
 
 	util.ResponseOk(context, "发布成功", "")
 }

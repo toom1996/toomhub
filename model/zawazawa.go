@@ -1,11 +1,24 @@
 package model
 
+import (
+	"fmt"
+	"gorm.io/gorm"
+	"time"
+)
+
 // ZawazawaPost [...]
 type ZawazawaPost struct {
 	ID        int    `gorm:"primary_key;column:id;type:int;not null" json:"-"`
 	Content   string `gorm:"column:content;type:varchar(255)" json:"content"`
 	CreatedAt int    `gorm:"column:created_at;type:int" json:"created_at"`
 	CreatedBy int    `gorm:"column:created_by;type:int" json:"created_by"`
+}
+
+// 在创建前更新 create_at 字段
+func (u *ZawazawaPost) BeforeCreate(tx *gorm.DB) (err error) {
+	fmt.Println("------------------")
+	u.CreatedAt = int(time.Now().Unix())
+	return
 }
 
 // ZawazawaPostImage [...]

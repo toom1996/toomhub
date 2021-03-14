@@ -3,21 +3,18 @@
 package middleware
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"toomhub/util"
 )
 
 // @title 	验证token
-func CheckIdentity() gin.HandlerFunc {
+func JWTAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 
-		claims, err := util.ParseToken(token, c)
+		claims, err := util.ParseToken(token)
 		c.Set("identity", claims)
-		fmt.Println("18 ------> ideneity")
-		fmt.Println(c.Get("identity"))
 
 		if err != nil {
 			c.JSON(util.Success, err.(*util.ResponseData))

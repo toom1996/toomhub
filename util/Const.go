@@ -27,3 +27,8 @@ const OAuthGithub = 0
 
 // 验证码redisKey
 const RedisMobileKey = ":mobile_code"
+
+// ------------------- user -------------------
+
+// 用户缓存redis key
+const CacheUserKey = "z_user"
